@@ -1,9 +1,9 @@
 {
   "catalogRoutes": 256,
-  "stopPointIds": 4950,
+  "stopPointIds": 4953,
   "recordedFamilies": 247,
   "recordedRuns": 1187,
-  "routableCatalogRoutesChecked": 249,
+  "routableCatalogRoutesChecked": 250,
   "passedIds": [
     "192000010",
     "192000012",
@@ -178,6 +178,7 @@
     "196000624",
     "196000630",
     "196000640",
+    "196000810",
     "196000820",
     "196000840",
     "196000850",
@@ -285,13 +286,11 @@
       "routeId": "196000613",
       "number": "울주61",
       "reason": "Fewer than two non-sentinel stop points in source"
-    },
-    {
-      "routeId": "196000810",
-      "number": "울주81",
-      "reason": "Fewer than two non-sentinel stop points in source"
     }
   ],
-  "elapsedSeconds": 10.94,
+  "inferredPartialSections": [
+    "196000810"
+  ],
+  "elapsedSeconds": 9.55,
   "scope": "One directed catalog edge per usable route; not every origin/destination pair or real-world route validation."
 }

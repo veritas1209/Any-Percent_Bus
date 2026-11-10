@@ -59,8 +59,23 @@ class Network {
   String routeLabel(String id) => routes[id]!['numberKnown'] == false
       ? '노선 ID ${routes[id]!['familyId']}'
       : observed
-      ? '${routes[id]!['number']}번'
+      ? '${routes[id]!['number']}번${routes[id]!['routeSource'] == 'gps_proximity_inferred' ? ' · GPS추정' : ''}'
       : '${routes[id]!['number']} · ${routes[id]!['name']}';
+  bool hasInferredRoute(List<dynamic> legs) => legs.any(
+    (l) =>
+        l['kind'] == 'ride' &&
+        routes[l['routeId']]?['routeSource'] == 'gps_proximity_inferred',
+  );
+  List<Json> relatedRoutes(Json route) => route['numberKnown'] == false
+      ? []
+      : catalogRoutes
+            .where(
+              (r) =>
+                  r['familyId'] != route['familyId'] &&
+                  r['number'] == route['number'] &&
+                  (r['stops'] as List).length >= 2,
+            )
+            .toList();
   Network(this.data);
   factory Network.decode(String s) => Network(jsonDecode(s));
 }

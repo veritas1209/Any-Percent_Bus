@@ -500,6 +500,23 @@ class _StopPickerState extends State<_StopPicker> {
                   '원본에 연결할 정류장 자료가 부족합니다. 이 노선은 목록만 확인할 수 있습니다.',
                   style: TextStyle(fontSize: 12, color: muted),
                 ),
+              if (selectedRoute != null &&
+                  (selectedRoute!['stops'] as List).length < 2)
+                for (final related in n.relatedRoutes(selectedRoute!))
+                  TextButton.icon(
+                    onPressed: () => setState(() {
+                      selectedRoute = related;
+                      query = '';
+                      controller.clear();
+                    }),
+                    icon: const Icon(Icons.alt_route, size: 16),
+                    label: Text('${n.routeLabel(related['id'])} · 다른 구간 보기'),
+                  ),
+              if (selectedRoute?['routeSource'] == 'gps_proximity_inferred')
+                const Text(
+                  'GPS 근접으로 복구한 일부 구간입니다. 정차·탑승 가능 여부와 전체 노선은 미확인입니다.',
+                  style: TextStyle(fontSize: 12, color: muted, height: 1.5),
+                ),
               TextField(
                 controller: controller,
                 autofocus: true,
@@ -528,7 +545,10 @@ class _StopPickerState extends State<_StopPicker> {
                           ),
                           subtitle: Text(
                             routeMode
-                                ? '${(rows[i]['stops'] as List).length}개 정류장 지점 · 시각 자료는 GPS 관측 범위만 제공'
+                                ? (rows[i]['routeSource'] ==
+                                          'gps_proximity_inferred'
+                                      ? '${(rows[i]['stops'] as List).length}개 정류장 · GPS 근접 추정 · 부분 구간'
+                                      : '${(rows[i]['stops'] as List).length}개 정류장 지점 · 시각 자료는 GPS 관측 범위만 제공')
                                 : rows[i]['direction'],
                           ),
                           trailing: const Icon(Icons.north_east, size: 18),

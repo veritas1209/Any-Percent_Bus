@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "method": {
+    "maxGpsDistanceMeters": 30,
+    "maxKph": 10,
+    "minStopSeparationMeters": 80,
+    "arrivalTimesInferred": false,
+    "boardingServiceVerified": false
+  },
+  "sourceFiles": [
+    {
+      "name": "gps_replay.csv",
+      "bytes": 14682419,
+      "sha256": "509962dbc5cf499c959beab6cebb2a19e16b6f36b0605ad9bbf2b2f6e132a921"
+    },
+    {
+      "name": "route_stops_named.csv",
+      "bytes": 1583031,
+      "sha256": "acd465a9c577433d3aa6be5429cef14ff66b512470be4cd97920d8ffad8d5baf"
+    },
+    {
+      "name": "bus_stops.csv",
+      "bytes": 282407,
+      "sha256": "68015c81853e8e7324fd84cce97d20fd3d58f703bf8740526bab056b9a03c36e"
+    },
+    {
+      "name": "stop_routes.csv",
+      "bytes": 491007,
+      "sha256": "38d972c1f28770a325f6e22f22dfbcc00ca8b56f49cf526011c718add9eb7d12"
+    }
+  ],
+  "routes": [
+    {
+      "routeId": "196000810",
+      "number": "울주81",
+      "vehicleId": "636",
+      "kind": "gps_proximity_inferred",
+      "partial": true,
+      "events": [
+        {
+          "id": "ref:31531",
+          "referenceStopId": "31531",
+          "name": "남창고등학교",
+          "lat": 35.41664323,
+          "lon": 129.2783373,
+          "firstMinute": 433.3666666666667,
+          "lastMinute": 433.3666666666667,
+          "supportSamples": 1,
+          "firstMatchDistanceMeters": 11.9,
+          "firstMatchKph": 1.0
+        },
+        {
+          "id": "ref:31516",
+          "referenceStopId": "31516",
+          "name": "온양우체국",
+          "lat": 35.41706921,
+          "lon": 129.2816836,
+          "firstMinute": 434.3666666666667,
+          "lastMinute": 434.3666666666667,
+          "supportSamples": 1,
+          "firstMatchDistanceMeters": 4.1,
+          "firstMatchKph": 8.0
+        },
+        {
+          "id": "ref:31532",
+          "referenceStopId": "31532",
+          "name": "남창역(기점)",
+          "lat": 35.41836146,
+          "lon": 129.2824957,
+          "firstMinute": 435.3666666666667,
+          "lastMinute": 477.8666666666667,
+          "supportSamples": 86,
+          "firstMatchDistanceMeters": 18.0,
+          "firstMatchKph": 6.0
+        }
+      ],
+      "originalStopIds": [
+        "1960082000"
+      ],
+      "disclaimer": "GPS가 정류장 가까이 저속으로 지나간 추정 구간입니다. 실제 정차·탑승 가능 여부와 전체 노선은 미확인입니다."
+    }
+  ],
+  "sparseRouteDetails": [
+    {
+      "routeId": "195000130",
+      "number": "북구13",
+      "sourceStopCount": 1,
+      "rawRows": 2,
+      "passedPointIds": {
+        "999000201": 2
+      },
+      "distinctCoordinates": 2,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 8,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [
+        "195000135"
+      ],
+      "recovered": false,
+      "recoveredStopCount": 0
+    },
+    {
+      "routeId": "195900010",
+      "number": null,
+      "sourceStopCount": 0,
+      "rawRows": 41,
+      "passedPointIds": {
+        "0": 41
+      },
+      "distinctCoordinates": 39,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 454,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [],
+      "recovered": false,
+      "recoveredStopCount": 0,
+      "idRuleNumberSuggestion": "순환1"
+    },
+    {
+      "routeId": "196000041",
+      "number": null,
+      "sourceStopCount": 1,
+      "rawRows": 15,
+      "passedPointIds": {
+        "196030122": 15
+      },
+      "distinctCoordinates": 15,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 60,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [],
+      "recovered": false,
+      "recoveredStopCount": 0,
+      "idRuleNumberSuggestion": "울주04"
+    },
+    {
+      "routeId": "196000071",
+      "number": "울주07",
+      "sourceStopCount": 1,
+      "rawRows": 3,
+      "passedPointIds": {
+        "196030504": 3
+      },
+      "distinctCoordinates": 2,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 30,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [
+        "196000070"
+      ],
+      "recovered": false,
+      "recoveredStopCount": 0
+    },
+    {
+      "routeId": "196000131",
+      "number": "울주13",
+      "sourceStopCount": 0,
+      "rawRows": 1,
+      "passedPointIds": {
+        "0": 1
+      },
+      "distinctCoordinates": 1,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 4,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [
+        "196000130"
+      ],
+      "recovered": false,
+      "recoveredStopCount": 0
+    },
+    {
+      "routeId": "196000613",
+      "number": "울주61",
+      "sourceStopCount": 1,
+      "rawRows": 20,
+      "passedPointIds": {
+        "196066401": 20
+      },
+      "distinctCoordinates": 4,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 370,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [],
+      "recovered": false,
+      "recoveredStopCount": 0
+    },
+    {
+      "routeId": "196000810",
+      "number": "울주81",
+      "sourceStopCount": 1,
+      "rawRows": 120,
+      "passedPointIds": {
+        "1960082000": 120
+      },
+      "distinctCoordinates": 43,
+      "databaseStopRows": 1,
+      "databaseHistorySamples": 750,
+      "newCoordinatesInHistorySample": 0,
+      "sameNumberRoutableIds": [],
+      "recovered": true,
+      "recoveredStopCount": 3
+    }
+  ]
+}

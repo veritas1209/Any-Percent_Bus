@@ -26,7 +26,7 @@ NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
 NETWORK_JSON={name:json.dumps(data,ensure_ascii=False,separators=(',',':')).encode('utf-8') for name,data in NETWORKS.items()}
 ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.2.0')
+app = FastAPI(title='Any% journey planner', version='0.2.1')
 app.add_middleware(GZipMiddleware,minimum_size=1024,compresslevel=5)
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
@@ -77,6 +77,7 @@ def coverage():
     return {'rawRouteIds':OBSERVED['rawRouteIds'],'catalogRouteCount':OBSERVED['catalogRouteCount'],
             'observedRouteFamilies':OBSERVED['observedRouteFamilies'],'observedRuns':OBSERVED['observedRuns'],
             'stopPoints':len(OBSERVED['stops']),'excludedSentinels':OBSERVED['excludedSentinels'],
+            'recoveredCatalogIds':OBSERVED.get('routeRecoveries',[]),'sparseRouteDetails':OBSERVED.get('sparseRouteDetails',[]),
             'unroutableCatalogIds':[r['familyId'] for r in OBSERVED['routes'] if r.get('scheduleSource')=='catalog_topology' and len(r['stops'])<2],
             'note':'시각 연결이 없으면 도착시각·확률 없는 노선 연결 후보를 제공합니다. 정류장 자료가 없는 노선은 목록에만 표시합니다.'}
 

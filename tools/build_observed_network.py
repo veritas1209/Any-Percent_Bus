@@ -2,6 +2,7 @@
 import csv
 import json
 import math
+import hashlib
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -55,15 +56,32 @@ for (vehicle,rid),events in vehicles.items():
                'delaySamples':[0,0,1,1,2,2,3,4,5,7],'scheduleSource':'replay_observed','delaySource':'simulated'}
         routes.append(route);used.update(stop_ids)
 observed_families={r['familyId'] for r in routes}
+recovery_path=ROOT/'shared/route_recoveries.json'
+recovery_data=json.loads(recovery_path.read_text(encoding='utf-8')) if recovery_path.exists() else {}
+for source in recovery_data.get('sourceFiles',[]):
+    path=SOURCE/source['name']
+    if path.exists() and hashlib.sha256(path.read_bytes()).hexdigest()!=source['sha256']:
+        raise ValueError(f"Recovery source changed: {source['name']}; regenerate recovery evidence first")
+recoveries={r['routeId']:r for r in recovery_data.get('routes',[])}
 for rid,ids in sorted(static.items()):
     # Preserve supplied direction and repeated stops; never invent a reverse route.
     ids=[sid for i,sid in enumerate(ids) if i==0 or sid!=ids[i-1]]
-    routes.append({'id':'cat:'+rid,'familyId':rid,'number':names.get(rid) or rid,'numberKnown':bool(names.get(rid)),
+    route={'id':'cat:'+rid,'familyId':rid,'number':names.get(rid) or rid,'numberKnown':bool(names.get(rid)),
                    'name':'BusTracker 노선 연결','stops':ids,'offsets':[0]*len(ids),'departures':[],
                    'color':colors[sorted(families).index(rid)%len(colors)],'delaySamples':[],
-                   'scheduleSource':'catalog_topology','delaySource':'unavailable'})
+                   'scheduleSource':'catalog_topology','delaySource':'unavailable'}
+    if rid in recoveries:
+        recovery=recoveries[rid]
+        route.update(stops=[e['id'] for e in recovery['events']],offsets=[0]*len(recovery['events']),
+                     sourceCatalogStops=ids,routeSource='gps_proximity_inferred',partial=True,recovery=recovery)
+    routes.append(route)
 stops=[{'id':sid,'name':catalog[sid]['stop_name'] or f'이름 미상 정류장 {sid}','lat':float(catalog[sid]['lat']),'lon':float(catalog[sid]['lon']),
         'direction':f'정류장 ID {sid}','hasRecordedService':sid in used} for sid in sorted(catalog) if sid!='0']
+for recovery in recoveries.values():
+    for event in recovery['events']:
+        if not any(s['id']==event['id'] for s in stops):
+            stops.append({k:event[k] for k in ('id','name','lat','lon','referenceStopId')}|
+                         {'direction':f"BusTracker 정류장 {event['referenceStopId']} · GPS 근접 추정",'hasRecordedService':False,'coordinateSource':'bustracker_bus_stops_csv'})
 
 def distance(a,b):
     dx=(a['lon']-b['lon'])*91000;dy=(a['lat']-b['lat'])*111000
@@ -83,7 +101,8 @@ network={'version':'jetson-2025-12-31-0700','dataset':'observed','source':'repla
          'defaultOrigin':'194027121','defaultDestination':'192021606','defaultDeparture':430,
          'routeFamilies':len(families),'observedRouteFamilies':len(observed_families),'observedRuns':sum(r['scheduleSource']=='replay_observed' for r in routes),
          'catalogRouteCount':len(static),'catalogFallback':True,'rawRouteIds':len(families)+1,'rawStopPointIds':len(catalog),'ambiguousTimestampsExcluded':ambiguous,
-         'excludedSentinels':{'routeIds':['0'],'stopIds':['0']},'stops':stops,'routes':routes,'footpaths':footpaths}
+         'excludedSentinels':{'routeIds':['0'],'stopIds':['0']},'routeRecoveries':list(recoveries),
+         'sparseRouteDetails':recovery_data.get('sparseRouteDetails',[]),'stops':stops,'routes':routes,'footpaths':footpaths}
 assert network['defaultOrigin'] in used and network['defaultDestination'] in used
 for path in (ROOT/'shared/observed_network.json',ROOT/'app/assets/data/observed_network.json'):
     path.parent.mkdir(parents=True,exist_ok=True)

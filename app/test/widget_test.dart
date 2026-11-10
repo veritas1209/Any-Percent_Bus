@@ -236,7 +236,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(session.network!.dataset, 'observed');
     expect(session.network!.data['routeFamilies'], 256);
-    expect(session.network!.stops.length, 4950);
+    expect(session.network!.stops.length, 4953);
     expect(
       session.network!.routeNumbers,
       containsAll(['114', '124', '134', '224', '741', '722', '772']),
@@ -392,6 +392,71 @@ void main() {
       full.searchStops('194027121').any((s) => s['id'] == '194027121'),
       isTrue,
     );
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets(
+    'recovered 81 shows its partial GPS source and no arrival promise',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final full = Network.decode(
+        File('assets/data/observed_network.json').readAsStringSync(),
+      );
+      const q = SearchQuery(
+        origin: 'ref:31531',
+        destination: 'ref:31532',
+        departure: 430,
+        maxWalk: 0,
+        maxTransfers: 0,
+        samples: 20,
+      );
+      final rows = JourneyEngine(full).search(q);
+      expect(rows, isNotEmpty);
+      expect(rows.first['arrival'], isNull);
+      final session = AppSession()
+        ..network = full
+        ..repository = MemoryRepository(full)
+        ..mapTileProviderFactory = MemoryMapTiles.new;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: JourneyScreen(session: session, query: q, journey: rows.first),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.textContaining('GPS 근접 추정 구간'), findsOneWidget);
+      expect(find.text('울주81번 · GPS추정'), findsWidgets);
+      expect(find.text('운행시각이 없는 경로입니다'), findsOneWidget);
+      expect(find.text('버스가 늦는다면?'), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets('sparse variant links to the existing same-number section', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final full = Network.decode(
+      File('assets/data/observed_network.json').readAsStringSync(),
+    );
+    final session = AppSession()..repository = MemoryRepository(full);
+    await tester.pumpWidget(AnyPercentApp(session: session));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('울산과학대학앞'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('노선'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '북구13');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('북구13번').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('북구13번 · 다른 구간 보기'));
+    await tester.pumpAndSettle();
+    final related = full.routes['cat:195000135']!;
+    expect(find.text(full.stops[related['stops'][0]]!['name']), findsWidgets);
     expect(tester.takeException(), isNull);
   });
 }

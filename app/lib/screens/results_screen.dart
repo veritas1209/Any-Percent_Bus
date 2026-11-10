@@ -165,7 +165,11 @@ class JourneyCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Eyebrow('ROUTE / 노선 연결 후보'),
+                  Eyebrow(
+                    session.network!.hasInferredRoute(journey['legs'])
+                        ? 'GPS 추정 / 부분 구간'
+                        : 'ROUTE / 노선 연결 후보',
+                  ),
                   const SizedBox(height: 12),
                   const Text(
                     '운행시각 미확인',

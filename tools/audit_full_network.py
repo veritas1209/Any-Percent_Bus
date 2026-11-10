@@ -21,6 +21,7 @@ for r in network['routes']:
 report={'catalogRoutes':network['catalogRouteCount'],'stopPointIds':len(network['stops']),
         'recordedFamilies':network['observedRouteFamilies'],'recordedRuns':network['observedRuns'],
         'routableCatalogRoutesChecked':len(passed),'passedIds':passed,'missingSourceConnections':missing,
+        'inferredPartialSections':network.get('routeRecoveries',[]),
         'elapsedSeconds':round(time.perf_counter()-started,2),
         'scope':'One directed catalog edge per usable route; not every origin/destination pair or real-world route validation.'}
 (ROOT/'artifacts/full-network-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')

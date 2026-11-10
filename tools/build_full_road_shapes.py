@@ -99,7 +99,13 @@ for route in network['routes']:
     if route['scheduleSource']!='catalog_topology':continue
     route['shapeSegments']=[]
     for a,b in zip(route['stops'],route['stops'][1:]):
-        key=family_edges.get((route['familyId'],a,b)) or shape('road:'+a+':'+b,a,b)
+        if route.get('routeSource')=='gps_proximity_inferred':
+            recovery=route['recovery'];events=recovery['events'];i=len(route['shapeSegments'])
+            ticks=times[route['familyId'],recovery['vehicleId']];trace=traces[route['familyId'],recovery['vehicleId']]
+            lo=bisect.bisect_left(ticks,events[i]['firstMinute']-.001);hi=bisect.bisect_right(ticks,events[i+1]['firstMinute']+.001)
+            samples=[p for _,p in trace[lo:hi]]
+            key=shape('recovery1:'+route['familyId']+':'+a+':'+b,a,b,samples,(route['familyId'],recovery['vehicleId']))
+        else:key=family_edges.get((route['familyId'],a,b)) or shape('road:'+a+':'+b,a,b)
         pool[key]=cache[key];route['shapeSegments'].append(key)
     # Distance is a ranking cost only. These are not estimated timetable offsets.
     route['distanceOffsets']=[0]
@@ -115,6 +121,7 @@ for p in network['footpaths']:
 network.update(shapes=pool,footpaths=paths,geometryVersion='local-osm-pool-2',version='jetson-2025-12-31-all+roads2',
                geometryAttribution='© OpenStreetMap contributors / OSM Korea',
                geometryNote='GPS는 외부로 보내지 않고 로컬 도로망에 보정했습니다. 형상은 최대 2m 오차로 단순화하며 공식 최신 노선 확정은 아닙니다.')
+if network.get('routeRecoveries'):network['version']+='+recovery1'
 for output in (ROOT/'shared/observed_network.json',ROOT/'app/assets/data/observed_network.json'):
     temp=output.with_suffix('.tmp');temp.write_text(json.dumps(network,ensure_ascii=False,separators=(',',':')),encoding='utf-8');temp.replace(output)
 save()

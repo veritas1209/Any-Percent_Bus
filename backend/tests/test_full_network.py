@@ -13,8 +13,10 @@ def test_full_inventory_and_search_include_every_non_sentinel_id():
     raw=json.loads((Path(__file__).resolve().parents[2]/'shared/bustracker_catalog.json').read_text(encoding='utf-8'))
     catalog=[r for r in OBSERVED['routes'] if r['scheduleSource']=='catalog_topology']
     assert {r['familyId'] for r in catalog}=={r['id'] for r in raw['routes']}-{'0'}
-    assert {s['id'] for s in OBSERVED['stops']}=={s['id'] for s in raw['stops']}-{'0'}
-    assert len(catalog)==256 and len(OBSERVED['stops'])==4950
+    raw_ids={s['id'] for s in raw['stops']}-{'0'}
+    assert raw_ids<={s['id'] for s in OBSERVED['stops']}
+    assert {s['id'] for s in OBSERVED['stops']}-raw_ids=={'ref:31531','ref:31516','ref:31532'}
+    assert len(catalog)==256 and len(OBSERVED['stops'])==4953
     client=TestClient(app)
     assert client.get('/v1/coverage').json()['observedRouteFamilies']==247
     assert len(client.get('/v1/routes/search').json()['routes'])==256

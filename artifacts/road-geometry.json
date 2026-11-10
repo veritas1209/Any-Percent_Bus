@@ -4,24 +4,23 @@
   "graphNodes": 678771,
   "graphWays": 69877,
   "shapes": {
-    "gps_road_matched": 23199,
-    "road_estimate": 7588
+    "gps_road_matched": 23201,
+    "road_estimate": 7598
   },
-  "shapePoolCount": 30787,
+  "shapePoolCount": 30799,
   "simplificationMeters": 2,
   "gpsExternalTransmission": false,
   "routeFamilies": 256,
   "observedRouteFamilies": 247,
   "observedRuns": 1187,
-  "stopPoints": 4950,
+  "stopPoints": 4953,
   "unroutableCatalogIds": [
     "195000130",
     "195900010",
     "196000041",
     "196000071",
     "196000131",
-    "196000613",
-    "196000810"
+    "196000613"
   ],
   "method": "Local directed OSM road graph; no turn-restriction relations or lane-level guarantee."
 }

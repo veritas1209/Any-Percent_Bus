@@ -29,9 +29,12 @@
     "catalogRouteCount": 256,
     "observedRouteFamilies": 247,
     "observedRuns": 1187,
-    "stopPointIds": 4950,
+    "stopPointIds": 4953,
     "method": "First sample after passed-point ID changes; split duplicate-point loops and gaps over 8 minutes",
     "ambiguousTimestampsExcluded": 895,
+    "inferredPartialSections": [
+      "196000810"
+    ],
     "arrivalQuality": "Passage-time proxy; boarding service at each point is not field-validated",
     "futureTrips": "Not extrapolated beyond the recording",
     "walking": "Candidate point pairs within 100m; lengths from local OSM pedestrian graph, not surveyed paths; disconnected pairs excluded",

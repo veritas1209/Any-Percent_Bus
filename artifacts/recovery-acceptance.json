@@ -1,0 +1,9 @@
+{
+  "passed": [
+    "recovered 81 can be searched with direct-only and zero walking",
+    "partial GPS source is explicit",
+    "no invented arrival or probability",
+    "sparse variant opens a real same-number section"
+  ],
+  "errors": []
+}

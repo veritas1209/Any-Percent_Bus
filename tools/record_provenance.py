@@ -21,6 +21,7 @@ result={'origin':'Authorized read-only copy from the user Jetson BusTracker dire
         'extraction':{'catalogRouteCount':network['catalogRouteCount'],'observedRouteFamilies':network['observedRouteFamilies'],'observedRuns':network['observedRuns'],'stopPointIds':len(network['stops']),
                       'method':'First sample after passed-point ID changes; split duplicate-point loops and gaps over 8 minutes',
                       'ambiguousTimestampsExcluded':network['ambiguousTimestampsExcluded'],
+                      'inferredPartialSections':network.get('routeRecoveries',[]),
                       'arrivalQuality':'Passage-time proxy; boarding service at each point is not field-validated',
                       'futureTrips':'Not extrapolated beyond the recording',
                       'walking':'Candidate point pairs within 100m; lengths from local OSM pedestrian graph, not surveyed paths; disconnected pairs excluded',

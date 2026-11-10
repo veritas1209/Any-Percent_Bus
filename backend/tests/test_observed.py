@@ -21,7 +21,7 @@ def test_observed_runs_use_recorded_window_and_no_future_departures():
     outside=engine.search(Query(OBSERVED['defaultOrigin'],OBSERVED['defaultDestination'],departure=480,samples=20))
     assert outside and all(j['arrival'] is None and j['source']=='catalog_topology' for j in outside)
     client=TestClient(app)
-    assert len(client.get('/v1/network?dataset=observed').json()['stops'])==4950
+    assert len(client.get('/v1/network?dataset=observed').json()['stops'])==4953
     payload={'dataset':'observed','origin':OBSERVED['defaultOrigin'],'destination':OBSERVED['defaultDestination'],'departure':430,'samples':20}
     response=client.post('/v1/journeys/search',json=payload)
     assert response.status_code==200 and response.json()['journeys']

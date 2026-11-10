@@ -51,6 +51,13 @@ class JourneyScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(height: 16),
+        if (session.network!.hasInferredRoute(journey['legs'])) ...[
+          const Text(
+            'GPS 근접 추정 구간입니다. 실제 정차·탑승 가능 여부와 전체 노선은 확인되지 않았습니다.',
+            style: TextStyle(fontSize: 12, color: muted, height: 1.6),
+          ),
+          const SizedBox(height: 12),
+        ],
         TransitMap(
           network: session.network!,
           legs: List<Json>.from(journey['legs']),
