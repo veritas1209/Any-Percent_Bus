@@ -8,8 +8,9 @@ from pathlib import Path
 from typing import Literal
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, Field
 
 from .engine import Engine, Query
@@ -22,9 +23,11 @@ NETWORK = json.loads((ROOT/'shared/network.json').read_text(encoding='utf-8'))
 engine = Engine(NETWORK)
 OBSERVED = json.loads((ROOT/'shared/observed_network.json').read_text(encoding='utf-8'))
 NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
+NETWORK_JSON={name:json.dumps(data,ensure_ascii=False,separators=(',',':')).encode('utf-8') for name,data in NETWORKS.items()}
 ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.1.3')
+app = FastAPI(title='Any% journey planner', version='0.2.0')
+app.add_middleware(GZipMiddleware,minimum_size=1024,compresslevel=5)
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
     from .replay_feed import create_router
@@ -52,12 +55,30 @@ def health():
 
 @app.get('/v1/network')
 def network(dataset: Literal['demo','observed']='observed'):
-    return NETWORKS[dataset]
+    return Response(content=NETWORK_JSON[dataset],media_type='application/json')
 
 
 @app.get('/v1/stops/search')
 def search_stops(q: str='',dataset: Literal['demo','observed']='observed'):
-    return {'stops':[s for s in NETWORKS[dataset]['stops'] if q.casefold() in (s['name']+s['direction']).casefold()]}
+    selected=NETWORKS[dataset];needle=q.casefold().replace(' ','')
+    route_stops={sid for r in selected['routes'] if needle in (str(r['number'])+'번').casefold() or needle in r['id'] for sid in r['stops']}
+    return {'stops':[s for s in selected['stops'] if needle in (s['name']+s['direction']+s['id']).casefold().replace(' ','') or s['id'] in route_stops]}
+
+
+@app.get('/v1/routes/search')
+def search_routes(q: str=''):
+    needle=q.casefold().strip().removesuffix('번').strip()
+    return {'routes':[r for r in OBSERVED['routes'] if r.get('scheduleSource')=='catalog_topology' and
+                      (needle in str(r['number']).casefold() or needle in r['familyId'])]}
+
+
+@app.get('/v1/coverage')
+def coverage():
+    return {'rawRouteIds':OBSERVED['rawRouteIds'],'catalogRouteCount':OBSERVED['catalogRouteCount'],
+            'observedRouteFamilies':OBSERVED['observedRouteFamilies'],'observedRuns':OBSERVED['observedRuns'],
+            'stopPoints':len(OBSERVED['stops']),'excludedSentinels':OBSERVED['excludedSentinels'],
+            'unroutableCatalogIds':[r['familyId'] for r in OBSERVED['routes'] if r.get('scheduleSource')=='catalog_topology' and len(r['stops'])<2],
+            'note':'시각 연결이 없으면 도착시각·확률 없는 노선 연결 후보를 제공합니다. 정류장 자료가 없는 노선은 목록에만 표시합니다.'}
 
 
 @app.post('/v1/journeys/search')
@@ -68,8 +89,9 @@ def journeys(body: Search):
     except ValueError as e:
         raise HTTPException(400,str(e)) from e
     selected=NETWORKS[body.dataset]
-    return {'journeys':rows,'source':selected['source'],'delaySource':'simulated','networkVersion':selected['version'],'elapsedMs':round((time.perf_counter()-started)*1000,2),
-            'warning':selected['description']+' 지연 확률은 가상 표본의 추정치입니다.'}
+    topology_only=bool(rows) and all(j.get('scheduleAvailable') is False for j in rows)
+    return {'journeys':rows,'source':'catalog_topology' if topology_only else selected['source'],'delaySource':'unavailable' if topology_only else 'simulated','networkVersion':selected['version'],'elapsedMs':round((time.perf_counter()-started)*1000,2),
+            'warning':('시각 자료가 없는 노선 연결 후보입니다. 도착시각·환승 성공률을 제공하지 않습니다.' if topology_only else selected['description']+' 지연 확률은 가상 표본의 추정치입니다.')}
 
 
 @app.get('/v1/vehicles')
@@ -85,7 +107,9 @@ def vehicles(minute: float=430,dataset: Literal['demo','observed']='observed'):
                     f=(minute-start)/(end-start)
                     position=[a['lat']+(b['lat']-a['lat'])*f,a['lon']+(b['lon']-a['lon'])*f]
                     if selected.get('geometryVersion'):
-                        position=point_along(r['shapeSegments'][i]['points'],f)
+                        shape=r['shapeSegments'][i]
+                        if isinstance(shape,str):shape=selected['shapes'][shape]
+                        position=point_along(shape['points'],f)
                         if position is None:continue
                     rows.append({'vehicleId':r.get('vehicleId',f"{r['id']}:{trip}"),'routeId':r['id'],'lat':position[0],'lon':position[1],'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation','tripId':str(trip)})
     return {'vehicles':rows,'virtualMinute':minute,'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation'}

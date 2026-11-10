@@ -10,6 +10,9 @@ with its owner. The raw recording is not included in release archives.
 
 GPS processing and matching run locally against the downloaded road graph.
 No GPS coordinates or timestamps are transmitted to a public matching service.
+The all-route dataset stores shared per-family road shapes by reference and
+simplifies the displayed line within two metres. Shape lengths retain the road
+graph length before simplification. A catalog-only connection has no timetable.
 
 `gps_road_matched` denotes a historical GPS-constrained local road match.
 `road_estimate` denotes a road-network estimate without verified GPS coverage.

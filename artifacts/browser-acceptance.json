@@ -1,9 +1,10 @@
 {
   "passed": [
-    "default BusTracker recorded dataset",
+    "default full BusTracker dataset",
+    "full route search by 722 number and stop list",
     "conditions use 07:10 recording time",
-    "Any% vs Safe recorded arrivals",
-    "124 / 741 / 114 timeline",
+    "Any% arrival agrees with full-network Python model",
+    "actual bus-number timeline",
     "no synthetic A / B route cards",
     "Jetson API search uses observed dataset",
     "API retry after interrupted request",

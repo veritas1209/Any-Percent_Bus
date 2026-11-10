@@ -55,7 +55,7 @@ class _TransitMapState extends State<TransitMap> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Text(
-                          '도로 경로 · 시연시각 ${clock(widget.minute)}',
+                          '도로 경로 · 조회시각 ${clock(widget.minute)}',
                           style: const TextStyle(fontSize: 11, color: muted),
                         ),
                       ),
@@ -202,12 +202,12 @@ class _RouteMapState extends State<_RouteMap> {
     final stop = widget.network.stops[id]!;
     final times = <String>[];
     for (final l in widget.legs) {
-      if (l['from'] == id) {
+      if (l['from'] == id && l['depart'] != null) {
         times.add(
           '${l['kind'] == 'walk' ? '도보 출발' : '탑승'} ${clock(l['depart'])}',
         );
       }
-      if (l['to'] == id) {
+      if (l['to'] == id && l['arrive'] != null) {
         times.add(
           '${l['kind'] == 'walk' ? '도보 도착' : '하차'} ${clock(l['arrive'])}',
         );
@@ -416,7 +416,7 @@ class _RouteMapState extends State<_RouteMap> {
                   for (final vehicle in geometry.vehicleMarkers(widget.minute))
                     Marker(
                       point: vehicle.point,
-                      width: 58,
+                      width: 72,
                       height: 28,
                       child: Semantics(
                         label: '${vehicle.route['number']}번 기록시각 기준 버스 위치',
@@ -435,12 +435,19 @@ class _RouteMapState extends State<_RouteMap> {
                                 size: 12,
                               ),
                               const SizedBox(width: 2),
-                              Text(
-                                '${vehicle.route['number']}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w800,
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    vehicle.route['numberKnown'] == false
+                                        ? '?'
+                                        : '${vehicle.route['number']}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

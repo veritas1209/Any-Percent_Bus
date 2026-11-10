@@ -1,13 +1,27 @@
 {
   "source": "https://tiles.osm.kr/download/gyeongsang-non-military.osm.pbf",
   "roadFileSha256": "0956bb9385abbf26172589538ff78627b4f10b7bef68a262956784516e131ac4",
-  "graphNodes": 243170,
-  "graphWays": 27974,
+  "graphNodes": 678771,
+  "graphWays": 69877,
   "shapes": {
-    "gps_road_matched": 3184,
-    "road_estimate": 418,
-    "unavailable": 11
+    "gps_road_matched": 23199,
+    "road_estimate": 7588
   },
+  "shapePoolCount": 30787,
+  "simplificationMeters": 2,
   "gpsExternalTransmission": false,
-  "method": "GPS-constrained local A* on directed OSM roads; no turn-restriction relations or lane-level guarantee."
+  "routeFamilies": 256,
+  "observedRouteFamilies": 247,
+  "observedRuns": 1187,
+  "stopPoints": 4950,
+  "unroutableCatalogIds": [
+    "195000130",
+    "195900010",
+    "196000041",
+    "196000071",
+    "196000131",
+    "196000613",
+    "196000810"
+  ],
+  "method": "Local directed OSM road graph; no turn-restriction relations or lane-level guarantee."
 }

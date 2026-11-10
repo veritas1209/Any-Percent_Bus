@@ -26,7 +26,7 @@ DRIVE={'motorway','motorway_link','trunk','trunk_link','primary','primary_link',
 FOOT=DRIVE-{'motorway','motorway_link','trunk','trunk_link','bus_guideway'}|{'footway','pedestrian','path','steps','cycleway'}
 
 
-def extract(pbf: Path,target: Path):
+def extract(pbf: Path,target: Path,bounds=(35.40,35.72,129.10,129.55)):
     import osmium
 
     class Roads(osmium.SimpleHandler):
@@ -34,7 +34,7 @@ def extract(pbf: Path,target: Path):
             super().__init__();self.nodes={};self.ways=[]
         def node(self,n):
             # Fixed public Ulsan metropolitan envelope, not a GPS-derived upload.
-            if 35.40<=n.location.lat<=35.72 and 129.10<=n.location.lon<=129.55:
+            if bounds[0]<=n.location.lat<=bounds[1] and bounds[2]<=n.location.lon<=bounds[3]:
                 self.nodes[n.id]=[round(n.location.lat,7),round(n.location.lon,7)]
         def way(self,w):
             highway=w.tags.get('highway','')

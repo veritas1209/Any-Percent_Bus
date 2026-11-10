@@ -14,13 +14,14 @@ def test_observed_runs_use_recorded_window_and_no_future_departures():
     engine=ENGINES['observed']
     rows=engine.search(Query(OBSERVED['defaultOrigin'],OBSERVED['defaultDestination'],departure=430,samples=20))
     assert rows
-    assert any(j['transfers']==2 for j in rows)
+    assert any(j['transfers']<=2 for j in rows)
     assert all(engine.replay(j,Query(OBSERVED['defaultOrigin'],OBSERVED['defaultDestination'],departure=430))['arrival']==j['arrival'] for j in rows)
     assert all(j['source']=='replay_observed' and j['delaySource']=='simulated' for j in rows)
-    assert all(len(r['departures'])==1 and 420<=r['departures'][0]<480 for r in OBSERVED['routes'])
-    assert engine.search(Query(OBSERVED['defaultOrigin'],OBSERVED['defaultDestination'],departure=480,samples=20))==[]
+    assert all(len(r['departures'])==1 and 420<=r['departures'][0]<480 for r in OBSERVED['routes'] if r['scheduleSource']=='replay_observed')
+    outside=engine.search(Query(OBSERVED['defaultOrigin'],OBSERVED['defaultDestination'],departure=480,samples=20))
+    assert outside and all(j['arrival'] is None and j['source']=='catalog_topology' for j in outside)
     client=TestClient(app)
-    assert len(client.get('/v1/network?dataset=observed').json()['stops'])==437
+    assert len(client.get('/v1/network?dataset=observed').json()['stops'])==4950
     payload={'dataset':'observed','origin':OBSERVED['defaultOrigin'],'destination':OBSERVED['defaultDestination'],'departure':430,'samples':20}
     response=client.post('/v1/journeys/search',json=payload)
     assert response.status_code==200 and response.json()['journeys']
@@ -32,8 +33,9 @@ def test_default_api_uses_bustracker_numbers_and_recorded_routes():
     client=TestClient(app)
     network=client.get('/v1/network').json()
     assert network['source']=='replay_observed'
-    assert {r['number'] for r in network['routes']}=={'124','114','134','224','741'}
-    assert all(r['familyId'] and r['vehicleId'] and r['shapeSegments'] for r in network['routes'])
+    assert {'124','114','134','224','741','722','772'}<={r['number'] for r in network['routes']}
+    assert network['routeFamilies']==256
+    assert all(r['familyId'] and r['vehicleId'] and r['shapeSegments'] for r in network['routes'] if r['scheduleSource']=='replay_observed')
     response=client.post('/v1/journeys/search',json={'origin':network['defaultOrigin'],'destination':network['defaultDestination'],'samples':20})
     assert response.status_code==200
     journeys=response.json()['journeys']

@@ -47,13 +47,16 @@ class _SearchScreenState extends State<SearchScreen> {
     destination = session.network!.defaultDestination;
   }
 
-  Future<void> select(bool from) async {
+  Future<void> select(bool from, {bool routesFirst = false}) async {
     final picked = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       backgroundColor: paper,
-      builder: (context) =>
-          _StopPicker(session.network!, from ? '출발 정류장' : '도착 정류장'),
+      builder: (context) => _StopPicker(
+        session.network!,
+        from ? '출발 정류장' : '도착 정류장',
+        routesFirst: routesFirst,
+      ),
     );
     if (picked != null && mounted) {
       setState(() {
@@ -324,18 +327,24 @@ class _SearchScreenState extends State<SearchScreen> {
                     spacing: 6,
                     runSpacing: 6,
                     children: [
-                      for (final number in n.routeNumbers)
+                      for (final number in n.routeNumbers.take(8))
                         Chip(
                           label: Text('$number번'),
                           visualDensity: VisualDensity.compact,
                         ),
                     ],
                   ),
+                  TextButton(
+                    onPressed: () => select(true, routesFirst: true),
+                    child: Text(
+                      '전체 ${n.data['routeFamilies']}개 노선 · ${n.stops.length}개 정류장 검색',
+                    ),
+                  ),
                   const SizedBox(height: 8),
                 ],
                 Text(
                   n.observed
-                      ? '2025.12.31 07:00~07:59 · ${n.routes.length}개 기록 구간\n실제 버스 번호·정류장·GPS 기록을 사용합니다.\n통과시각은 근사치, 지연은 가상, 보행은 도로망 추정입니다.'
+                      ? '2025.12.31 07:00~07:59 · ${n.data['observedRuns'] ?? n.routes.length}개 기록 구간\n전체 노선·정류장을 검색합니다. 시각 자료가 없으면 노선 연결 후보로 안내합니다.\n통과시각은 근사치, 지연은 가상, 보행은 도로망 추정입니다.'
                       : '운행시각과 지연은 시뮬레이션 데이터입니다.\n실제 버스 이용 안내로 사용할 수 없습니다.',
                   style: const TextStyle(
                     fontSize: 11,
@@ -412,18 +421,47 @@ class _SearchScreenState extends State<SearchScreen> {
 class _StopPicker extends StatefulWidget {
   final Network network;
   final String title;
-  const _StopPicker(this.network, this.title);
+  final bool routesFirst;
+  const _StopPicker(this.network, this.title, {this.routesFirst = false});
   @override
   State<_StopPicker> createState() => _StopPickerState();
 }
 
 class _StopPickerState extends State<_StopPicker> {
   String query = '';
+  late bool routeMode = widget.routesFirst;
+  Json? selectedRoute;
+  final controller = TextEditingController();
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final rows = widget.network.stops.values
-        .where((s) => (s['name'] + s['direction']).toString().contains(query))
-        .toList();
+    final n = widget.network;
+    final matching = routeMode ? <Json>[] : n.searchStops(query);
+    final matchingIds = matching.map((s) => s['id']).toSet();
+    final rows = routeMode
+        ? n.catalogRoutes
+              .where(
+                (r) => '${r['number']} ${r['familyId']} ${r['name']}'
+                    .toLowerCase()
+                    .contains(
+                      query.trim().toLowerCase().replaceFirst(
+                        RegExp(r'번$'),
+                        '',
+                      ),
+                    ),
+              )
+              .toList()
+        : selectedRoute == null
+        ? matching
+        : [
+            for (final sid in selectedRoute!['stops'])
+              if (matchingIds.contains(sid)) n.stops[sid]!,
+          ];
     return SafeArea(
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * .78,
@@ -437,11 +475,37 @@ class _StopPickerState extends State<_StopPicker> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 20),
+              SegmentedButton<bool>(
+                segments: const [
+                  ButtonSegment(value: false, label: Text('정류장')),
+                  ButtonSegment(value: true, label: Text('노선')),
+                ],
+                selected: {routeMode},
+                onSelectionChanged: (s) => setState(() {
+                  routeMode = s.first;
+                  selectedRoute = null;
+                  query = '';
+                  controller.clear();
+                }),
+              ),
+              const SizedBox(height: 12),
+              if (selectedRoute != null)
+                InputChip(
+                  label: Text('${n.routeLabel(selectedRoute!['id'])} 정류장'),
+                  onDeleted: () => setState(() => selectedRoute = null),
+                ),
+              if (selectedRoute != null &&
+                  (selectedRoute!['stops'] as List).length < 2)
+                const Text(
+                  '원본에 연결할 정류장 자료가 부족합니다. 이 노선은 목록만 확인할 수 있습니다.',
+                  style: TextStyle(fontSize: 12, color: muted),
+                ),
               TextField(
+                controller: controller,
                 autofocus: true,
                 onChanged: (v) => setState(() => query = v),
                 decoration: const InputDecoration(
-                  hintText: '정류장 이름 또는 방면 검색',
+                  hintText: '정류장 이름·ID 또는 버스 번호 검색',
                   prefixIcon: Icon(Icons.search),
                 ),
               ),
@@ -453,11 +517,33 @@ class _StopPickerState extends State<_StopPicker> {
                         itemCount: rows.length,
                         separatorBuilder: (_, _) => const Divider(height: 1),
                         itemBuilder: (context, i) => ListTile(
+                          leading: selectedRoute == null
+                              ? null
+                              : Text('${i + 1}'),
                           contentPadding: EdgeInsets.zero,
-                          title: Text(rows[i]['name']),
-                          subtitle: Text(rows[i]['direction']),
+                          title: Text(
+                            routeMode
+                                ? n.routeLabel(rows[i]['id'])
+                                : rows[i]['name'],
+                          ),
+                          subtitle: Text(
+                            routeMode
+                                ? '${(rows[i]['stops'] as List).length}개 정류장 지점 · 시각 자료는 GPS 관측 범위만 제공'
+                                : rows[i]['direction'],
+                          ),
                           trailing: const Icon(Icons.north_east, size: 18),
-                          onTap: () => Navigator.pop(context, rows[i]['id']),
+                          onTap: () {
+                            if (routeMode) {
+                              setState(() {
+                                selectedRoute = rows[i];
+                                routeMode = false;
+                                query = '';
+                                controller.clear();
+                              });
+                            } else {
+                              Navigator.pop(context, rows[i]['id']);
+                            }
+                          },
                         ),
                       ),
               ),

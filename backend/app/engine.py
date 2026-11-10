@@ -4,7 +4,9 @@ from __future__ import annotations
 import copy
 import math
 import random
+from collections import defaultdict
 from dataclasses import dataclass
+from .topology import connections,reachable,labels
 
 
 @dataclass(frozen=True)
@@ -30,6 +32,11 @@ class Engine:
         self.network = network
         self.stops = {s['id']: s for s in network['stops']}
         self.routes = {r['id']: r for r in network['routes']}
+        self.timed_routes=[r for r in self.routes.values() if r['departures']]
+        self.boardings=defaultdict(list);self.walks=defaultdict(list)
+        for r in self.timed_routes:
+            for bi,sid in enumerate(r['stops'][:-1]):self.boardings[sid].append((r,bi))
+        for f in network.get('footpaths',[]):self.walks[f['from']].append(f)
 
     def search(self, q: Query):
         if q.origin not in self.stops or q.destination not in self.stops:
@@ -37,48 +44,49 @@ class Engine:
         if q.origin == q.destination:
             return []
         frontier = [(q.origin, q.departure, [], set(), 0.0)]
+        layers=reachable(self.timed_routes,self.network.get('footpaths',[]),q.destination,q.max_transfers+1,q.max_walk)
         found = {}
         def add(legs,walked):
             key='|'.join(f"{l.get('routeId','walk')}:{l['from']}:{l['to']}" for l in legs)
             found.setdefault(key,{'id':key,'legs':legs,'arrival':legs[-1]['arrive'],'walkingMeters':walked})
-        for f in self.network.get('footpaths',[]):
+        for f in self.walks[q.origin]:
             if f['from']==q.origin and f['to']==q.destination and f['meters']<=q.max_walk:
                 add([{'kind':'walk','from':q.origin,'to':q.destination,'depart':q.departure,'arrive':q.departure+f['meters']/q.walking_speed/60,'meters':f['meters']}],f['meters'])
-        for _ in range(q.max_transfers+1):
+        for round in range(q.max_transfers+1):
             next_frontier = []
             for stop, now, legs, used, walked in frontier:
                 accesses = [(stop, now, [], walked)]
-                for f in self.network.get('footpaths', []):
+                for f in self.walks[stop]:
                     if f['from'] == stop and walked+f['meters'] <= q.max_walk:
                         end = now+f['meters']/q.walking_speed/60
                         accesses.append((f['to'], end, [{'kind':'walk','from':stop,'to':f['to'],'depart':now,'arrive':end,'meters':f['meters']}],walked+f['meters']))
                 for board, ready, walk_legs, total_walk in accesses:
-                    for r in self.routes.values():
-                        if r['id'] in used or board not in r['stops']:
+                    for r,bi in self.boardings[board]:
+                        if r['id'] in used:
                             continue
-                        bi = r['stops'].index(board)
                         buffer = 0.5 if used else 0
                         trip = next((d for d in r['departures'] if d+r['offsets'][bi] >= ready+buffer), None)
                         if trip is None:
                             continue
                         for ai in range(bi+1,len(r['stops'])):
                             endstop = r['stops'][ai]
+                            if endstop not in layers[q.max_transfers-round]:continue
                             leg = {'kind':'ride','routeId':r['id'],'from':board,'to':endstop,'boardIndex':bi,'alightIndex':ai,'trip':trip,'depart':trip+r['offsets'][bi],'arrive':trip+r['offsets'][ai]}
                             newlegs = legs+walk_legs+[leg]
                             if endstop == q.destination:
                                 add(newlegs,total_walk)
                             else:
-                                for f in self.network.get('footpaths',[]):
+                                for f in self.walks[endstop]:
                                     if f['from']==endstop and f['to']==q.destination and total_walk+f['meters']<=q.max_walk:
                                         last={'kind':'walk','from':endstop,'to':q.destination,'depart':leg['arrive'],'arrive':leg['arrive']+f['meters']/q.walking_speed/60,'meters':f['meters']}
                                         add(newlegs+[last],total_walk+f['meters'])
                                 next_frontier.append((endstop,leg['arrive'],newlegs,used|{r['id']},total_walk))
             # Keep alternatives by route sequence, not just earliest label: late safe journeys matter.
-            frontier = sorted(next_frontier,key=lambda x:x[1])[:500]
+            frontier = list(labels(next_frontier))
         candidates = sorted(found.values(), key=lambda j:j['arrival'])[:20]
         evaluated = [self.evaluate(j,q) for j in candidates]
         if not evaluated:
-            return []
+            return connections(self.network,q) if self.network.get('catalogFallback') else []
         any_id = min(evaluated,key=lambda j:j['arrival'])['id']
         safe_id = min(evaluated,key=lambda j:(j['p90Arrival'],j['expectedArrival']))['id']
         for j in evaluated:
@@ -130,8 +138,9 @@ class Engine:
         baseline = self.replay(j,q)
         arrivals = []; successes = 0; no_service = 0
         rng = random.Random(q.seed)
+        relevant={l['routeId'] for l in j['legs'] if l['kind']=='ride'}
         for _ in range(q.samples):
-            draws = {(r['id'],trip): rng.choice(r['delaySamples']) for r in self.routes.values() for trip in r['departures']}
+            draws = {(rid,trip): rng.choice(self.routes[rid]['delaySamples']) for rid in sorted(relevant) for trip in self.routes[rid]['departures']}
             sample = self.replay(j,q,draws)
             if sample['arrival'] is None:
                 no_service += 1
@@ -144,6 +153,6 @@ class Engine:
         j.update(expectedArrival=sum(censored)/len(censored),p90Arrival=quantile(censored,.9),successProbability=successes/q.samples,
                  sampleCount=q.samples,noServiceProbability=no_service/q.samples,source=self.network.get('source','simulated'),delaySource='simulated',scenario=baseline,
                  statisticsIncludeFailurePenalty=no_service>0,failurePenaltyArrival=max(q.departure+240,1440) if no_service else None,
-                 transfers=max(0,sum(l['kind']=='ride' for l in j['legs'])-1),
+                 scheduleAvailable=True,transfers=max(0,sum(l['kind']=='ride' for l in j['legs'])-1),
                  missPenalty=None if baseline['arrival'] is None else max(0,baseline['arrival']-j['arrival']))
         return j

@@ -1,12 +1,20 @@
 """Browser acceptance run against locally served Flutter, using real accessibility controls."""
 import asyncio
 import json
+import sys
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'artifacts/screenshots'
 OUT.mkdir(parents=True,exist_ok=True)
+sys.path.insert(0,str(ROOT/'backend'))
+from app.engine import Engine,Query
+network=json.loads((ROOT/'shared/observed_network.json').read_text(encoding='utf-8'))
+engine=Engine(network)
+expected=next(j for j in engine.search(Query(network['defaultOrigin'],network['defaultDestination'],departure=430,samples=20)) if 'ANY%' in j['tags'])
+bus_labels=[engine.routes[l['routeId']]['number']+'번' for l in expected['legs'] if l['kind']=='ride']
+minute=int(expected['arrival']+.5);expected_clock=f'{minute//60:02}:{minute%60:02}'
 
 
 async def run():
@@ -36,6 +44,14 @@ async def run():
         assert 'BusTracker 운행 기록' in initial
         assert '성남동' in initial and '가상 시연' not in initial
         await page.screenshot(path=str(OUT/'01-search-mobile.png'))
+        await page.get_by_role('button',name='출발 정류장 선택',exact=False).click()
+        await page.get_by_role('button',name='노선',exact=True).click()
+        await page.get_by_role('textbox').fill('722번')
+        await page.wait_for_timeout(600)
+        await page.get_by_role('button',name='722번',exact=False).first.click()
+        await page.get_by_role('checkbox',name='722번 정류장',exact=True).wait_for()
+        await page.screenshot(path=str(OUT/'14-full-route-stops-mobile.png'))
+        await page.mouse.click(20,100)
         await page.get_by_role('button',name='나의 경로 만들기',exact=True).click()
         await page.wait_for_timeout(700)
         assert '07:10' in await page.locator('body').aria_snapshot()
@@ -43,14 +59,14 @@ async def run():
         await page.get_by_role('button',name='경로 비교하기',exact=True).click(force=True)
         await page.get_by_role('button',name='ANY% 경로 상세 보기',exact=False).first.wait_for(timeout=30000)
         results=await page.locator('body').aria_snapshot()
-        assert all(number in results for number in ('124번','741번','114번'))
-        assert '07:48' in results and '07:52' in results
+        assert all(number in results for number in bus_labels)
+        assert expected_clock in results
         assert 'A · 동구 연결' not in results and 'B · 도심 급행' not in results
         await page.screenshot(path=str(OUT/'03-results-mobile.png'))
         await page.get_by_role('button',name='ANY% 경로 상세 보기',exact=False).first.click()
         await page.wait_for_timeout(700)
         details=await page.locator('body').aria_snapshot()
-        assert all(number in details for number in ('124번','741번','114번'))
+        assert all(number in details for number in bus_labels)
         try:
             await page.get_by_role('button',name='개략도로 보기',exact=True).wait_for(timeout=10000)
         except Exception:
@@ -101,7 +117,7 @@ async def run():
         await page.get_by_role('button',name='경로 비교하기',exact=True).click(force=True)
         await page.get_by_role('button',name='ANY% 경로 상세 보기',exact=False).first.wait_for(timeout=30000)
         await page.screenshot(path=str(OUT/'08-observed-results-mobile.png'))
-        assert '07:48' in await page.locator('body').aria_snapshot()
+        assert expected_clock in await page.locator('body').aria_snapshot()
         await page.get_by_role('button',name='ANY% 경로 상세 보기',exact=False).first.click()
         await page.wait_for_timeout(700)
         await page.get_by_role('button',name='버스가 늦는다면?',exact=True).click(force=True)
@@ -137,7 +153,7 @@ async def run():
             import shutil
             shutil.copyfile(await video.path(),ROOT/'artifacts/AnyPercent-demo.webm')
         assert blocked_tiles, 'Map failure recovery was not exercised'
-        result={'passed':['default BusTracker recorded dataset','conditions use 07:10 recording time','Any% vs Safe recorded arrivals','124 / 741 / 114 timeline','no synthetic A / B route cards','Jetson API search uses observed dataset','API retry after interrupted request','invalid backend connection recovery','offline recovery keeps recorded bus numbers','3-minute delay reports unknown subsequent service','cancelled connection preserves selected stops','map failure to diagram fallback'],'errors':errors,'externalRequests':external,'mapTilesBlocked':len(blocked_tiles),'screenshotDirectory':str(OUT)}
+        result={'passed':['default full BusTracker dataset','full route search by 722 number and stop list','conditions use 07:10 recording time','Any% arrival agrees with full-network Python model','actual bus-number timeline','no synthetic A / B route cards','Jetson API search uses observed dataset','API retry after interrupted request','invalid backend connection recovery','offline recovery keeps recorded bus numbers','3-minute delay reports unknown subsequent service','cancelled connection preserves selected stops','map failure to diagram fallback'],'errors':errors,'externalRequests':external,'mapTilesBlocked':len(blocked_tiles),'screenshotDirectory':str(OUT)}
         (ROOT/'artifacts/browser-acceptance.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
         print(json.dumps(result,ensure_ascii=False))
 

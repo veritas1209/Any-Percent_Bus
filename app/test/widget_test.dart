@@ -127,7 +127,7 @@ void main() {
           samples: 20,
         ),
       ),
-      isEmpty,
+      everyElement(containsPair('scheduleAvailable', false)),
     );
   });
   test('Any% and Safe differ under delay risk', () {
@@ -201,7 +201,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('가장 빠르게.\n놓쳐도, 괜찮게.'), findsOneWidget);
       expect(find.text('성남동'), findsOneWidget);
-      expect(find.text('124번'), findsOneWidget);
+      expect(session.network!.routeNumbers, contains('722'));
       expect(find.text('가상 시연'), findsNothing);
       await tester.tap(find.text('울산과학대학앞'));
       await tester.pumpAndSettle();
@@ -235,21 +235,26 @@ void main() {
     await tester.pumpWidget(AnyPercentApp(session: session));
     await tester.pumpAndSettle();
     expect(session.network!.dataset, 'observed');
-    expect(session.network!.routeNumbers, ['114', '124', '134', '224', '741']);
+    expect(session.network!.data['routeFamilies'], 256);
+    expect(session.network!.stops.length, 4950);
+    expect(
+      session.network!.routeNumbers,
+      containsAll(['114', '124', '134', '224', '741', '722', '772']),
+    );
     await tester.ensureVisible(find.text('나의 경로 만들기'));
     await tester.tap(find.text('나의 경로 만들기'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('경로 비교하기'));
     await tester.pumpAndSettle();
     expect(find.text('124번'), findsWidgets);
-    expect(find.text('741번'), findsWidgets);
-    expect(find.text('114번'), findsWidgets);
+    expect(find.text('722번'), findsWidgets);
+    expect(find.text('772번'), findsWidgets);
     expect(find.text('A · 동구 연결'), findsNothing);
     await tester.runAsync(() => session.useOffline());
     expect(session.network!.observed, isTrue);
     expect(
       session.network!.routeLabel(session.network!.routes.keys.first),
-      matches(RegExp(r'^\d+번$')),
+      endsWith('번'),
     );
     expect(tester.takeException(), isNull);
   });
@@ -323,6 +328,70 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('07:10'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('catalog-only route shows no invented arrival or delay action', (
+    tester,
+  ) async {
+    final full = Network.decode(
+      File('assets/data/observed_network.json').readAsStringSync(),
+    );
+    final q = SearchQuery(
+      origin: full.defaultOrigin,
+      destination: full.defaultDestination,
+      departure: 480,
+      samples: 20,
+    );
+    final rows = JourneyEngine(full).search(q);
+    expect(rows, isNotEmpty);
+    expect(rows, everyElement(containsPair('scheduleAvailable', false)));
+    final session = AppSession()
+      ..network = full
+      ..repository = MemoryRepository(full)
+      ..mapTileProviderFactory = MemoryMapTiles.new;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: JourneyScreen(session: session, query: q, journey: rows.first),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('노선 연결 후보'), findsOneWidget);
+    expect(find.text('버스가 늦는다면?'), findsNothing);
+    expect(find.textContaining('시뮬레이션'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('all-route picker finds 722 and opens its stop list', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final full = Network.decode(
+      File('assets/data/observed_network.json').readAsStringSync(),
+    );
+    final session = AppSession()..repository = MemoryRepository(full);
+    await tester.pumpWidget(AnyPercentApp(session: session));
+    await tester.pumpAndSettle();
+    final button = find.textContaining('전체 256개 노선');
+    await tester.scrollUntilVisible(
+      button,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '722');
+    await tester.pumpAndSettle();
+    expect(find.text('722번'), findsWidgets);
+    await tester.tap(find.text('722번').first);
+    await tester.pumpAndSettle();
+    expect(find.text('722번 정류장'), findsOneWidget);
+    expect(full.searchStops('722번'), isNotEmpty);
+    expect(
+      full.searchStops('194027121').any((s) => s['id'] == '194027121'),
+      isTrue,
+    );
     expect(tester.takeException(), isNull);
   });
 }

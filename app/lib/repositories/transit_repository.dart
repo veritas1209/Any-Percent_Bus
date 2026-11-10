@@ -61,11 +61,11 @@ class ApiTransitRepository implements TransitRepository {
   Future<Network> loadNetwork() async {
     final response = await http
         .get(Uri.parse('$baseUrl/v1/network?dataset=$dataset'))
-        .timeout(const Duration(seconds: 8));
+        .timeout(const Duration(seconds: 20));
     if (response.statusCode != 200) {
       throw Exception('노선망을 불러올 수 없습니다 (${response.statusCode})');
     }
-    return Network.decode(response.body);
+    return Network.decode(utf8.decode(response.bodyBytes));
   }
 
   @override

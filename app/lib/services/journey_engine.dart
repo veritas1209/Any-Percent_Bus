@@ -1,12 +1,44 @@
 import 'dart:math';
 import '../models/transit.dart';
+import 'topology.dart';
 
 class JourneyEngine {
   final Network network;
   JourneyEngine(this.network);
+  late final timedRoutes = network.routes.values
+      .where((r) => (r['departures'] as List).isNotEmpty)
+      .toList();
+  late final boards = <String, List<(Json, int)>>{}
+    ..addEntries(_boardEntries());
+  Iterable<MapEntry<String, List<(Json, int)>>> _boardEntries() {
+    final index = <String, List<(Json, int)>>{};
+    for (final r in timedRoutes) {
+      for (var i = 0; i < (r['stops'] as List).length - 1; i++) {
+        index.putIfAbsent(r['stops'][i], () => []).add((r, i));
+      }
+    }
+    return index.entries;
+  }
+
+  late final walks = <String, List<Json>>{}..addEntries(_walkEntries());
+  Iterable<MapEntry<String, List<Json>>> _walkEntries() {
+    final index = <String, List<Json>>{};
+    for (final raw in network.data['footpaths']) {
+      final f = Json.from(raw);
+      index.putIfAbsent(f['from'], () => []).add(f);
+    }
+    return index.entries;
+  }
 
   List<Json> search(SearchQuery q) {
     if (q.origin == q.destination) return [];
+    final layers = reachableStops(
+      timedRoutes,
+      network.data['footpaths'],
+      q.destination,
+      q.maxTransfers + 1,
+      q.maxWalk,
+    );
     List<Json> frontier = [
       {
         'stop': q.origin,
@@ -32,7 +64,7 @@ class JourneyEngine {
       );
     }
 
-    for (final f in network.data['footpaths']) {
+    for (final f in walks[q.origin] ?? <Json>[]) {
       if (f['from'] == q.origin &&
           f['to'] == q.destination &&
           f['meters'] <= q.maxWalk) {
@@ -59,7 +91,7 @@ class JourneyEngine {
             'walked': state['walked'],
           },
         ];
-        for (final f in network.data['footpaths']) {
+        for (final f in walks[state['stop']] ?? <Json>[]) {
           if (f['from'] == state['stop'] &&
               state['walked'] + f['meters'] <= q.maxWalk) {
             final end =
@@ -82,13 +114,12 @@ class JourneyEngine {
           }
         }
         for (final access in accesses) {
-          for (final route in network.routes.values) {
+          for (final (route, bi) in boards[access['stop']] ?? <(Json, int)>[]) {
             final used = state['used'] as Set<String>;
             final stops = List<String>.from(route['stops']);
             if (used.contains(route['id']) || !stops.contains(access['stop'])) {
               continue;
             }
-            final bi = stops.indexOf(access['stop']);
             final departures = List<num>.from(route['departures']);
             final offsets = List<num>.from(route['offsets']);
             final buffer = used.isEmpty ? 0.0 : 0.5;
@@ -98,6 +129,7 @@ class JourneyEngine {
             if (options.isEmpty) continue;
             final trip = options.first;
             for (var ai = bi + 1; ai < stops.length; ai++) {
+              if (!layers[q.maxTransfers - round].contains(stops[ai])) continue;
               final leg = <String, dynamic>{
                 'kind': 'ride',
                 'routeId': route['id'],
@@ -117,7 +149,7 @@ class JourneyEngine {
               if (stops[ai] == q.destination) {
                 add(legs, numValue(access['walked']));
               } else {
-                for (final f in network.data['footpaths']) {
+                for (final f in walks[stops[ai]] ?? <Json>[]) {
                   if (f['from'] == stops[ai] &&
                       f['to'] == q.destination &&
                       numValue(access['walked']) + f['meters'] <= q.maxWalk) {
@@ -149,13 +181,16 @@ class JourneyEngine {
           }
         }
       }
-      next.sort((a, b) => (a['now'] as num).compareTo(b['now']));
-      frontier = next.take(500).toList();
+      frontier = paretoLabels(next);
     }
     final candidates = found.values.toList()
       ..sort((a, b) => (a['arrival'] as num).compareTo(b['arrival']));
     final evaluated = candidates.take(20).map((j) => evaluate(j, q)).toList();
-    if (evaluated.isEmpty) return [];
+    if (evaluated.isEmpty) {
+      return network.data['catalogFallback'] == true
+          ? topologyConnections(network, q)
+          : [];
+    }
     final earliest = evaluated.reduce(
       (a, b) => a['arrival'] <= b['arrival'] ? a : b,
     );
@@ -238,9 +273,14 @@ class JourneyEngine {
     final j = Json.from(journey), rng = Random(q.seed);
     final times = <double>[];
     var success = 0, noService = 0;
+    final relevant = <String>{
+      for (final l in j['legs'])
+        if (l['kind'] == 'ride') l['routeId'] as String,
+    }.toList()..sort();
     for (var i = 0; i < q.samples; i++) {
       final draws = <String, double>{};
-      for (final r in network.routes.values) {
+      for (final id in relevant) {
+        final r = network.routes[id]!;
         final ds = List<num>.from(r['delaySamples']);
         for (final trip in r['departures']) {
           draws['${r['id']}:$trip'] = ds[rng.nextInt(ds.length)].toDouble();
@@ -269,6 +309,7 @@ class JourneyEngine {
           : null,
       'source': network.data['source'] ?? 'simulated',
       'delaySource': 'simulated',
+      'scheduleAvailable': true,
       'scenario': scenario,
       'transfers': max(
         0,

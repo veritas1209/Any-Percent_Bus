@@ -19,10 +19,14 @@ class JourneyScreen extends StatelessWidget {
   Widget build(BuildContext context) => AppPage(
     title: '경로와 환승',
     bottom: PrimaryAction(
-      (journey['legs'] as List).any((l) => l['kind'] == 'ride')
+      journey['scheduleAvailable'] == false
+          ? '운행시각이 없는 경로입니다'
+          : (journey['legs'] as List).any((l) => l['kind'] == 'ride')
           ? '버스가 늦는다면?'
           : '도보 경로입니다',
-      onPressed: !(journey['legs'] as List).any((l) => l['kind'] == 'ride')
+      onPressed:
+          journey['scheduleAvailable'] == false ||
+              !(journey['legs'] as List).any((l) => l['kind'] == 'ride')
           ? null
           : () => Navigator.push(
               context,
@@ -41,7 +45,9 @@ class JourneyScreen extends StatelessWidget {
         Eyebrow(List<String>.from(journey['tags']).join(' / ')),
         const SizedBox(height: 8),
         Text(
-          '${clock(journey['arrival'])} 도착',
+          journey['scheduleAvailable'] == false
+              ? '노선 연결 후보'
+              : '${clock(journey['arrival'])} 도착',
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(height: 16),
@@ -56,20 +62,23 @@ class JourneyScreen extends StatelessWidget {
         const SizedBox(height: 18),
         ...timeline(session, journey['legs']),
         const SizedBox(height: 20),
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: lime,
-            borderRadius: BorderRadius.circular(14),
+        if (journey['scheduleAvailable'] != false)
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: lime,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Text(
+              '같은 여정 ${journey['sampleCount']}회 시뮬레이션\n계획한 환승 성공 추정 ${((journey['successProbability'] as num) * 100).round()}%\n출발시각과 보행속도를 바꾸면 결과도 달라집니다.',
+              style: const TextStyle(fontSize: 12, height: 1.8),
+            ),
           ),
-          child: Text(
-            '같은 여정 ${journey['sampleCount']}회 시뮬레이션\n계획한 환승 성공 추정 ${((journey['successProbability'] as num) * 100).round()}%\n출발시각과 보행속도를 바꾸면 결과도 달라집니다.',
-            style: const TextStyle(fontSize: 12, height: 1.8),
-          ),
-        ),
         const SizedBox(height: 14),
         Text(
-          '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 운행 GPS와 도로망 기반 경로입니다.',
+          journey['scheduleAvailable'] == false
+              ? '기록된 시각으로 연결되지 않아 원본 노선의 정류장 순서로 찾은 후보입니다. 운행 방향·시간표 확인이 필요합니다.'
+              : '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 운행 GPS와 도로망 기반 경로입니다.',
           style: const TextStyle(fontSize: 10, color: muted),
         ),
       ],
@@ -82,7 +91,7 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
   double? lastArrival;
   for (final l in legs) {
     final isWalk = l['kind'] == 'walk';
-    if (!isWalk && lastArrival != null) {
+    if (!isWalk && lastArrival != null && l['depart'] != null) {
       final margin = numValue(l['depart']) - lastArrival - .5;
       widgets.add(
         Padding(
@@ -133,10 +142,11 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
                     '${session.network!.stops[l['from']]!['name']} → ${session.network!.stops[l['to']]!['name']}',
                     style: const TextStyle(fontSize: 12),
                   ),
-                  Text(
-                    '${clock(l['depart'])} - ${clock(l['arrive'])}',
-                    style: const TextStyle(fontSize: 12, color: muted),
-                  ),
+                  if (l['depart'] != null)
+                    Text(
+                      '${clock(l['depart'])} - ${clock(l['arrive'])}',
+                      style: const TextStyle(fontSize: 12, color: muted),
+                    ),
                 ],
               ),
             ),
@@ -144,7 +154,7 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
         ),
       ),
     );
-    lastArrival = numValue(l['arrive']);
+    lastArrival = l['arrive'] == null ? null : numValue(l['arrive']);
   }
   return widgets;
 }

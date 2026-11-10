@@ -35,7 +35,11 @@ class RouteMapGeometry {
     for (final id in stopIds) point(id),
     for (final segment in segments) ...segment.points,
   ];
-  String get description => network.data['geometryVersion'] == null
+  String get description =>
+      legs.any((l) => l['kind'] == 'ride') &&
+          legs.where((l) => l['kind'] == 'ride').every((l) => l['trip'] == null)
+      ? 'BusTracker 노선 연결 · 도로망 보정·추정 · 운행시각 미확인'
+      : network.data['geometryVersion'] == null
       ? '정류장 연결선 · 차량은 시연시각 기준 보간'
       : segments.any((s) => s.source == 'unavailable')
       ? '일부 구간 도로 형상 없음 · 확인된 도로 구간만 표시'
@@ -43,12 +47,15 @@ class RouteMapGeometry {
       ? 'BusTracker 기록 GPS · 도로 보정·추정 · 기록시각 기준 차량 보간'
       : '운행 GPS 기반 도로 보정 · 일부 구간 도로망 추정 · 시연 차량';
 
-  List<LatLng> _points(dynamic shape) => shape is Map && shape['points'] is List
-      ? [
-          for (final p in shape['points'])
-            LatLng(numValue(p[0]), numValue(p[1])),
-        ]
-      : [];
+  List<LatLng> _points(dynamic value) {
+    final shape = network.shape(value);
+    return shape is Map && shape['points'] is List
+        ? [
+            for (final p in shape['points'])
+              LatLng(numValue(p[0]), numValue(p[1])),
+          ]
+        : [];
+  }
 
   RouteMapSegment _segment(Json leg) {
     final ids = _ids(leg);
@@ -59,7 +66,7 @@ class RouteMapGeometry {
     if (leg['kind'] == 'walk') {
       for (final f in network.data['footpaths']) {
         if (f['from'] == leg['from'] && f['to'] == leg['to']) {
-          shapes.add(f['shape']);
+          shapes.add(network.shape(f['shape']));
           break;
         }
       }
@@ -67,7 +74,9 @@ class RouteMapGeometry {
       final route = network.routes[leg['routeId']]!;
       final raw = route['shapeSegments'] as List?;
       if (raw != null) {
-        shapes.addAll(raw.sublist(leg['boardIndex'], leg['alightIndex']));
+        shapes.addAll(
+          raw.sublist(leg['boardIndex'], leg['alightIndex']).map(network.shape),
+        );
       }
     }
     final paths = <List<LatLng>>[];
@@ -121,6 +130,7 @@ class RouteMapGeometry {
     final seen = <String>{};
     for (final s in segments.where((s) => !s.walking)) {
       final leg = s.leg;
+      if (leg['trip'] == null) continue;
       if (!seen.add('${leg['routeId']}:${leg['trip']}')) continue;
       final route = network.routes[leg['routeId']]!;
       final ids = List<String>.from(route['stops']);

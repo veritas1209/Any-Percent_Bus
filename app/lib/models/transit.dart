@@ -22,11 +22,43 @@ class Network {
   late final Map<String, Json> routes = {
     for (final r in data['routes']) r['id'] as String: Json.from(r),
   };
+  dynamic shape(dynamic value) =>
+      value is String ? ((data['shapes'] as Map?) ?? const {})[value] : value;
+  late final Map<String, Set<String>> stopRouteNumbers = () {
+    final index = <String, Set<String>>{};
+    for (final r in routes.values) {
+      for (final sid in r['stops']) {
+        index.putIfAbsent(sid, () => {}).add('${r['number']}');
+      }
+    }
+    return index;
+  }();
+  List<Json> searchStops(String query) {
+    final q = query.trim().toLowerCase().replaceAll(' ', '');
+    return stops.values
+        .where(
+          (s) =>
+              '${s['name']}${s['direction']}${s['id']}'
+                  .toLowerCase()
+                  .replaceAll(' ', '')
+                  .contains(q) ||
+              (stopRouteNumbers[s['id']] ?? {}).any(
+                (n) => '$n번'.toLowerCase().contains(q),
+              ),
+        )
+        .toList();
+  }
+
+  List<Json> get catalogRoutes => routes.values
+      .where((r) => r['scheduleSource'] == 'catalog_topology')
+      .toList();
   List<String> get routeNumbers =>
       routes.values.map((r) => '${r['number']}').toSet().toList()..sort(
         (a, b) => (int.tryParse(a) ?? 0).compareTo(int.tryParse(b) ?? 0),
       );
-  String routeLabel(String id) => observed
+  String routeLabel(String id) => routes[id]!['numberKnown'] == false
+      ? '노선 ID ${routes[id]!['familyId']}'
+      : observed
       ? '${routes[id]!['number']}번'
       : '${routes[id]!['number']} · ${routes[id]!['name']}';
   Network(this.data);

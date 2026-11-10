@@ -94,7 +94,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           const Text('연결할 수 있는 경로가 없습니다.', textAlign: TextAlign.center),
           const SizedBox(height: 10),
           const Text(
-            '출발시각, 허용 보행거리 또는 최대 환승 횟수를 바꿔보세요.',
+            '허용 보행거리 또는 최대 환승 횟수를 바꿔보세요. 원본 노선의 구간 누락·방향 단절로 연결되지 않을 수 있습니다.',
             textAlign: TextAlign.center,
             style: TextStyle(color: muted),
           ),
@@ -121,7 +121,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
         const SizedBox(height: 12),
         Text(
           widget.session.network!.observed
-              ? '관측 운행에 가상 지연을 적용했습니다. 자료 밖 후속 차량은 추정하지 않으며, 운행 구간별로 탐색합니다. 실측 환승 성공률이 아닙니다.'
+              ? '기록 연결은 가상 지연을 적용한 비교입니다. 기록으로 연결되지 않으면 시각·성공률 없는 노선 연결 후보를 제공합니다. 실측 환승 성공률이 아닙니다.'
               : '성공률은 입력한 지연 표본으로 계산한 시뮬레이션 추정입니다. 90백분위 도착시각은 실제 도착 보장이 아닙니다.',
           style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
         ),
@@ -131,7 +131,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
   List<Json> displayRows() {
     final list = [...rows!];
     if (safeFirst) {
-      list.sort((a, b) => (a['p90Arrival'] as num).compareTo(b['p90Arrival']));
+      list.sort(
+        (a, b) => ((a['p90Arrival'] ?? a['topologyCost']) as num).compareTo(
+          (b['p90Arrival'] ?? b['topologyCost']) as num,
+        ),
+      );
     }
     return list;
   }
@@ -149,6 +153,55 @@ class JourneyCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    if (journey['scheduleAvailable'] == false) {
+      return Semantics(
+        button: true,
+        label: 'ROUTE 경로 상세 보기',
+        child: Card(
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(22),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Eyebrow('ROUTE / 노선 연결 후보'),
+                  const SizedBox(height: 12),
+                  const Text(
+                    '운행시각 미확인',
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${journey['transfers']}회 환승 · 도보 ${(journey['walkingMeters'] as num).round()}m',
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 6,
+                    children: [
+                      for (final l in journey['legs'])
+                        Chip(
+                          label: Text(
+                            l['kind'] == 'walk'
+                                ? '도보'
+                                : session.network!.routeLabel(l['routeId']),
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '노선의 정류장 연결만 확인했습니다. 도착시각·환승 성공률은 계산하지 않습니다.',
+                    style: TextStyle(fontSize: 11, color: muted, height: 1.6),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     final tags = List<String>.from(journey['tags']),
         isAny = tags.contains('ANY%');
     return Semantics(

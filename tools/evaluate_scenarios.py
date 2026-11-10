@@ -30,9 +30,9 @@ for name,network,query in cases:
     results=engine.search(query)
     selected=[j for j in results if j['tags']]
     rows.append({'case':name,'source':network['source'],'candidateCount':len(results),'selected':[
-        {'tags':j['tags'],'plannedArrival':j['arrival'],'scenarioArrival':j['scenario']['arrival'],
+        {'tags':j['tags'],'plannedArrival':j['arrival'],'scenarioArrival':j.get('scenario',{}).get('arrival'),
          'successProbability':j['successProbability'],'noServiceProbability':j['noServiceProbability'],
-         'p90Arrival':j['p90Arrival'] if j['noServiceProbability']<=.1 else None,
+         'p90Arrival':j['p90Arrival'] if j.get('noServiceProbability') is not None and j['noServiceProbability']<=.1 else None,
          'routes':[engine.routes[l['routeId']]['number'] for l in j['legs'] if l['kind']=='ride'],
          'transfers':j['transfers'],'walkingMeters':j['walkingMeters']} for j in selected]})
 result={'generatedAt':datetime.now(timezone.utc).isoformat(),'seed':base.seed,'samples':base.samples,

@@ -18,8 +18,9 @@ with (SOURCE/'gps_replay.csv').open(encoding='utf-8-sig') as f:
 network=json.loads((ROOT/'shared/observed_network.json').read_text(encoding='utf-8'))
 result={'origin':'Authorized read-only copy from the user Jetson BusTracker directory','files':files,
         'recording':{'start':first,'end':last,'timezone':'Asia/Seoul','rows':count,'rawDeviceIds':len(vehicles),'rawRouteIdsIncludingZero':len(routes)},
-        'extraction':{'selectedRouteFamilies':5,'observedRuns':len(network['routes']),'stopPointIds':len(network['stops']),
+        'extraction':{'catalogRouteCount':network['catalogRouteCount'],'observedRouteFamilies':network['observedRouteFamilies'],'observedRuns':network['observedRuns'],'stopPointIds':len(network['stops']),
                       'method':'First sample after passed-point ID changes; split duplicate-point loops and gaps over 8 minutes',
+                      'ambiguousTimestampsExcluded':network['ambiguousTimestampsExcluded'],
                       'arrivalQuality':'Passage-time proxy; boarding service at each point is not field-validated',
                       'futureTrips':'Not extrapolated beyond the recording',
                       'walking':'Candidate point pairs within 100m; lengths from local OSM pedestrian graph, not surveyed paths; disconnected pairs excluded',
