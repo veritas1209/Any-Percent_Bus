@@ -1,0 +1,10 @@
+{
+  "requests": 114,
+  "inserted": 2181,
+  "errors": 0,
+  "sources": [
+    "replay_observed"
+  ],
+  "durationSeconds": 1201.14,
+  "warning": "Repeated replay observations are not independent real calendar days."
+}

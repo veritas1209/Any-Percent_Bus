@@ -1,0 +1,254 @@
+{
+  "generatedAt": "2026-11-10T03:40:38.338307+00:00",
+  "seed": 42,
+  "samples": 300,
+  "warning": "Simulation and recorded passage-time examples; not measured travel-time prediction accuracy.",
+  "cases": [
+    {
+      "case": "default",
+      "source": "simulated",
+      "candidateCount": 5,
+      "selected": [
+        {
+          "tags": [
+            "ANY%"
+          ],
+          "plannedArrival": 576,
+          "scenarioArrival": 576,
+          "successProbability": 0.3233333333333333,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 599,
+          "routes": [
+            "A",
+            "B"
+          ],
+          "transfers": 1,
+          "walkingMeters": 220.0
+        },
+        {
+          "tags": [
+            "SAFE"
+          ],
+          "plannedArrival": 583,
+          "scenarioArrival": 583,
+          "successProbability": 0.9566666666666667,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 586,
+          "routes": [
+            "A",
+            "C"
+          ],
+          "transfers": 1,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "first_bus_plus_3",
+      "source": "simulated",
+      "candidateCount": 5,
+      "selected": [
+        {
+          "tags": [
+            "ANY%"
+          ],
+          "plannedArrival": 576,
+          "scenarioArrival": 596,
+          "successProbability": 0.023333333333333334,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 599,
+          "routes": [
+            "A",
+            "B"
+          ],
+          "transfers": 1,
+          "walkingMeters": 220.0
+        },
+        {
+          "tags": [
+            "SAFE"
+          ],
+          "plannedArrival": 588,
+          "scenarioArrival": 591,
+          "successProbability": 1.0,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 595,
+          "routes": [
+            "D"
+          ],
+          "transfers": 0,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "walk_slow_0.8",
+      "source": "simulated",
+      "candidateCount": 5,
+      "selected": [
+        {
+          "tags": [
+            "ANY%",
+            "SAFE"
+          ],
+          "plannedArrival": 583,
+          "scenarioArrival": 583,
+          "successProbability": 0.9566666666666667,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 586,
+          "routes": [
+            "A",
+            "C"
+          ],
+          "transfers": 1,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "walk_fast_1.6",
+      "source": "simulated",
+      "candidateCount": 5,
+      "selected": [
+        {
+          "tags": [
+            "ANY%"
+          ],
+          "plannedArrival": 576,
+          "scenarioArrival": 576,
+          "successProbability": 0.5133333333333333,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 598,
+          "routes": [
+            "A",
+            "B"
+          ],
+          "transfers": 1,
+          "walkingMeters": 220.0
+        },
+        {
+          "tags": [
+            "SAFE"
+          ],
+          "plannedArrival": 583,
+          "scenarioArrival": 583,
+          "successProbability": 0.9566666666666667,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 586,
+          "routes": [
+            "A",
+            "C"
+          ],
+          "transfers": 1,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "no_walking",
+      "source": "simulated",
+      "candidateCount": 4,
+      "selected": [
+        {
+          "tags": [
+            "ANY%",
+            "SAFE"
+          ],
+          "plannedArrival": 583,
+          "scenarioArrival": 583,
+          "successProbability": 0.9566666666666667,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 586,
+          "routes": [
+            "A",
+            "C"
+          ],
+          "transfers": 1,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "direct_only",
+      "source": "simulated",
+      "candidateCount": 1,
+      "selected": [
+        {
+          "tags": [
+            "ANY%",
+            "SAFE"
+          ],
+          "plannedArrival": 588,
+          "scenarioArrival": 588,
+          "successProbability": 1.0,
+          "noServiceProbability": 0.0,
+          "p90Arrival": 592,
+          "routes": [
+            "D"
+          ],
+          "transfers": 0,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "after_last_service",
+      "source": "simulated",
+      "candidateCount": 0,
+      "selected": []
+    },
+    {
+      "case": "disconnected",
+      "source": "simulated",
+      "candidateCount": 0,
+      "selected": []
+    },
+    {
+      "case": "recorded_transfers",
+      "source": "replay_observed",
+      "candidateCount": 3,
+      "selected": [
+        {
+          "tags": [
+            "ANY%"
+          ],
+          "plannedArrival": 467.7833333333333,
+          "scenarioArrival": 467.7833333333333,
+          "successProbability": 0.5433333333333333,
+          "noServiceProbability": 0.45666666666666667,
+          "p90Arrival": null,
+          "routes": [
+            "124",
+            "741",
+            "114"
+          ],
+          "transfers": 2,
+          "walkingMeters": 96.0
+        },
+        {
+          "tags": [
+            "SAFE"
+          ],
+          "plannedArrival": 472.28333366666664,
+          "scenarioArrival": 472.28333366666664,
+          "successProbability": 0.6333333333333333,
+          "noServiceProbability": 0.36666666666666664,
+          "p90Arrival": null,
+          "routes": [
+            "124",
+            "741",
+            "224"
+          ],
+          "transfers": 2,
+          "walkingMeters": 0.0
+        }
+      ]
+    },
+    {
+      "case": "outside_recording",
+      "source": "replay_observed",
+      "candidateCount": 0,
+      "selected": []
+    }
+  ]
+}

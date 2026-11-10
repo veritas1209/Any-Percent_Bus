@@ -1,0 +1,35 @@
+{
+    "name": "Any% · 환승의 다음까지",
+    "short_name": "Any%",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#F4F5EF",
+    "theme_color": "#101A2C",
+    "description": "도착시간과 환승 실패의 영향을 비교하는 울산 버스 경로 시연 앱",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

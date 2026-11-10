@@ -1,0 +1,39 @@
+{
+  "origin": "Authorized read-only copy from the user Jetson BusTracker directory",
+  "files": [
+    {
+      "name": "gps_replay.csv",
+      "bytes": 14682419,
+      "sha256": "509962dbc5cf499c959beab6cebb2a19e16b6f36b0605ad9bbf2b2f6e132a921"
+    },
+    {
+      "name": "route_stops_named.csv",
+      "bytes": 1583031,
+      "sha256": "acd465a9c577433d3aa6be5429cef14ff66b512470be4cd97920d8ffad8d5baf"
+    },
+    {
+      "name": "route_names_manual.csv",
+      "bytes": 14245,
+      "sha256": "c65f5acd134f8a20883d81fbcc3f103fe2e8f9a2fd213173a90dea12d7894395"
+    }
+  ],
+  "recording": {
+    "start": "2025-12-31 07:00:00",
+    "end": "2025-12-31 07:59:59",
+    "timezone": "Asia/Seoul",
+    "rows": 149808,
+    "rawDeviceIds": 923,
+    "rawRouteIdsIncludingZero": 257
+  },
+  "extraction": {
+    "selectedRouteFamilies": 5,
+    "observedRuns": 83,
+    "stopPointIds": 437,
+    "method": "First sample after passed-point ID changes; split duplicate-point loops and gaps over 8 minutes",
+    "arrivalQuality": "Passage-time proxy; boarding service at each point is not field-validated",
+    "futureTrips": "Not extrapolated beyond the recording",
+    "walking": "Geometric distance x1.5 for point pairs within 100m; not surveyed pedestrian paths",
+    "uncertainty": "Synthetic delay samples, not fitted or calibrated to historical prediction errors"
+  },
+  "warning": "A replay loop is not a new independent calendar day. The recording is not a current official timetable."
+}

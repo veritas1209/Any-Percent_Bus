@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-11-10T03:49:22.317122+00:00",
+  "platform": "NVIDIA Jetson Orin Nano Super",
+  "cases": [
+    {
+      "dataset": "demo",
+      "samples": 300,
+      "measuredRequests": 1,
+      "clientRoundTripMs": 352.69,
+      "serverElapsedMs": 338.07,
+      "candidateCount": 5,
+      "source": "simulated",
+      "networkSha256": "33140dd2474e9c7315a70a82fcb251c8f0550fce76231c562d91566b78aba84c"
+    },
+    {
+      "dataset": "observed",
+      "samples": 300,
+      "measuredRequests": 1,
+      "clientRoundTripMs": 624.16,
+      "serverElapsedMs": 607.73,
+      "candidateCount": 3,
+      "source": "replay_observed",
+      "networkSha256": "ba84611ac8f055fe2a1008616b257752679f3b7975e92ec6d5c3f0545fcd810a"
+    }
+  ],
+  "note": "One warmed request per dataset; not a percentile latency estimate. Both remote API and web datasets match delivered assets."
+}

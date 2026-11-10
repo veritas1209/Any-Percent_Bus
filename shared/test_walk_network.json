@@ -1,0 +1,11 @@
+{
+  "version":"walking-edge-cases",
+  "source":"simulated",
+  "stops":[
+    {"id":"a","name":"A","direction":"test","lat":35.5,"lon":129.3},
+    {"id":"b","name":"B","direction":"test","lat":35.51,"lon":129.31},
+    {"id":"c","name":"C","direction":"test","lat":35.511,"lon":129.311}
+  ],
+  "routes":[{"id":"r","number":"R","name":"fixture","stops":["a","b"],"offsets":[0,5],"departures":[540],"delaySamples":[0],"color":"#CEF75F"}],
+  "footpaths":[{"from":"b","to":"c","meters":120}]
+}

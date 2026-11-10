@@ -1,0 +1,18 @@
+{
+  "apkBytes": 56045514,
+  "apkSha256": "9cb302322f71557f41023d18aec4c420cab47824f8ff715a6dc9422c039d0635",
+  "datasets": [
+    {
+      "name": "network.json",
+      "sha256": "33140dd2474e9c7315a70a82fcb251c8f0550fce76231c562d91566b78aba84c",
+      "routes": 5,
+      "stops": 9
+    },
+    {
+      "name": "observed_network.json",
+      "sha256": "ba84611ac8f055fe2a1008616b257752679f3b7975e92ec6d5c3f0545fcd810a",
+      "routes": 83,
+      "stops": 437
+    }
+  ]
+}

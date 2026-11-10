@@ -1,0 +1,10 @@
+{
+  "version":"analytic-probability-fixture",
+  "source":"simulated",
+  "stops":[{"id":"o","lat":35.5,"lon":129.3},{"id":"x","lat":35.51,"lon":129.31},{"id":"d","lat":35.52,"lon":129.32}],
+  "routes":[
+    {"id":"a","stops":["o","x"],"offsets":[0,10],"departures":[0],"delaySamples":[0,2]},
+    {"id":"b","stops":["x","d"],"offsets":[0,4],"departures":[11,30],"delaySamples":[0]}
+  ],
+  "footpaths":[]
+}

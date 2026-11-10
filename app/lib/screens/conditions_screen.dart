@@ -1,0 +1,145 @@
+import 'package:flutter/material.dart';
+import '../main.dart';
+import '../models/transit.dart';
+import '../theme.dart';
+import 'results_screen.dart';
+
+class ConditionsScreen extends StatefulWidget {
+  final AppSession session;
+  final String origin, destination;
+  const ConditionsScreen({
+    super.key,
+    required this.session,
+    required this.origin,
+    required this.destination,
+  });
+  @override
+  State<ConditionsScreen> createState() => _ConditionsScreenState();
+}
+
+class _ConditionsScreenState extends State<ConditionsScreen> {
+  double departure = 540, speed = 1.2, walk = 500;
+  int transfers = 2;
+  @override
+  void initState() {
+    super.initState();
+    departure = widget.session.network!.defaultDeparture;
+  }
+
+  @override
+  Widget build(BuildContext context) => AppPage(
+    title: '이동 조건',
+    bottom: PrimaryAction(
+      '경로 비교하기',
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultsScreen(
+            session: widget.session,
+            query: SearchQuery(
+              origin: widget.origin,
+              destination: widget.destination,
+              dataset: widget.session.network!.dataset,
+              departure: departure,
+              walkingSpeed: speed,
+              maxWalk: walk,
+              maxTransfers: transfers,
+            ),
+          ),
+        ),
+      ),
+    ),
+    child: ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        const Eyebrow('YOUR PACE, YOUR ROUTE.'),
+        const SizedBox(height: 12),
+        Text(
+          '어떤 속도로\n이동할까요?',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 28),
+        _label('출발 시각'),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(
+            clock(departure),
+            style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w800),
+          ),
+          trailing: const Icon(Icons.schedule),
+          onTap: () async {
+            final t = await showTimePicker(
+              context: context,
+              initialTime: TimeOfDay(
+                hour: departure ~/ 60,
+                minute: departure.toInt() % 60,
+              ),
+            );
+            if (t != null) {
+              setState(() => departure = (t.hour * 60 + t.minute).toDouble());
+            }
+          },
+        ),
+        Text(
+          widget.session.network!.observed
+              ? '관측 범위 07:00~07:59 · 기본 07:10. 범위 밖 운행은 알 수 없습니다.'
+              : '시연 추천 시간 09:00 · 운영 종료 이후에는 경로가 없을 수 있어요.',
+          style: const TextStyle(fontSize: 11, color: muted),
+        ),
+        const SizedBox(height: 28),
+        _label('보행 속도'),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          children: [
+            for (final item in [(0.8, '느리게'), (1.2, '보통'), (1.6, '빠르게')])
+              ChoiceChip(
+                label: Text('${item.$2} ${item.$1}m/s'),
+                selected: speed == item.$1,
+                onSelected: (_) => setState(() => speed = item.$1),
+                selectedColor: lime,
+              ),
+          ],
+        ),
+        const SizedBox(height: 28),
+        _label('허용 보행거리  ${walk.toInt()}m'),
+        Slider(
+          value: walk,
+          min: 0,
+          max: 1000,
+          divisions: 10,
+          label: '${walk.toInt()}m',
+          onChanged: (v) => setState(() => walk = v),
+        ),
+        const SizedBox(height: 20),
+        _label('최대 환승'),
+        const SizedBox(height: 12),
+        SegmentedButton<int>(
+          segments: const [
+            ButtonSegment(value: 0, label: Text('직행만')),
+            ButtonSegment(value: 1, label: Text('1회')),
+            ButtonSegment(value: 2, label: Text('2회')),
+          ],
+          selected: {transfers},
+          onSelectionChanged: (v) => setState(() => transfers = v.first),
+        ),
+        const SizedBox(height: 32),
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Text(
+            'Any%는 기준 예측에서 빠른 경로를, Safe는 지연 시나리오에서 도착시간이 안정적인 경로를 보여줍니다.',
+            style: TextStyle(fontSize: 13, height: 1.7),
+          ),
+        ),
+      ],
+    ),
+  );
+  Widget _label(String t) => Text(
+    t,
+    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+  );
+}
