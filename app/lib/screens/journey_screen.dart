@@ -82,7 +82,6 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
   double? lastArrival;
   for (final l in legs) {
     final isWalk = l['kind'] == 'walk';
-    final r = isWalk ? null : session.network!.routes[l['routeId']];
     if (!isWalk && lastArrival != null) {
       final margin = numValue(l['depart']) - lastArrival - .5;
       widgets.add(
@@ -126,7 +125,7 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
                   Text(
                     isWalk
                         ? '도보 ${l['meters']}m'
-                        : '${r!['number']} · ${r['name']}',
+                        : session.network!.routeLabel(l['routeId']),
                     style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 5),

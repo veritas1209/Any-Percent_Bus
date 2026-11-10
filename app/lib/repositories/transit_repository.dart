@@ -28,10 +28,10 @@ abstract class TransitRepository {
 
 class AssetTransitRepository implements TransitRepository {
   final String dataset;
-  AssetTransitRepository({this.dataset = 'demo'});
+  AssetTransitRepository({this.dataset = 'observed'});
   Network? _network;
   @override
-  String get label => dataset == 'observed' ? 'Jetson 관측 리플레이' : '로컬 데모';
+  String get label => dataset == 'observed' ? 'BusTracker 운행 기록' : '로컬 데모';
   @override
   Future<Network> loadNetwork() async => _network ??= Network.decode(
     await rootBundle.loadString(
@@ -53,10 +53,10 @@ class AssetTransitRepository implements TransitRepository {
 class ApiTransitRepository implements TransitRepository {
   final String baseUrl;
   final String dataset;
-  ApiTransitRepository(String baseUrl, {this.dataset = 'demo'})
+  ApiTransitRepository(String baseUrl, {this.dataset = 'observed'})
     : baseUrl = baseUrl.replaceAll(RegExp(r'/+$'), '');
   @override
-  String get label => dataset == 'observed' ? '백엔드 · 관측 리플레이' : '백엔드 연결';
+  String get label => dataset == 'observed' ? 'BusTracker · 백엔드 연결' : '백엔드 연결';
   @override
   Future<Network> loadNetwork() async {
     final response = await http

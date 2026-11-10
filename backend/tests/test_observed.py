@@ -28,6 +28,20 @@ def test_observed_runs_use_recorded_window_and_no_future_departures():
     assert client.get('/v1/network?dataset=missing').status_code==422
 
 
+def test_default_api_uses_bustracker_numbers_and_recorded_routes():
+    client=TestClient(app)
+    network=client.get('/v1/network').json()
+    assert network['source']=='replay_observed'
+    assert {r['number'] for r in network['routes']}=={'124','114','134','224','741'}
+    assert all(r['familyId'] and r['vehicleId'] and r['shapeSegments'] for r in network['routes'])
+    response=client.post('/v1/journeys/search',json={'origin':network['defaultOrigin'],'destination':network['defaultDestination'],'samples':20})
+    assert response.status_code==200
+    journeys=response.json()['journeys']
+    assert journeys and all(j['source']=='replay_observed' for j in journeys)
+    assert all(l['routeId'].startswith('obs:') for j in journeys for l in j['legs'] if l['kind']=='ride')
+    assert client.get('/v1/vehicles').json()['positionMethod']=='road_shape_interpolation'
+
+
 def test_raw_replay_keeps_latest_nonfuture_sample_and_separates_cycles(tmp_path):
     path=tmp_path/'gps.csv'
     with path.open('w',newline='',encoding='utf-8') as f:

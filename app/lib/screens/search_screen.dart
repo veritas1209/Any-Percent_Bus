@@ -74,7 +74,6 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
     String? problem;
-    String dataset = session.network!.dataset;
     bool connecting = false;
     await showModalBottomSheet(
       context: context,
@@ -101,15 +100,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   '경로 계산은 오프라인으로 가능합니다. 실제 지도는 인터넷 연결이 필요하며, 백엔드 주소는 아래에서 설정합니다.',
                 ),
                 const SizedBox(height: 16),
-                SegmentedButton<String>(
-                  segments: const [
-                    ButtonSegment(value: 'demo', label: Text('가상 시연')),
-                    ButtonSegment(value: 'observed', label: Text('관측 리플레이')),
-                  ],
-                  selected: {dataset},
-                  onSelectionChanged: connecting
-                      ? null
-                      : (value) => local(() => dataset = value.first),
+                const Text(
+                  'BusTracker 실제 버스 번호·정류장·운행 기록을 사용합니다.\n2025.12.31 07:00~07:59 기록이며 현재 실시간 운행은 아닙니다.',
+                  style: TextStyle(fontSize: 12, color: muted, height: 1.6),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -138,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           try {
                             await session.connect(
                               controller.text.trim(),
-                              dataset: dataset,
+                              dataset: 'observed',
                               accept: () => context.mounted,
                             );
                             if (context.mounted) {
@@ -159,8 +152,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   onPressed: connecting
                       ? null
                       : () async {
-                          await session.useDemo(
-                            dataset: dataset,
+                          await session.useOffline(
+                            dataset: 'observed',
                             accept: () => context.mounted,
                           );
                           if (context.mounted) {
@@ -168,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             if (mounted) setState(alignStops);
                           }
                         },
-                  child: const Text('선택한 데이터를 오프라인으로 사용'),
+                  child: const Text('운행 기록을 오프라인으로 사용'),
                 ),
               ],
             ),
@@ -326,9 +319,23 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
+                if (n.observed) ...[
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [
+                      for (final number in n.routeNumbers)
+                        Chip(
+                          label: Text('$number번'),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                ],
                 Text(
                   n.observed
-                      ? '2025.12.31 07시대 GPS 통과기록 · 83개 운행 구간\n정차시각은 근사치, 지연과 보행거리는 가상·추정입니다.'
+                      ? '2025.12.31 07:00~07:59 · ${n.routes.length}개 기록 구간\n실제 버스 번호·정류장·GPS 기록을 사용합니다.\n통과시각은 근사치, 지연은 가상, 보행은 도로망 추정입니다.'
                       : '운행시각과 지연은 시뮬레이션 데이터입니다.\n실제 버스 이용 안내로 사용할 수 없습니다.',
                   style: const TextStyle(
                     fontSize: 11,

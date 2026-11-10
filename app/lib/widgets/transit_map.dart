@@ -80,6 +80,40 @@ class _TransitMapState extends State<TransitMap> {
           ),
         ],
       ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 6,
+          children: [
+            for (final id in {
+              for (final leg in widget.legs)
+                if (leg['kind'] == 'ride') leg['routeId'] as String,
+            })
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Color(
+                    int.parse(
+                      (widget.network.routes[id]!['color'] as String? ??
+                              '#CEF75F')
+                          .replaceFirst('#', 'FF'),
+                      radix: 16,
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  widget.network.routeLabel(id),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
       ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: diagram
@@ -355,7 +389,7 @@ class _RouteMapState extends State<_RouteMap> {
                               child: Center(
                                 child: id == start || id == end
                                     ? Text(
-                                        id == start ? 'A' : 'B',
+                                        id == start ? '출' : '도',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w900,
@@ -379,23 +413,37 @@ class _RouteMapState extends State<_RouteMap> {
                         ),
                       ),
                     ),
-                  for (final point in geometry.vehicles(widget.minute))
+                  for (final vehicle in geometry.vehicleMarkers(widget.minute))
                     Marker(
-                      point: point,
-                      width: 28,
+                      point: vehicle.point,
+                      width: 58,
                       height: 28,
                       child: Semantics(
-                        label: '시연 버스 위치',
+                        label: '${vehicle.route['number']}번 기록시각 기준 버스 위치',
                         child: Container(
                           decoration: BoxDecoration(
                             color: blue,
-                            shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(14),
                             border: Border.all(color: Colors.white, width: 3),
                           ),
-                          child: const Icon(
-                            Icons.directions_bus,
-                            color: Colors.white,
-                            size: 14,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.directions_bus,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                '${vehicle.route['number']}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

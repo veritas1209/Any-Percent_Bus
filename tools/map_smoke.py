@@ -25,10 +25,12 @@ async def run():
         assert tiles and all(t['status']==200 for t in tiles),tiles
         assert '지도 연결을 확인해주세요.' not in snapshot
         assert '정류장 정보:' in snapshot
+        assert all(number in snapshot for number in ('124번','741번','114번'))
+        assert '기록시각 기준 버스 위치' in snapshot
         assert not errors,errors
         await page.screenshot(path=str(ROOT/'artifacts/screenshots/13-street-map-mobile.png'))
         await browser.close()
-        result={'passed':['real map tiles loaded in one initial viewport','visible OpenStreetMap attribution','selected route stop markers'],'tileResponses':len(tiles),'statuses':sorted(set(t['status'] for t in tiles)),'errors':errors,
+        result={'passed':['real map tiles loaded in one initial viewport','visible OpenStreetMap attribution','selected route stop markers','BusTracker bus numbers on map legend and vehicle'],'tileResponses':len(tiles),'statuses':sorted(set(t['status'] for t in tiles)),'errors':errors,
                 'note':'No automated live-tile panning/zooming, offline downloads or tile archive. Camera interaction tests use in-memory tiles.'}
         (ROOT/'artifacts/map-acceptance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
         print(json.dumps(result))

@@ -12,6 +12,12 @@ class RouteMapSegment {
   bool get walking => leg['kind'] == 'walk';
 }
 
+class RouteMapVehicle {
+  final LatLng point;
+  final Json route;
+  RouteMapVehicle(this.point, this.route);
+}
+
 /// Only the selected boarding/alighting portion belongs to the highlighted route.
 class RouteMapGeometry {
   final Network network;
@@ -33,6 +39,8 @@ class RouteMapGeometry {
       ? '정류장 연결선 · 차량은 시연시각 기준 보간'
       : segments.any((s) => s.source == 'unavailable')
       ? '일부 구간 도로 형상 없음 · 확인된 도로 구간만 표시'
+      : network.observed
+      ? 'BusTracker 기록 GPS · 도로 보정·추정 · 기록시각 기준 차량 보간'
       : '운행 GPS 기반 도로 보정 · 일부 구간 도로망 추정 · 시연 차량';
 
   List<LatLng> _points(dynamic shape) => shape is Map && shape['points'] is List
@@ -105,8 +113,11 @@ class RouteMapGeometry {
   }
 
   /// Baseline position of each selected vehicle along its road shape.
-  List<LatLng> vehicles(double minute) {
-    final positions = <LatLng>[];
+  List<LatLng> vehicles(double minute) =>
+      vehicleMarkers(minute).map((v) => v.point).toList();
+
+  List<RouteMapVehicle> vehicleMarkers(double minute) {
+    final positions = <RouteMapVehicle>[];
     final seen = <String>{};
     for (final s in segments.where((s) => !s.walking)) {
       final leg = s.leg;
@@ -122,16 +133,21 @@ class RouteMapGeometry {
             final raw = route['shapeSegments'] as List?;
             final road = raw == null ? <LatLng>[] : _points(raw[i]);
             final position = pointAlongRoad(road, (minute - a) / (b - a));
-            if (position != null) positions.add(position);
+            if (position != null) {
+              positions.add(RouteMapVehicle(position, route));
+            }
             break;
           }
           final from = point(ids[i]),
               to = point(ids[i + 1]),
               f = (minute - a) / (b - a);
           positions.add(
-            LatLng(
-              from.latitude + (to.latitude - from.latitude) * f,
-              from.longitude + (to.longitude - from.longitude) * f,
+            RouteMapVehicle(
+              LatLng(
+                from.latitude + (to.latitude - from.latitude) * f,
+                from.longitude + (to.longitude - from.longitude) * f,
+              ),
+              route,
             ),
           );
           break;

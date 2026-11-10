@@ -176,7 +176,7 @@ void main() {
       await tester.tap(find.byTooltip('전체 경로 맞추기'));
       await tester.pumpAndSettle();
       expect(map.mapController!.camera.zoom, closeTo(before, .001));
-      await tester.tap(find.text('A'));
+      await tester.tap(find.text('출'));
       await tester.pumpAndSettle();
       expect(find.text('울산과학대학앞'), findsOneWidget);
       expect(find.textContaining('탑승 09:00'), findsOneWidget);

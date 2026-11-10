@@ -1,6 +1,6 @@
 {
-  "apkBytes": 58762914,
-  "apkSha256": "9bf1f651b63835749b399aa0f20a740346cd939805e9e5c7cb6752d50fcbb3bb",
+  "apkBytes": 58795682,
+  "apkSha256": "3956bbc25d0d65cc33a8d032a3c02f71827ff74d8fd36e2101b3012c35cf9340",
   "datasets": [
     {
       "name": "network.json",

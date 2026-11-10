@@ -22,6 +22,13 @@ class Network {
   late final Map<String, Json> routes = {
     for (final r in data['routes']) r['id'] as String: Json.from(r),
   };
+  List<String> get routeNumbers =>
+      routes.values.map((r) => '${r['number']}').toSet().toList()..sort(
+        (a, b) => (int.tryParse(a) ?? 0).compareTo(int.tryParse(b) ?? 0),
+      );
+  String routeLabel(String id) => observed
+      ? '${routes[id]!['number']}번'
+      : '${routes[id]!['number']} · ${routes[id]!['name']}';
   Network(this.data);
   factory Network.decode(String s) => Network(jsonDecode(s));
 }
@@ -34,7 +41,7 @@ class SearchQuery {
   const SearchQuery({
     required this.origin,
     required this.destination,
-    this.dataset = 'demo',
+    this.dataset = 'observed',
     this.departure = 540,
     this.walkingSpeed = 1.2,
     this.maxWalk = 500,

@@ -66,12 +66,12 @@ def test_reproducibility_and_last_service(engine):
 def test_api_inputs_network_and_clock():
     client=TestClient(app)
     assert client.get('/v1/health').json()['status']=='ok'
-    assert len(client.get('/v1/network').json()['routes'])==5
-    assert {s['id'] for s in client.get('/v1/stops/search',params={'q':'태화강'}).json()['stops']}=={'hwajung','station','station-b'}
-    assert client.post('/v1/journeys/search',json={'origin':'uc','destination':'tower','samples':20}).json()['journeys']
+    assert len(client.get('/v1/network?dataset=demo').json()['routes'])==5
+    assert {s['id'] for s in client.get('/v1/stops/search',params={'q':'태화강','dataset':'demo'}).json()['stops']}=={'hwajung','station','station-b'}
+    assert client.post('/v1/journeys/search',json={'dataset':'demo','origin':'uc','destination':'tower','departure':540,'samples':20}).json()['journeys']
     assert client.post('/v1/journeys/search',json={'origin':'uc','destination':'tower','walking_speed':0}).status_code==422
     assert client.post('/v1/journeys/search',json={'origin':'missing','destination':'tower'}).status_code==400
-    assert client.get('/v1/vehicles?minute=550').json()['vehicles']
+    assert client.get('/v1/vehicles?minute=550&dataset=demo').json()['vehicles']
     assert client.post('/v1/integration/sync').status_code==503
 
 

@@ -2,9 +2,10 @@
   "passed": [
     "real map tiles loaded in one initial viewport",
     "visible OpenStreetMap attribution",
-    "selected route stop markers"
+    "selected route stop markers",
+    "BusTracker bus numbers on map legend and vehicle"
   ],
-  "tileResponses": 4,
+  "tileResponses": 9,
   "statuses": [
     200
   ],

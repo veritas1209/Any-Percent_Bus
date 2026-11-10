@@ -24,7 +24,7 @@ OBSERVED = json.loads((ROOT/'shared/observed_network.json').read_text(encoding='
 NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
 ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.1.2')
+app = FastAPI(title='Any% journey planner', version='0.1.3')
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
     from .replay_feed import create_router
@@ -33,10 +33,10 @@ if os.getenv('BUSTRACKER_CSV'):
 
 
 class Search(BaseModel):
-    dataset: Literal['demo','observed'] = 'demo'
+    dataset: Literal['demo','observed'] = 'observed'
     origin: str
     destination: str
-    departure: float = Field(default=540,ge=0,lt=1440)
+    departure: float = Field(default=430,ge=0,lt=1440)
     walking_speed: float = Field(default=1.2,ge=.3,le=3)
     max_walk: float = Field(default=500,ge=0,le=2000)
     max_transfers: int = Field(default=2,ge=0,le=2)
@@ -47,16 +47,16 @@ class Search(BaseModel):
 
 @app.get('/v1/health')
 def health():
-    return {'status':'ok','mode':'prototype','networkVersion':NETWORK['version'],'datasets':list(NETWORKS)}
+    return {'status':'ok','mode':'prototype','networkVersion':OBSERVED['version'],'defaultDataset':'observed','datasets':list(NETWORKS)}
 
 
 @app.get('/v1/network')
-def network(dataset: Literal['demo','observed']='demo'):
+def network(dataset: Literal['demo','observed']='observed'):
     return NETWORKS[dataset]
 
 
 @app.get('/v1/stops/search')
-def search_stops(q: str='',dataset: Literal['demo','observed']='demo'):
+def search_stops(q: str='',dataset: Literal['demo','observed']='observed'):
     return {'stops':[s for s in NETWORKS[dataset]['stops'] if q.casefold() in (s['name']+s['direction']).casefold()]}
 
 
@@ -73,7 +73,7 @@ def journeys(body: Search):
 
 
 @app.get('/v1/vehicles')
-def vehicles(minute: float=540,dataset: Literal['demo','observed']='demo'):
+def vehicles(minute: float=430,dataset: Literal['demo','observed']='observed'):
     rows=[]
     selected=NETWORKS[dataset]; selected_engine=ENGINES[dataset]
     for r in selected['routes']:
@@ -108,7 +108,7 @@ async def sync():
         with sqlite3.connect(ROOT/'backend/catalog.db') as db:
             db.execute('CREATE TABLE IF NOT EXISTS snapshots(id INTEGER PRIMARY KEY, observed REAL, payload TEXT)')
             db.execute('INSERT INTO snapshots(observed,payload) VALUES(?,?)',(time.time(),json.dumps(snapshot,ensure_ascii=False)))
-        return {'routes':len(snapshot['routes']),'stops':len(snapshot['stops']),'routingMode':'demo','note':'실제 정적 노선망 동기화 완료. 운행시각 검증 후 라우팅 적용 가능.'}
+        return {'routes':len(snapshot['routes']),'stops':len(snapshot['stops']),'routingMode':'replay_observed','note':'정적 노선망 동기화 완료. 경로 탐색은 GPS 관측 운행 기록을 사용합니다.'}
     except (httpx.HTTPError,ValueError) as e:
         raise HTTPException(502,'BusTracker 연결 또는 데이터 형식 오류') from e
 

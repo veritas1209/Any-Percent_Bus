@@ -32,7 +32,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
       if (mounted) setState(() => rows = r);
     } catch (e) {
       if (mounted) {
-        setState(() => error = '서버 연결에 실패했습니다. 다시 시도하거나 로컬 데모로 검색하세요.');
+        setState(() => error = '서버 연결에 실패했습니다. 다시 시도하거나 저장된 운행 기록으로 검색하세요.');
       }
     }
   }
@@ -77,10 +77,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
           PrimaryAction('다시 시도', onPressed: load),
           TextButton(
             onPressed: () async {
-              await widget.session.useDemo(dataset: widget.query.dataset);
+              await widget.session.useOffline(dataset: widget.query.dataset);
               if (mounted) load();
             },
-            child: const Text('로컬 데모로 검색'),
+            child: const Text('저장된 운행 기록으로 검색'),
           ),
         ] else if (rows == null)
           const Padding(
@@ -265,7 +265,7 @@ class JourneyCard extends StatelessWidget {
                           child: Text(
                             l['kind'] == 'walk'
                                 ? '도보 ${l['meters']}m'
-                                : '${session.network!.routes[l['routeId']]!['number']} · ${session.network!.routes[l['routeId']]!['name']}',
+                                : session.network!.routeLabel(l['routeId']),
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),

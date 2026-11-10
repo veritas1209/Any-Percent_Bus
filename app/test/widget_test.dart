@@ -193,9 +193,16 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(const AnyPercentApp());
+      final session = AppSession();
+      await tester.runAsync(session.initialize);
+      expect(session.network!.observed, isTrue);
+      session.repository = MemoryRepository(session.network!);
+      await tester.pumpWidget(AnyPercentApp(session: session));
       await tester.pumpAndSettle();
       expect(find.text('가장 빠르게.\n놓쳐도, 괜찮게.'), findsOneWidget);
+      expect(find.text('성남동'), findsOneWidget);
+      expect(find.text('124번'), findsOneWidget);
+      expect(find.text('가상 시연'), findsNothing);
       await tester.tap(find.text('울산과학대학앞'));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '없는이름');
@@ -209,11 +216,43 @@ void main() {
       await tester.tap(find.text('나의 경로 만들기'));
       await tester.pumpAndSettle();
       expect(find.text('어떤 속도로\n이동할까요?'), findsOneWidget);
+      expect(find.text('07:10'), findsOneWidget);
       await tester.tap(find.text('느리게 0.8m/s'));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     },
   );
+  testWidgets('default search and offline recovery keep actual bus routes', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final session = AppSession()..mapTileProviderFactory = MemoryMapTiles.new;
+    await tester.runAsync(session.initialize);
+    session.repository = MemoryRepository(session.network!);
+    await tester.pumpWidget(AnyPercentApp(session: session));
+    await tester.pumpAndSettle();
+    expect(session.network!.dataset, 'observed');
+    expect(session.network!.routeNumbers, ['114', '124', '134', '224', '741']);
+    await tester.ensureVisible(find.text('나의 경로 만들기'));
+    await tester.tap(find.text('나의 경로 만들기'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('경로 비교하기'));
+    await tester.pumpAndSettle();
+    expect(find.text('124번'), findsWidgets);
+    expect(find.text('741번'), findsWidgets);
+    expect(find.text('114번'), findsWidgets);
+    expect(find.text('A · 동구 연결'), findsNothing);
+    await tester.runAsync(() => session.useOffline());
+    expect(session.network!.observed, isTrue);
+    expect(
+      session.network!.routeLabel(session.network!.routes.keys.first),
+      matches(RegExp(r'^\d+번$')),
+    );
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('details and delay simulator update actual arrival', (
     tester,
   ) async {

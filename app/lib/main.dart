@@ -33,7 +33,7 @@ class AppSession {
 
   Future<void> connect(
     String url, {
-    String dataset = 'demo',
+    String dataset = 'observed',
     bool Function()? accept,
   }) async {
     final candidate = ApiTransitRepository(url, dataset: dataset);
@@ -43,8 +43,8 @@ class AppSession {
     network = next;
   }
 
-  Future<void> useDemo({
-    String dataset = 'demo',
+  Future<void> useOffline({
+    String dataset = 'observed',
     bool Function()? accept,
   }) async {
     final candidate = AssetTransitRepository(dataset: dataset);

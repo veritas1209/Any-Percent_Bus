@@ -1,20 +1,20 @@
 {
   "passed": [
-    "offline routing with map tiles unavailable",
-    "conditions",
-    "Any% vs Safe",
-    "timeline",
-    "3-minute delay / 20-minute arrival penalty",
-    "Jetson API search",
+    "default BusTracker recorded dataset",
+    "conditions use 07:10 recording time",
+    "Any% vs Safe recorded arrivals",
+    "124 / 741 / 114 timeline",
+    "no synthetic A / B route cards",
+    "Jetson API search uses observed dataset",
     "API retry after interrupted request",
     "invalid backend connection recovery",
-    "observed replay dataset",
-    "unknown arrival outside observation range",
+    "offline recovery keeps recorded bus numbers",
+    "3-minute delay reports unknown subsequent service",
     "cancelled connection preserves selected stops",
     "map failure to diagram fallback"
   ],
   "errors": [],
   "externalRequests": [],
-  "mapTilesBlocked": 44,
+  "mapTilesBlocked": 36,
   "screenshotDirectory": "C:\\Users\\hajin\\Downloads\\anypercent\\artifacts\\screenshots"
 }
