@@ -3,6 +3,7 @@ import '../main.dart';
 import '../models/transit.dart';
 import '../theme.dart';
 import 'conditions_screen.dart';
+import '../widgets/location_picker.dart';
 
 class SearchScreen extends StatefulWidget {
   final AppSession? session;
@@ -14,6 +15,15 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late final session = widget.session ?? AppSession();
   String origin = 'uc', destination = 'tower';
+  Json? originPoint, destinationPoint;
+  bool get samePoint => originPoint != null && destinationPoint != null
+      ? (numValue(originPoint!['lat']) - numValue(destinationPoint!['lat']))
+                    .abs() <
+                .000001 &&
+            (numValue(originPoint!['lon']) - numValue(destinationPoint!['lon']))
+                    .abs() <
+                .000001
+      : origin == destination;
   String? error;
   bool loading = true;
   @override
@@ -42,12 +52,55 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  void alignStops() {
+  void alignStops({bool preserve = false}) {
+    if (preserve && originPoint != null && destinationPoint != null) return;
     origin = session.network!.defaultOrigin;
     destination = session.network!.defaultDestination;
+    originPoint = {
+      ...session.network!.stops[origin]!,
+      'direction': '장소·주소 또는 지도에서 선택',
+      'isLocation': true,
+    };
+    destinationPoint = {
+      ...session.network!.stops[destination]!,
+      'direction': '장소·주소 또는 지도에서 선택',
+      'isLocation': true,
+    };
   }
 
   Future<void> select(bool from, {bool routesFirst = false}) async {
+    if (!routesFirst) {
+      final point = await showModalBottomSheet<Json>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: paper,
+        builder: (context) => LocationPicker(
+          network: session.network!,
+          title: from ? '출발 지점' : '도착 지점',
+          initial: (from ? originPoint : destinationPoint)!,
+          tileProviderFactory: session.mapTileProviderFactory,
+          advancedBuilder: (routes, picked, back) => _StopPicker(
+            session.network!,
+            from ? '출발 정류장' : '도착 정류장',
+            routesFirst: routes,
+            onPicked: picked,
+            onPlaces: back,
+          ),
+        ),
+      );
+      if (point != null && mounted) {
+        setState(() {
+          if (from) {
+            originPoint = point;
+            origin = point['id'] ?? '@origin';
+          } else {
+            destinationPoint = point;
+            destination = point['id'] ?? '@destination';
+          }
+        });
+      }
+      return;
+    }
     final picked = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -62,8 +115,16 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         if (from) {
           origin = picked;
+          originPoint = {
+            ...session.network!.stops[picked]!,
+            'isLocation': true,
+          };
         } else {
           destination = picked;
+          destinationPoint = {
+            ...session.network!.stops[picked]!,
+            'isLocation': true,
+          };
         }
       });
     }
@@ -139,7 +200,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             );
                             if (context.mounted) {
                               Navigator.pop(context);
-                              if (mounted) setState(alignStops);
+                              if (mounted) {
+                                setState(() => alignStops(preserve: true));
+                              }
                             }
                           } catch (e) {
                             if (context.mounted) {
@@ -161,7 +224,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           );
                           if (context.mounted) {
                             Navigator.pop(context);
-                            if (mounted) setState(alignStops);
+                            if (mounted) {
+                              setState(() => alignStops(preserve: true));
+                            }
                           }
                         },
                   child: const Text('운행 기록을 오프라인으로 사용'),
@@ -247,8 +312,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Column(
                     children: [
                       _stopTile(
-                        '출발',
-                        n.stops[origin]!,
+                        '출발 지점',
+                        originPoint!,
                         () => select(true),
                         lime,
                       ),
@@ -260,6 +325,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               final t = origin;
                               origin = destination;
                               destination = t;
+                              final p = originPoint;
+                              originPoint = destinationPoint;
+                              destinationPoint = p;
                             }),
                             tooltip: '출발·도착 교환',
                             icon: const Icon(
@@ -271,8 +339,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                       _stopTile(
-                        '도착',
-                        n.stops[destination]!,
+                        '도착 지점',
+                        destinationPoint!,
                         () => select(false),
                         const Color(0xFF7CB8FF),
                       ),
@@ -282,7 +350,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(height: 20),
                 PrimaryAction(
                   '나의 경로 만들기',
-                  onPressed: origin == destination
+                  onPressed: samePoint
                       ? null
                       : () => Navigator.push(
                           context,
@@ -291,11 +359,13 @@ class _SearchScreenState extends State<SearchScreen> {
                               session: session,
                               origin: origin,
                               destination: destination,
+                              originPoint: originPoint,
+                              destinationPoint: destinationPoint,
                             ),
                           ),
                         ),
                 ),
-                if (origin == destination)
+                if (samePoint)
                   const Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
@@ -371,7 +441,7 @@ class _SearchScreenState extends State<SearchScreen> {
     Color accent,
   ) => Semantics(
     button: true,
-    label: '$label 정류장 선택',
+    label: '$label 선택',
     child: InkWell(
       onTap: tap,
       borderRadius: BorderRadius.circular(12),
@@ -404,7 +474,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    stop['direction'],
+                    stop['address'] ?? stop['direction'] ?? '선택한 지점',
                     style: const TextStyle(color: Colors.white54, fontSize: 10),
                   ),
                 ],
@@ -422,7 +492,15 @@ class _StopPicker extends StatefulWidget {
   final Network network;
   final String title;
   final bool routesFirst;
-  const _StopPicker(this.network, this.title, {this.routesFirst = false});
+  final ValueChanged<String>? onPicked;
+  final VoidCallback? onPlaces;
+  const _StopPicker(
+    this.network,
+    this.title, {
+    this.routesFirst = false,
+    this.onPicked,
+    this.onPlaces,
+  });
   @override
   State<_StopPicker> createState() => _StopPickerState();
 }
@@ -475,6 +553,12 @@ class _StopPickerState extends State<_StopPicker> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 20),
+              if (widget.onPlaces != null)
+                TextButton.icon(
+                  onPressed: widget.onPlaces,
+                  icon: const Icon(Icons.arrow_back, size: 16),
+                  label: const Text('장소·지도 선택'),
+                ),
               SegmentedButton<bool>(
                 segments: const [
                   ButtonSegment(value: false, label: Text('정류장')),
@@ -561,7 +645,11 @@ class _StopPickerState extends State<_StopPicker> {
                                 controller.clear();
                               });
                             } else {
-                              Navigator.pop(context, rows[i]['id']);
+                              if (widget.onPicked != null) {
+                                widget.onPicked!(rows[i]['id']);
+                              } else {
+                                Navigator.pop(context, rows[i]['id']);
+                              }
                             }
                           },
                         ),

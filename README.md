@@ -4,12 +4,13 @@
 
 ## 구성
 
-- `app/`: Flutter, 5개 화면, 로컬 데이터 계산과 API 연결, OpenStreetMap 지도·경로·정류장·가상 차량 및 오프라인 개략도
+- `app/`: Flutter, 장소·주소·지도 지점 선택, 로컬 데이터 계산과 API 연결, OpenStreetMap 지도·경로·정류장·기록 차량 및 오프라인 개략도
 - `backend/`: 시간표 경로 탐색, 여정 단위 몬테카를로, REST API, BusTracker 정적 노선망 동기화
 - `shared/network.json`: 계산 회귀 검증용 5개 가상 노선·9개 정류장. 일반 앱의 선택 항목에서는 제외
 - `shared/observed_network.json`: 전체 256개 노선 ID·4,953개 정류장/참조 지점, 정제한 247개 노선의 1,187개 관측 운행 구간, 전체 노선 연결 정보와 공유 도로 형상
 - `shared/route_recoveries.json`: 원본 해시·GPS 근접 추정 구간·7개 희소 ID의 조사 결과
 - `shared/bustracker_catalog.json`: 원본 CSV의 정적 노선망 사본. 가상 시간표와 구분
+- `shared/places.json`, `shared/walk_graph.bin`: OSM 장소·주소 37,427건과 접근 도보 계산용 로컬 보행망
 - `tools/`: 데이터 준비, 실행·패키징 보조 도구
 - `integration/bustracker/`: 기존 BusTracker에 추가한 연동 모듈과 최소 변경 패치
 
@@ -65,7 +66,7 @@ flutter run -d chrome --web-port 8080
 
 앱은 저장된 BusTracker 운행 기록으로 시작하며 서버 없이 경로를 계산합니다. 우측 상단 설정에서 백엔드 주소를 지정하거나 같은 운행 기록의 오프라인 사용으로 돌아갈 수 있습니다. Android 에뮬레이터는 `http://10.0.2.2:8001`, PC 웹은 `http://127.0.0.1:8001`입니다. 물리 휴대폰은 같은 LAN의 PC 주소와 서버 바인딩 설정이 필요합니다. 데모용 HTTP 연결만 허용하고 실제 공개 배포는 HTTPS를 사용합니다.
 
-전체 노선망은 약 14.7MB JSON이며 API는 시작 시 직렬화한 응답을 재사용하고 gzip으로 압축합니다. 앱은 최대 20초 동안 연결을 시도하며, 서버 연결 없이도 같은 전체 데이터를 사용할 수 있습니다.
+전체 노선망은 약 23.6MB JSON이며 API는 시작 시 직렬화한 응답을 재사용하고 gzip으로 압축합니다. 장소·주소 색인은 약 6.4MB, 보행망은 약 24.6MB입니다. 앱은 최대 20초 동안 연결을 시도하며, 서버 연결 없이도 같은 전체 데이터를 사용할 수 있습니다.
 
 ## BusTracker 연결
 
@@ -101,10 +102,10 @@ flutter build apk --release
 
 | 항목 | 결과 |
 |---|---|
-| Python 자동 테스트 | 23개 통과. 전체 노선·기존 계산, GPS 추정 구간의 시각 비생성, 방향 복사 방지와 근접 판정 |
-| Flutter 자동 테스트 | 19개 통과. 기존 검색·지도·계산, 울주81 추정 표시와 같은 번호의 다른 구간 안내 |
+| Python 자동 테스트 | 29개 통과. 기존 계산과 전체 노선, 지점 접근 보행·보행 속도·거리 예산, GPS 정차·공백·방향 보정 |
+| Flutter 자동 테스트 | 22개 통과. 기존 검색·지도·계산, 지도 핀 선택, 복수 정류장 보행 접근, GPS 정차와 지연 위치 반영 |
 | Flutter 정적 분석 | 오류·경고·정보 항목 없음 |
-| 실제 Chrome 시연 | 전체 노선 검색을 포함한 13개 흐름과 실제 지도 1개 초기 화면 확인, 페이지 예외 0건 |
+| 실제 Chrome 시연 | 기존 13개 흐름, 장소·핀 입력과 재생 6개 흐름, 복구 노선 4개 흐름, 실제 지도 1개 초기 화면 확인. 페이지 예외 0건 |
 | Android | APK 빌드, 앱 이름·버전·권한·번들 데이터 정적 확인 완료 |
 | 물리 Android 기기 | 연결된 기기가 없어 설치·실기기 조작은 미검증 |
 | 원격 Jetson | 독립 API·웹 실행, 노선 동기화·GPS 리플레이·관측 저장·경로 계산 확인 |
@@ -132,10 +133,11 @@ SSH 비밀번호는 코드·설정에 저장하지 않습니다. 원격 연동 �
 |---|---|
 | `GET /v1/network?dataset=demo\|observed` | 데이터셋과 노선망 조회 |
 | `GET /v1/stops/search?q=...&dataset=...` | 이름·방면 검색 |
+| `GET /v1/places/search?q=...` | 로컬 OSM 장소·도로명주소 검색 |
 | `GET /v1/routes/search?q=722` | 전체 원본 노선과 정류장 순서 조회 |
 | `GET /v1/coverage` | 전체·관측 범위와 연결 자료가 없는 노선 ID |
-| `POST /v1/journeys/search` | 시각·보행·환승·지연 조건의 여정 계산 |
-| `GET /v1/vehicles?minute=430&dataset=observed` | 요청한 가상시각의 구간 보간 위치 |
+| `POST /v1/journeys/search` | 선택적 `origin_point`·`destination_point`의 이름·위경도를 받아 접근/도착 도보를 포함한 여정 계산 |
+| `GET /v1/vehicles?minute=430&dataset=observed` | 요청한 기록시각의 GPS 진행도 보간 위치, GPS 공백에서는 생략 |
 | `POST /v1/integration/sync` | 읽기 전용 BusTracker 카탈로그 동기화 |
 | `GET /v1/live/status`, `/v1/live/vehicles` | 연결된 공급원의 리플레이 상태·차량 조회 |
 | `POST /v1/observations/collect` | 60m 내·7km/h 이하 GPS를 정류장 근처 통과 관측으로 저장 |
@@ -158,19 +160,27 @@ SSH 비밀번호는 코드·설정에 저장하지 않습니다. 원격 연동 �
 
 발표에 사용할 실제 화면은 `artifacts/screenshots/`, 조작 영상은 `artifacts/AnyPercent-demo.webm`, Jetson 측정은 `artifacts/jetson-benchmark.json`에 있습니다. 캡처에 보이는 도착시각은 데이터셋 시연 결과입니다.
 
+0.3.0의 장소·지도 핀·재생 검증은 `artifacts/location-motion-acceptance.json`에 있습니다. 기본 지점 쌍의 Jetson 계산은 예열 후 단일 요청에서 약 2.4초였으며, 삼산로 주소에서 임의 지도 핀으로 가는 별도 조합은 약 10초가 걸렸습니다. 모든 지점 쌍의 응답시간이나 최단 경로 정확도를 보장하는 측정은 아닙니다.
+
 10개 조건 비교 결과는 `artifacts/scenarios.json`, 원본 CSV 해시와 추출 가정은 `artifacts/provenance.json`, APK·웹 자산 일치 확인은 `artifacts/build-audit.json`에 있습니다.
 
 ## Flutter 사용 기술과 AI 활용
 
 Flutter Material 3, `StatefulWidget`과 세션 객체, `Navigator` 화면 전환, Repository 인터페이스, `http` REST 통신, JSON 자산, `compute`를 통한 로컬 계산 분리, `flutter_map` 실제 지도, `CustomPainter` 오프라인 개략도, `Timer` 가상 운행, 한국어 로컬라이제이션과 Pretendard 글꼴을 사용합니다. 웹·Android에서 같은 Dart 화면과 계산 규칙을 사용합니다.
 
-## 경로 지도 (0.2.1)
+## 지점 선택과 경로 지도 (0.3.0)
+
+첫 화면은 **출발 지점·도착 지점**을 선택합니다. 장소 이름·도로명주소 검색, 지도에서 핀 찍기를 지원하며 정류장·노선 목록도 보조 선택으로 유지합니다. 선택 좌표는 정류장 좌표로 바꾸지 않습니다. 로컬 OSM 보행망에서 거리 예산 안의 여러 탑승·하차 정류장까지 접근 도보를 계산하고, 접근·환승·도착 도보의 합과 사용자 보행 속도를 경로 비교에 반영합니다. 도보만으로 이동할 수 있으면 도보 후보도 계산합니다. OSM에 없는 주소는 검색되지 않을 수 있으며 지도에서 출입구나 도로 가까운 지점을 선택할 수 있습니다. 건물 내부 동선과 출입문은 실측하지 않았습니다.
+
+차량 궤적은 방향과 이동 거리를 고려해 로컬 OSM 도로에 맞춥니다. 정류장 대표 좌표를 궤적에 강제로 끼워 넣던 처리를 제거했습니다. 1,187개 운행 구간은 1,979개 연속 GPS 궤적과 실제 표본 시각의 진행도를 가집니다. 저속 위치 흔들림은 정차로 유지하고, 120초 초과 GPS 공백이나 불가능한 이동은 끊습니다. 정류장 사이 896개 구간에는 공백이 걸려 있어 확인된 부분만 표시합니다. 근거는 `artifacts/motion-build.json`에 있습니다.
+
+지연 화면은 1·10·20·60배속으로 초 단위 재생합니다. 지연된 차량의 위치 시계도 함께 이동하고, 여정 끝에서 멈추며 65분마다 시작 위치로 되돌아가지 않습니다. GPS가 없는 시간에는 차량을 숨깁니다. 이 화면은 과거 기록 재생이며 실시간 차량 위치가 아닙니다.
 
 경로 상세와 지연 화면에 OpenStreetMap을 표시합니다. A/B 출발·도착, 환승 정류장, 노선별 색상, 점선 도보와 선택 차량의 보간 위치를 겹쳐 표시합니다. 드래그·확대·축소, 전체 경로 맞춤, 정류장 탑승·하차 시각, 전체 화면을 지원합니다. 노선의 탑승~하차 구간만 잘라 도로 형상을 표시하며 차량 아이콘도 도로 길이에 따라 움직입니다. 형상이 없는 구간은 선과 차량을 생략합니다.
 
-BusTracker의 기록 GPS를 **로컬 OSM 도로망**에 맞춰 보정했습니다. GPS는 공용 서버에 업로드하지 않습니다. 울주 남부·서부를 포함하며, 공유 형상 30,799개를 최대 2m 오차로 단순화해 중복을 줄였습니다. 관측 구간과 노선 연결의 선택한 부분을 표시합니다. `gps_road_matched`와 `road_estimate`를 구분하고, 형상이 없으면 직선으로 잇지 않습니다. 차량은 시각이 있는 운행에만 표시하며 기록 시각 사이를 도로 거리로 보간합니다. 현재 공식 노선도·모든 차로/회전 제한·실시간 위치를 보장하지 않습니다. 정류장 근접 추정의 품질은 도로 형상 보정과 별개이며 울주81에는 두 출처를 함께 표시합니다.
+BusTracker의 기록 GPS를 **로컬 OSM 도로망**에 맞춰 보정했습니다. GPS는 공용 서버에 업로드하지 않습니다. 울주 남부·서부를 포함하며, 공유 형상과 진행도 표본으로 중복을 줄였습니다. 관측 구간과 노선 연결의 선택한 부분을 표시합니다. `gps_trace_matched`·`road_estimate`·`unavailable`을 구분하고, 형상이 없으면 직선으로 잇지 않습니다. 차량은 시각이 있는 운행에만 표시하며 기록 시각 사이를 도로 거리로 보간합니다. 현재 공식 노선도·모든 차로/회전 제한·실시간 위치를 보장하지 않습니다. 정류장 근접 추정의 품질은 도로 형상 보정과 별개이며 울주81에는 두 출처를 함께 표시합니다.
 
-도보 연결도 보행 도로망의 길이 추정을 사용합니다. 출처·해시는 `artifacts/road-geometry.json`, 이용 출처는 `shared/GEOMETRY_LICENSE.md`에 있습니다. 재생성은 공개 PBF와 허가된 CSV를 준비해 `python tools/build_observed_network.py`, `python tools/build_full_road_shapes.py` 순으로 실행합니다. 복구 근거 갱신은 `tmp/jetson-extra/`의 BusTracker 보조 파일과 읽기 전용 조사 결과를 준비한 뒤 `python tools/recover_sparse_routes.py`를 먼저 실행합니다. 원본 GPS/정류장 해시가 달라지면 이전 복구 근거를 그대로 적용하지 않습니다. 배포 앱은 생성 결과를 포함하므로 PBF·원본 CSV가 필요하지 않습니다. `python tools/audit_full_network.py`는 원본 연결 249개와 추정 부분 구간 1개에서 한 방향 구간씩 검사합니다. 모든 출발·도착 쌍의 검증은 아닙니다.
+도보 연결도 보행 도로망의 길이 추정을 사용합니다. 출처·해시는 `artifacts/road-geometry.json`, `artifacts/motion-build.json`, `artifacts/location-assets.json`, 이용 출처는 `shared/GEOMETRY_LICENSE.md`에 있습니다. 재생성은 공개 PBF와 허가된 CSV를 준비해 `python tools/build_observed_network.py`, `python tools/build_full_road_shapes.py`, `python tools/rebuild_motion_traces.py`, `python tools/build_location_assets.py` 순으로 실행합니다. 복구 근거 갱신은 `tmp/jetson-extra/`의 BusTracker 보조 파일과 읽기 전용 조사 결과를 준비한 뒤 `python tools/recover_sparse_routes.py`를 먼저 실행합니다. 원본 GPS/정류장 해시가 달라지면 이전 복구 근거를 그대로 적용하지 않습니다. 배포 앱은 생성 결과를 포함하므로 PBF·원본 CSV가 필요하지 않습니다. `python tools/audit_full_network.py`는 원본 연결 249개와 추정 부분 구간 1개에서 한 방향 구간씩 검사합니다. 모든 출발·도착 쌍의 검증은 아닙니다.
 
 실제 지도는 인터넷 연결이 필요합니다. 계산과 개략도는 오프라인에서 동작하며, 지도 연결에 실패하면 재시도 또는 개략도 전환을 제공합니다. 지도 타일은 화면에 보이는 범위만 요청하고 출처를 항상 표시합니다. Android는 `flutter_map`의 HTTP 헤더 기반 캐시(50MB 소프트 제한), 웹은 브라우저 캐시를 사용하며 별도 오프라인 지도 다운로드는 제공하지 않습니다. 제공자 변경은 `--dart-define=MAP_TILE_URL=...`로 지정할 수 있으며 다른 제공자의 표시·사용 조건은 별도로 확인해야 합니다.
 

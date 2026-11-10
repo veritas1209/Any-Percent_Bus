@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/transit.dart';
@@ -22,32 +23,59 @@ class SimulationScreen extends StatefulWidget {
 }
 
 class _SimulationScreenState extends State<SimulationScreen> {
-  double delay = 0, elapsed = 10;
+  double delay = 0, elapsed = 0, rate = 20, _anchor = 0, _limit = 1;
   Timer? ticker;
+  final stopwatch = Stopwatch();
   @override
   void dispose() {
     ticker?.cancel();
+    stopwatch.stop();
     super.dispose();
   }
 
   void play() {
     if (ticker != null) {
       ticker!.cancel();
+      stopwatch.stop();
       setState(() => ticker = null);
       return;
     }
-    ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
-      if (mounted) setState(() => elapsed = (elapsed + 1) % 65);
+    if (elapsed >= _limit) elapsed = 0;
+    _anchor = elapsed;
+    stopwatch.reset();
+    stopwatch.start();
+    ticker = Timer.periodic(const Duration(milliseconds: 33), (_) {
+      if (!mounted) return;
+      final value =
+          _anchor + stopwatch.elapsedMicroseconds / 1000000 * rate / 60;
+      if (value >= _limit) {
+        ticker?.cancel();
+        stopwatch.stop();
+        ticker = null;
+      }
+      setState(() => elapsed = min(value, _limit));
     });
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final engine = JourneyEngine(widget.session.network!),
+    final engine = JourneyEngine(widget.session.displayNetwork),
         scenario = engine.replay(widget.journey, widget.query.withDelay(delay));
     final lost = (scenario['missed'] as List).isNotEmpty,
         arrival = scenario['arrival'];
+    final recordedLegs = scenario['legs'] as List;
+    _limit = max(
+      1,
+      numValue(
+            arrival ??
+                (recordedLegs.isEmpty
+                    ? widget.query.departure + 1
+                    : recordedLegs.last['arrive']),
+          ) -
+          widget.query.departure,
+    );
+    final displayed = elapsed.clamp(0.0, _limit);
     return AppPage(
       title: '지연 시뮬레이션',
       child: ListView(
@@ -147,7 +175,21 @@ class _SimulationScreenState extends State<SimulationScreen> {
           const SizedBox(height: 24),
           Row(
             children: [
-              const Expanded(child: Eyebrow('VIRTUAL CLOCK')),
+              const Expanded(child: Eyebrow('RECORDING CLOCK')),
+              DropdownButton<double>(
+                value: rate,
+                items: [
+                  for (final value in [1.0, 10.0, 20.0, 60.0])
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text('${value.toInt()}×'),
+                    ),
+                ],
+                onChanged: (value) {
+                  if (ticker != null) play();
+                  setState(() => rate = value ?? 20);
+                },
+              ),
               TextButton.icon(
                 onPressed: play,
                 icon: Icon(ticker == null ? Icons.play_arrow : Icons.pause),
@@ -155,15 +197,26 @@ class _SimulationScreenState extends State<SimulationScreen> {
               ),
             ],
           ),
+          Slider(
+            key: const Key('playback-clock'),
+            value: displayed,
+            min: 0,
+            max: _limit,
+            label: clockSeconds(widget.query.departure + displayed),
+            onChanged: (value) {
+              if (ticker != null) play();
+              setState(() => elapsed = value);
+            },
+          ),
           TransitMap(
-            network: widget.session.network!,
+            network: widget.session.displayNetwork,
             legs: List<Json>.from(scenario['legs']),
-            minute: widget.query.departure + elapsed,
+            minute: widget.query.departure + displayed,
             tileProviderFactory: widget.session.mapTileProviderFactory,
           ),
           const SizedBox(height: 8),
           Text(
-            '가상시각 ${clock(widget.query.departure + elapsed)} · 파란 점은 기준 운행 궤적',
+            '${widget.session.network!.observed ? '기록 시각' : '시연 시각'} ${clockSeconds(widget.query.departure + displayed)} · ${rate.toInt()}배속 · 현재 운행 위치가 아닙니다.',
             style: const TextStyle(fontSize: 10, color: muted),
           ),
           const SizedBox(height: 24),

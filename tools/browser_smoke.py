@@ -12,7 +12,8 @@ sys.path.insert(0,str(ROOT/'backend'))
 from app.engine import Engine,Query
 network=json.loads((ROOT/'shared/observed_network.json').read_text(encoding='utf-8'))
 engine=Engine(network)
-expected=next(j for j in engine.search(Query(network['defaultOrigin'],network['defaultDestination'],departure=430,samples=20)) if 'ANY%' in j['tags'])
+stops={s['id']:s for s in network['stops']}
+expected=next(j for j in engine.search(Query(network['defaultOrigin'],network['defaultDestination'],departure=430,samples=20,origin_point=stops[network['defaultOrigin']],destination_point=stops[network['defaultDestination']])) if 'ANY%' in j['tags'])
 bus_labels=[engine.routes[l['routeId']]['number']+'번' for l in expected['legs'] if l['kind']=='ride']
 minute=int(expected['arrival']+.5);expected_clock=f'{minute//60:02}:{minute%60:02}'
 
@@ -44,7 +45,7 @@ async def run():
         assert 'BusTracker 운행 기록' in initial
         assert '성남동' in initial and '가상 시연' not in initial
         await page.screenshot(path=str(OUT/'01-search-mobile.png'))
-        await page.get_by_role('button',name='출발 정류장 선택',exact=False).click()
+        await page.get_by_role('button',name='출발 지점 선택',exact=False).click()
         await page.get_by_role('button',name='노선',exact=True).click()
         await page.get_by_role('textbox').fill('722번')
         await page.wait_for_timeout(600)
@@ -131,7 +132,7 @@ async def run():
         await page.reload(wait_until='networkidle')
         await page.locator('flt-semantics-placeholder').dispatch_event('click')
         await page.wait_for_timeout(600)
-        await page.get_by_role('button',name='출발 정류장 선택',exact=False).click()
+        await page.get_by_role('button',name='출발 지점 선택',exact=False).click()
         await page.get_by_role('textbox').fill('화정주공')
         await page.get_by_role('button',name='화정주공아파트앞',exact=False).first.click()
         await page.wait_for_timeout(500)

@@ -24,8 +24,9 @@ result={'origin':'Authorized read-only copy from the user Jetson BusTracker dire
                       'inferredPartialSections':network.get('routeRecoveries',[]),
                       'arrivalQuality':'Passage-time proxy; boarding service at each point is not field-validated',
                       'futureTrips':'Not extrapolated beyond the recording',
-                      'walking':'Candidate point pairs within 100m; lengths from local OSM pedestrian graph, not surveyed paths; disconnected pairs excluded',
-                      'roadGeometry':'Local OSM road matching constrained by recorded GPS; no external GPS transmission; see road-geometry.json',
+                      'walking':'Existing inter-stop links plus query-time access/egress to all reachable stops within cumulative walking budget; local OSM pedestrian graph, not surveyed paths',
+                      'places':'37,427 local OSM place/address entries plus arbitrary map pins; incomplete coverage; see location-assets.json',
+                      'roadGeometry':'Direction-aware local GPS trace matching without forced stop-centroid anchors; actual sample clock, pauses and explicit gaps; no external GPS transmission; see motion-build.json',
                       'uncertainty':'Synthetic delay samples, not fitted or calibrated to historical prediction errors'},
         'warning':'A replay loop is not a new independent calendar day. The recording is not a current official timetable.'}
 (ROOT/'artifacts/provenance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')

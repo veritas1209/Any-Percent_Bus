@@ -5,6 +5,8 @@ from the [OSM Korea regional extract](https://tiles.osm.kr/download/).
 OpenStreetMap data is available under the [Open Database License 1.0](https://www.openstreetmap.org/copyright).
 
 The derived coordinates are included in `network.json` and `observed_network.json`.
+The derived pedestrian graph (`walk_graph.bin`) and place/address index
+(`places.json`) also contain OpenStreetMap data under the same license.
 The input bus GPS recording was supplied by the project owner; its rights remain
 with its owner. The raw recording is not included in release archives.
 
@@ -15,6 +17,10 @@ simplifies the displayed line within two metres. Shape lengths retain the road
 graph length before simplification. A catalog-only connection has no timetable.
 
 `gps_road_matched` denotes a historical GPS-constrained local road match.
+`gps_trace_matched` denotes direction-aware trace matching with timestamped
+progress samples. Stop coordinates are not forced into the vehicle trace.
+`osm_pedestrian_access` denotes a query-time access/egress walk on the local
+pedestrian graph, including short estimated links from the selected endpoints.
 `road_estimate` denotes a road-network estimate without verified GPS coverage.
 `unavailable` denotes an unconnected/missing shape; it is not drawn as a straight
 line between its endpoints. Turn-restriction relations and lane-level bus access

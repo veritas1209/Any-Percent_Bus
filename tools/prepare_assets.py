@@ -8,7 +8,8 @@ ROOT=Path(__file__).resolve().parents[1]
 SOURCE=Path('C:/Users/hajin/공부/울산과학대학교/3학년_1학기/2026일경험/bustracker')
 target=ROOT/'app/assets/data/network.json'
 target.parent.mkdir(parents=True,exist_ok=True)
-shutil.copyfile(ROOT/'shared/network.json',target)
+for name in ('network.json','observed_network.json','places.json','walk_graph.bin'):
+    shutil.copyfile(ROOT/'shared'/name,target.parent/name)
 # Preserve raw catalog separately; reconstructed loops are not blindly treated as directional runs.
 if SOURCE.exists():
     names={r['route_id']:r for r in csv.DictReader((SOURCE/'route_names_manual.csv').open(encoding='utf-8-sig'))}

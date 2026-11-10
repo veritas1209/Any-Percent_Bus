@@ -29,6 +29,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
     });
     try {
       final r = await widget.session.repository.search(widget.query);
+      if (r.isNotEmpty && r.first['places'] != null) {
+        final base = await widget.session.repository.loadNetwork();
+        widget.session.journeyNetwork = base.withPlaces(r.first['places']);
+      } else {
+        widget.session.journeyNetwork = null;
+      }
       if (mounted) setState(() => rows = r);
     } catch (e) {
       if (mounted) {
@@ -50,6 +56,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(height: 16),
+        if (widget.query.originPoint != null ||
+            widget.query.destinationPoint != null)
+          Text(
+            '${widget.query.originPoint?['name'] ?? ''} → ${widget.query.destinationPoint?['name'] ?? ''}',
+            style: const TextStyle(fontSize: 12, color: muted),
+          ),
         Text(
           '${clock(widget.query.departure)} 출발 · 보행 ${widget.query.walkingSpeed}m/s · ${widget.query.maxTransfers}회 이내 환승',
           style: const TextStyle(color: muted, fontSize: 12),
@@ -94,7 +106,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           const Text('연결할 수 있는 경로가 없습니다.', textAlign: TextAlign.center),
           const SizedBox(height: 10),
           const Text(
-            '허용 보행거리 또는 최대 환승 횟수를 바꿔보세요. 원본 노선의 구간 누락·방향 단절로 연결되지 않을 수 있습니다.',
+            '보행거리·환승 횟수를 늘리거나 지점을 출입구 쪽으로 옮겨보세요. 보행 연결이나 원본 운행 자료가 부족하면 경로가 없을 수 있습니다.',
             textAlign: TextAlign.center,
             style: TextStyle(color: muted),
           ),
@@ -184,7 +196,10 @@ class JourneyCard extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 6,
                     children: [
-                      for (final l in journey['legs'])
+                      for (final l in (journey['legs'] as List).where(
+                        (l) =>
+                            l['kind'] != 'walk' || numValue(l['meters']) >= .5,
+                      ))
                         Chip(
                           label: Text(
                             l['kind'] == 'walk'
@@ -309,7 +324,10 @@ class JourneyCard extends StatelessWidget {
                     spacing: 6,
                     runSpacing: 6,
                     children: [
-                      for (final l in journey['legs'])
+                      for (final l in (journey['legs'] as List).where(
+                        (l) =>
+                            l['kind'] != 'walk' || numValue(l['meters']) >= .5,
+                      ))
                         Container(
                           padding: const EdgeInsets.symmetric(
                             vertical: 5,

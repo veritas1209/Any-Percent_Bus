@@ -16,3 +16,16 @@ def point_along(points,fraction):
             return [points[i][0]+(points[i+1][0]-points[i][0])*f,points[i][1]+(points[i+1][1]-points[i][1])*f]
         remaining-=span
     return points[-1]
+
+
+def point_on_trace(network,route,minute):
+    import bisect
+    for chunk in route.get('traceChunks',[]):
+        frames=chunk['samples']
+        if not frames or not (frames[0][0]<=minute<=frames[-1][0]):continue
+        i=bisect.bisect_right([f[0] for f in frames],minute)-1
+        progress=frames[i][1]
+        if i<len(frames)-1:
+            a,b=frames[i:i+2];progress+=(b[1]-a[1])*(minute-a[0])/(b[0]-a[0])
+        return point_along(network['shapes'][chunk['shape']]['points'],0 if frames[-1][1]==0 else progress/frames[-1][1])
+    return None

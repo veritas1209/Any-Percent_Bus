@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 from .engine import Engine, Query
 from . import bustracker
 from .history import generate_history
-from .geometry import point_along
+from .geometry import point_along,point_on_trace
 
 ROOT = Path(__file__).resolve().parents[2]
 NETWORK = json.loads((ROOT/'shared/network.json').read_text(encoding='utf-8'))
@@ -26,13 +26,20 @@ NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
 NETWORK_JSON={name:json.dumps(data,ensure_ascii=False,separators=(',',':')).encode('utf-8') for name,data in NETWORKS.items()}
 ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.2.1')
+app = FastAPI(title='Any% journey planner', version='0.3.0')
 app.add_middleware(GZipMiddleware,minimum_size=1024,compresslevel=5)
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
     from .replay_feed import create_router
     static_catalog=json.loads((ROOT/'shared/bustracker_catalog.json').read_text(encoding='utf-8'))
     app.include_router(create_router(Path(os.environ['BUSTRACKER_CSV']),static_catalog))
+
+
+class Location(BaseModel):
+    name: str = Field(default='선택한 지점',max_length=150)
+    lat: float = Field(ge=35.2,le=35.85)
+    lon: float = Field(ge=128.85,le=129.6)
+    address: str = Field(default='',max_length=300)
 
 
 class Search(BaseModel):
@@ -46,6 +53,27 @@ class Search(BaseModel):
     delay: float = Field(default=0,ge=0,le=30)
     samples: int = Field(default=300,ge=20,le=1000)
     seed: int = 42
+    origin_point: Location | None = None
+    destination_point: Location | None = None
+
+
+@app.get('/v1/places/search')
+def places(q: str=''):
+    # Static public index is cached by the function below, never a public geocoder.
+    rows=_places_index()
+    needle=''.join(q.casefold().split())
+    if not needle:return {'places':[],'attribution':'© OpenStreetMap contributors'}
+    matches=[p for p in rows if needle in p['_query']]
+    matches.sort(key=lambda p:(not ''.join(p['name'].casefold().split()).startswith(needle),p['name']))
+    return {'places':[{k:v for k,v in p.items() if k not in ('_query','searchText')} for p in matches[:35]],'attribution':'© OpenStreetMap contributors'}
+
+
+from functools import lru_cache
+@lru_cache(maxsize=1)
+def _places_index():
+    data=json.loads((ROOT/'shared/places.json').read_text(encoding='utf-8'))['places']
+    for p in data:p['_query']=''.join((p['name']+' '+p['address']+' '+p['searchText']).casefold().split())
+    return data
 
 
 @app.get('/v1/health')
@@ -107,13 +135,16 @@ def vehicles(minute: float=430,dataset: Literal['demo','observed']='observed'):
                     a,b=selected_engine.stops[r['stops'][i]],selected_engine.stops[r['stops'][i+1]]
                     f=(minute-start)/(end-start)
                     position=[a['lat']+(b['lat']-a['lat'])*f,a['lon']+(b['lon']-a['lon'])*f]
-                    if selected.get('geometryVersion'):
+                    if selected.get('motionVersion'):
+                        position=point_on_trace(selected,r,minute-(trip-r['departures'][0]))
+                        if position is None:continue
+                    elif selected.get('geometryVersion'):
                         shape=r['shapeSegments'][i]
                         if isinstance(shape,str):shape=selected['shapes'][shape]
                         position=point_along(shape['points'],f)
                         if position is None:continue
-                    rows.append({'vehicleId':r.get('vehicleId',f"{r['id']}:{trip}"),'routeId':r['id'],'lat':position[0],'lon':position[1],'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation','tripId':str(trip)})
-    return {'vehicles':rows,'virtualMinute':minute,'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation'}
+                    rows.append({'vehicleId':r.get('vehicleId',f"{r['id']}:{trip}"),'routeId':r['id'],'lat':position[0],'lon':position[1],'source':selected['source'],'positionMethod':'gps_trace_interpolation' if selected.get('motionVersion') else 'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation','tripId':str(trip)})
+    return {'vehicles':rows,'virtualMinute':minute,'source':selected['source'],'positionMethod':'gps_trace_interpolation' if selected.get('motionVersion') else 'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation'}
 
 
 @app.post('/v1/integration/sync')

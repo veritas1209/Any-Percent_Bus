@@ -7,11 +7,14 @@ import 'results_screen.dart';
 class ConditionsScreen extends StatefulWidget {
   final AppSession session;
   final String origin, destination;
+  final Json? originPoint, destinationPoint;
   const ConditionsScreen({
     super.key,
     required this.session,
     required this.origin,
     required this.destination,
+    this.originPoint,
+    this.destinationPoint,
   });
   @override
   State<ConditionsScreen> createState() => _ConditionsScreenState();
@@ -38,6 +41,8 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
             session: widget.session,
             query: SearchQuery(
               origin: widget.origin,
+              originPoint: widget.originPoint,
+              destinationPoint: widget.destinationPoint,
               destination: widget.destination,
               dataset: widget.session.network!.dataset,
               departure: departure,
@@ -106,8 +111,8 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
         Slider(
           value: walk,
           min: 0,
-          max: 1000,
-          divisions: 10,
+          max: 2000,
+          divisions: 20,
           label: '${walk.toInt()}m',
           onChanged: (v) => setState(() => walk = v),
         ),

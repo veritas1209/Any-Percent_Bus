@@ -24,9 +24,12 @@ def managed(kind):
     pid=int(pidfile.read_text())
     try:
         proc=Path('/proc')/str(pid)
+        if (proc/'stat').read_text().split(') ',1)[1].split()[0]=='Z':return None
         command=(proc/'cmdline').read_bytes().replace(b'\0',b' ').decode()
+        if not command.strip():return None
         expected='uvicorn app.main:app' if kind=='backend' else 'http.server 8080'
         if (proc/'cwd').resolve()!=ROOT or expected not in command:
+            if (proc/'stat').read_text().split(') ',1)[1].split()[0]=='Z':return None
             raise RuntimeError(f'{kind}: PID does not belong to this demo; refusing to stop it')
         return pid
     except FileNotFoundError:
@@ -37,10 +40,14 @@ def start(kind):
     old=managed(kind)
     if old:
         os.kill(old,signal.SIGTERM)
-        for _ in range(40):
-            if not Path(f'/proc/{old}').exists():break
+        for _ in range(150):
+            if managed(kind) is None:break
             time.sleep(.1)
-        else:raise RuntimeError('Existing demo process did not stop')
+        else:
+            if managed(kind)!=old:raise RuntimeError('Demo process ownership changed during shutdown')
+            os.kill(old,signal.SIGKILL)
+            time.sleep(.2)
+            if managed(kind) is not None:raise RuntimeError('Existing demo process did not stop')
     env=os.environ.copy()
     if kind=='backend':
         keyfile=ROOT/'.integration-key'

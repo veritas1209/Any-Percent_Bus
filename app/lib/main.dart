@@ -27,6 +27,8 @@ class AppSession {
   MapTileProviderFactory? mapTileProviderFactory;
   TransitRepository repository = AssetTransitRepository();
   Network? network;
+  Network? journeyNetwork;
+  Network get displayNetwork => journeyNetwork ?? network!;
   Future<void> initialize() async {
     network = await repository.loadNetwork();
   }
@@ -41,6 +43,7 @@ class AppSession {
     if (accept != null && !accept()) return;
     repository = candidate;
     network = next;
+    journeyNetwork = null;
   }
 
   Future<void> useOffline({
@@ -52,5 +55,6 @@ class AppSession {
     if (accept != null && !accept()) return;
     repository = candidate;
     network = next;
+    journeyNetwork = null;
   }
 }

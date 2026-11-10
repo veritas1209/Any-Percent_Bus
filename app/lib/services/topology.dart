@@ -1,4 +1,55 @@
 import '../models/transit.dart';
+import 'dart:collection';
+
+List<Map<String, double>> walkingBounds(
+  Iterable<Json> routes,
+  List<dynamic> paths,
+  String destination,
+  int rides,
+) {
+  final incoming = <String, List<(String, double)>>{};
+  for (final f in paths) {
+    incoming.putIfAbsent(f['to'], () => []).add((
+      f['from'] as String,
+      numValue(f['meters']),
+    ));
+  }
+  Map<String, double> spread(Map<String, double> values) {
+    final queue = Queue<String>.of(values.keys), queued = values.keys.toSet();
+    while (queue.isNotEmpty) {
+      final node = queue.removeFirst();
+      queued.remove(node);
+      for (final (other, meters) in incoming[node] ?? <(String, double)>[]) {
+        final cost = values[node]! + meters;
+        if (cost < (values[other] ?? double.infinity)) {
+          values[other] = cost;
+          if (queued.add(other)) queue.add(other);
+        }
+      }
+    }
+    return values;
+  }
+
+  final layers = [
+    spread({destination: 0.0}),
+  ];
+  for (var i = 0; i < rides; i++) {
+    final previous = layers.last,
+        values = Map<String, double>.from(layers.last);
+    for (final route in routes) {
+      var downstream = double.infinity;
+      for (final sid in (route['stops'] as List).reversed.cast<String>()) {
+        if (downstream < (values[sid] ?? double.infinity)) {
+          values[sid] = downstream;
+        }
+        final cost = previous[sid] ?? double.infinity;
+        if (cost < downstream) downstream = cost;
+      }
+    }
+    layers.add(spread(values));
+  }
+  return layers;
+}
 
 List<Set<String>> reachableStops(
   Iterable<Json> routes,
@@ -111,6 +162,7 @@ List<Json> topologyConnections(Network network, SearchQuery q) {
                 'from': state['stop'],
                 'to': f['to'],
                 'meters': f['meters'],
+                'shape': f['shape'],
               },
             ],
           });
@@ -153,6 +205,7 @@ List<Json> topologyConnections(Network network, SearchQuery q) {
                           'from': end,
                           'to': q.destination,
                           'meters': f['meters'],
+                          'shape': f['shape'],
                         },
                       ],
                       'walked': access['walked'] + f['meters'],

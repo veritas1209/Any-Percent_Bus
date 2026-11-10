@@ -7,6 +7,11 @@ String clock(num minutes) {
   return '${(n ~/ 60).toString().padLeft(2, '0')}:${(n % 60).toString().padLeft(2, '0')}';
 }
 
+String clockSeconds(num minutes) {
+  final n = (minutes * 60).floor();
+  return '${(n ~/ 3600).toString().padLeft(2, '0')}:${((n ~/ 60) % 60).toString().padLeft(2, '0')}:${(n % 60).toString().padLeft(2, '0')}';
+}
+
 class Network {
   final Json data;
   bool get observed => data['source'] == 'replay_observed';
@@ -77,6 +82,14 @@ class Network {
             )
             .toList();
   Network(this.data);
+  Network withPlaces(List<dynamic> places) => Network({
+    ...data,
+    'stops': [
+      for (final s in data['stops'])
+        if (!(s['id'] as String).startsWith('@')) s,
+      ...places,
+    ],
+  });
   factory Network.decode(String s) => Network(jsonDecode(s));
 }
 
@@ -85,6 +98,7 @@ class SearchQuery {
   final String origin, destination;
   final double departure, walkingSpeed, maxWalk, delay;
   final int maxTransfers, samples, seed;
+  final Json? originPoint, destinationPoint;
   const SearchQuery({
     required this.origin,
     required this.destination,
@@ -96,6 +110,8 @@ class SearchQuery {
     this.maxTransfers = 2,
     this.samples = 300,
     this.seed = 42,
+    this.originPoint,
+    this.destinationPoint,
   });
   SearchQuery withDelay(double value) => SearchQuery(
     origin: origin,
@@ -108,6 +124,8 @@ class SearchQuery {
     maxTransfers: maxTransfers,
     samples: samples,
     seed: seed,
+    originPoint: originPoint,
+    destinationPoint: destinationPoint,
   );
   Json toJson() => {
     'dataset': dataset,
@@ -120,5 +138,7 @@ class SearchQuery {
     'max_transfers': maxTransfers,
     'samples': samples,
     'seed': seed,
+    if (originPoint != null) 'origin_point': originPoint,
+    if (destinationPoint != null) 'destination_point': destinationPoint,
   };
 }

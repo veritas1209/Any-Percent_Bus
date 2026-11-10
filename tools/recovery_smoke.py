@@ -19,14 +19,19 @@ async def run():
             await page.locator('flt-semantics-placeholder').dispatch_event('click')
         await home()
         for label,sid,name in [('출발','ref:31531','남창고등학교'),('도착','ref:31532','남창역(기점)')]:
-            await page.get_by_role('button',name=label+' 정류장 선택',exact=False).click()
+            await page.get_by_role('button',name=label+' 지점 선택',exact=False).click()
             await page.get_by_role('textbox').fill(sid)
             await page.wait_for_timeout(500)
             await page.get_by_role('button',name=name,exact=False).first.click()
+            await page.wait_for_timeout(500)
         await page.get_by_role('button',name='나의 경로 만들기',exact=True).click()
         slider=page.get_by_role('slider').first
-        await slider.focus();await page.keyboard.press('Home')
-        for _ in range(5):await page.keyboard.press('ArrowLeft')
+        await slider.scroll_into_view_if_needed()
+        box=await slider.bounding_box()
+        await page.mouse.click(box['x']+2,box['y']+box['height']/2)
+        await slider.focus()
+        for _ in range(20):await page.keyboard.press('ArrowLeft')
+        assert '0m' in await page.locator('body').aria_snapshot()
         await page.mouse.move(180,400)
         await page.mouse.wheel(0,500)
         await page.wait_for_timeout(500)
@@ -35,7 +40,12 @@ async def run():
         await page.wait_for_timeout(300)
         assert await direct.get_attribute('aria-current')=='true'
         await page.get_by_role('button',name='경로 비교하기',exact=True).click(force=True)
-        await page.get_by_role('button',name='ROUTE 경로 상세 보기',exact=False).first.wait_for(timeout=30000)
+        try:
+            await page.get_by_role('button',name='ROUTE 경로 상세 보기',exact=False).first.wait_for(timeout=30000)
+        except Exception:
+            print(await page.locator('body').aria_snapshot(),flush=True)
+            print(errors,flush=True)
+            raise
         result=await page.locator('body').aria_snapshot()
         assert '운행시각 미확인' in result and '울주81번 · GPS추정' in result
         assert '도착 예정' not in result and '환승 성공 추정' not in result
@@ -45,7 +55,7 @@ async def run():
         assert 'GPS 근접 추정 구간' in detail and '운행시각이 없는 경로입니다' in detail
         await page.screenshot(path=str(ROOT/'artifacts/screenshots/15-recovered-81-mobile.png'))
         await home()
-        await page.get_by_role('button',name='출발 정류장 선택',exact=False).click()
+        await page.get_by_role('button',name='출발 지점 선택',exact=False).click()
         await page.get_by_role('button',name='노선',exact=True).click()
         await page.get_by_role('textbox').fill('북구13')
         await page.wait_for_timeout(600)

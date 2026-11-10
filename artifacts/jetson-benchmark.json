@@ -1,13 +1,13 @@
 {
-  "recordedAt": "2026-11-10T06:53:04.694188+00:00",
+  "recordedAt": "2026-11-10T08:29:45.177607+00:00",
   "platform": "NVIDIA Jetson Orin Nano Super",
   "cases": [
     {
       "dataset": "demo",
       "samples": 300,
       "measuredRequests": 1,
-      "clientRoundTripMs": 158.09,
-      "serverElapsedMs": 135.9,
+      "clientRoundTripMs": 150.37,
+      "serverElapsedMs": 133.61,
       "candidateCount": 5,
       "source": "simulated",
       "networkSha256": "55f698603f500f12942bd831d9b91a6603dc6b0f61400a4e68ac6c0d60e78a5f"
@@ -16,11 +16,21 @@
       "dataset": "observed",
       "samples": 300,
       "measuredRequests": 1,
-      "clientRoundTripMs": 1106.17,
-      "serverElapsedMs": 1075.85,
+      "clientRoundTripMs": 1050.96,
+      "serverElapsedMs": 1013.08,
       "candidateCount": 20,
       "source": "replay_observed",
-      "networkSha256": "84d62f2b4968d30bb972ea6839b26e1fa14a49944cc8aea2256c5be7b78ffbaa"
+      "networkSha256": "990742147515aa008cac651edc4cd231970a7f8fae7335c918f8313f5c1549ec"
+    },
+    {
+      "dataset": "observed-points",
+      "samples": 300,
+      "measuredRequests": 1,
+      "clientRoundTripMs": 2407.62,
+      "serverElapsedMs": 2361.83,
+      "candidateCount": 20,
+      "source": "replay_observed",
+      "networkSha256": "990742147515aa008cac651edc4cd231970a7f8fae7335c918f8313f5c1549ec"
     }
   ],
   "note": "One warmed request per dataset; not a percentile latency estimate. Both remote API and web datasets match delivered assets."

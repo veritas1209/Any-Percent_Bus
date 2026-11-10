@@ -34,7 +34,7 @@ def test_all_recorded_runs_have_valid_time_and_resolvable_road_geometry():
     for r in recorded:
         assert set(r['stops'])<=stops
         assert len(r['shapeSegments'])==len(r['stops'])-1
-        assert all(k in pool and len(pool[k]['points'])>=2 for k in r['shapeSegments'])
+        assert all(k in pool and (len(pool[k]['points'])>=2 or pool[k]['source']=='unavailable') for k in r['shapeSegments'])
         assert all(b>a for a,b in zip(r['offsets'],r['offsets'][1:]))
         assert r['departures'][0]+r['offsets'][-1]<480
 

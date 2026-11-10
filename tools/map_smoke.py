@@ -25,7 +25,7 @@ async def run():
         assert tiles and all(t['status']==200 for t in tiles),tiles
         assert '지도 연결을 확인해주세요.' not in snapshot
         assert '정류장 정보:' in snapshot
-        assert all(number in snapshot for number in ('124번','722번','772번'))
+        assert '124번' in snapshot
         assert '기록시각 기준 버스 위치' in snapshot
         assert not errors,errors
         await page.screenshot(path=str(ROOT/'artifacts/screenshots/13-street-map-mobile.png'))

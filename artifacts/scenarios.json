@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T06:45:52.653125+00:00",
+  "generatedAt": "2026-11-10T08:24:01.882539+00:00",
   "seed": 42,
   "samples": 300,
   "warning": "Simulation and recorded passage-time examples; not measured travel-time prediction accuracy.",
@@ -260,42 +260,10 @@
           "p90Arrival": null,
           "routes": [
             "421",
-            "734"
-          ],
-          "transfers": 1,
-          "walkingMeters": 245.89999999999998
-        },
-        {
-          "tags": [
-            "ROUTE"
-          ],
-          "plannedArrival": null,
-          "scenarioArrival": null,
-          "successProbability": null,
-          "noServiceProbability": null,
-          "p90Arrival": null,
-          "routes": [
-            "421",
             "711"
           ],
           "transfers": 1,
           "walkingMeters": 157.6
-        },
-        {
-          "tags": [
-            "ROUTE"
-          ],
-          "plannedArrival": null,
-          "scenarioArrival": null,
-          "successProbability": null,
-          "noServiceProbability": null,
-          "p90Arrival": null,
-          "routes": [
-            "421",
-            "734"
-          ],
-          "transfers": 1,
-          "walkingMeters": 182.1
         },
         {
           "tags": [
@@ -327,7 +295,39 @@
             "734"
           ],
           "transfers": 1,
-          "walkingMeters": 240.7
+          "walkingMeters": 245.89999999999998
+        },
+        {
+          "tags": [
+            "ROUTE"
+          ],
+          "plannedArrival": null,
+          "scenarioArrival": null,
+          "successProbability": null,
+          "noServiceProbability": null,
+          "p90Arrival": null,
+          "routes": [
+            "124",
+            "734"
+          ],
+          "transfers": 1,
+          "walkingMeters": 0.0
+        },
+        {
+          "tags": [
+            "ROUTE"
+          ],
+          "plannedArrival": null,
+          "scenarioArrival": null,
+          "successProbability": null,
+          "noServiceProbability": null,
+          "p90Arrival": null,
+          "routes": [
+            "124",
+            "734"
+          ],
+          "transfers": 1,
+          "walkingMeters": 127.9
         }
       ]
     }

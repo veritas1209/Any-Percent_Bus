@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:latlong2/latlong.dart';
 import '../models/transit.dart';
+import 'motion_curve.dart';
 
 class RouteMapSegment {
   final Json leg;
@@ -31,8 +32,44 @@ class RouteMapGeometry {
     for (final l in legs) ...[l['from'] as String, l['to'] as String],
   };
   RouteMapGeometry(this.network, this.legs);
+  late final Map<String, List<MotionCurve>> motions = {
+    for (final leg in legs)
+      if (leg['kind'] == 'ride')
+        leg['routeId'] as String: [
+          for (final chunk
+              in network.routes[leg['routeId']]!['traceChunks'] ?? [])
+            MotionCurve(network, Json.from(chunk)),
+        ],
+  };
+  late final Map<String, LatLng> markerPoints = () {
+    final points = <String, LatLng>{};
+    for (final id in stopIds) {
+      points[id] = point(id);
+    }
+    for (final leg in legs.where((l) => l['kind'] == 'ride')) {
+      final route = network.routes[leg['routeId']]!;
+      if ((route['departures'] as List).isEmpty ||
+          (motions[route['id']] ?? []).isEmpty) {
+        continue;
+      }
+      for (var i = leg['boardIndex'] as int; i <= leg['alightIndex']; i++) {
+        final id = route['stops'][i] as String;
+        if (importantStops.contains(id)) continue;
+        final time =
+            numValue(route['departures'][0]) + numValue(route['offsets'][i]);
+        for (final chunk in motions[route['id']] ?? <MotionCurve>[]) {
+          if (chunk.start <= time && time <= chunk.end) {
+            final p = chunk.at(time);
+            if (p != null) points[id] = p;
+            break;
+          }
+        }
+      }
+    }
+    return points;
+  }();
   List<LatLng> get boundsPoints => [
-    for (final id in stopIds) point(id),
+    for (final id in stopIds) markerPoints[id]!,
     for (final segment in segments) ...segment.points,
   ];
   String get description =>
@@ -64,7 +101,9 @@ class RouteMapGeometry {
     }
     final shapes = <dynamic>[];
     if (leg['kind'] == 'walk') {
+      if (leg['shape'] != null) shapes.add(network.shape(leg['shape']));
       for (final f in network.data['footpaths']) {
+        if (shapes.isNotEmpty) break;
         if (f['from'] == leg['from'] && f['to'] == leg['to']) {
           shapes.add(network.shape(f['shape']));
           break;
@@ -72,6 +111,29 @@ class RouteMapGeometry {
       }
     } else {
       final route = network.routes[leg['routeId']]!;
+      if (network.data['motionVersion'] != null &&
+          route['scheduleSource'] == 'replay_observed') {
+        final start =
+            numValue(route['departures'][0]) +
+            numValue(route['offsets'][leg['boardIndex']]);
+        final end =
+            numValue(route['departures'][0]) +
+            numValue(route['offsets'][leg['alightIndex']]);
+        final paths = <List<LatLng>>[];
+        var covered = 0.0;
+        for (final chunk in motions[route['id']] ?? <MotionCurve>[]) {
+          final a = max(start, chunk.start), b = min(end, chunk.end);
+          if (b < a) continue;
+          paths.add(chunk.curve.clip(chunk.metersAt(a), chunk.metersAt(b)));
+          covered += b - a;
+        }
+        return RouteMapSegment(
+          leg,
+          ids,
+          paths,
+          covered >= end - start - .001 ? 'gps_trace_matched' : 'unavailable',
+        );
+      }
       final raw = route['shapeSegments'] as List?;
       if (raw != null) {
         shapes.addAll(
@@ -135,9 +197,33 @@ class RouteMapGeometry {
       final route = network.routes[leg['routeId']]!;
       final ids = List<String>.from(route['stops']);
       final trip = numValue(leg['trip']);
+      final shift = leg['depart'] == null
+          ? 0.0
+          : numValue(leg['depart']) -
+                (trip + numValue(route['offsets'][leg['boardIndex']]));
+      if (network.data['motionVersion'] != null &&
+          route['scheduleSource'] == 'replay_observed') {
+        final recorded =
+            minute - shift - (trip - numValue(route['departures'][0]));
+        final start =
+            numValue(route['departures'][0]) +
+            numValue(route['offsets'][leg['boardIndex']]);
+        final end =
+            numValue(route['departures'][0]) +
+            numValue(route['offsets'][leg['alightIndex']]);
+        if (recorded < start || recorded >= end) continue;
+        for (final chunk in motions[route['id']] ?? <MotionCurve>[]) {
+          if (chunk.start <= recorded && recorded <= chunk.end) {
+            final p = chunk.at(recorded);
+            if (p != null) positions.add(RouteMapVehicle(p, route));
+            break;
+          }
+        }
+        continue;
+      }
       for (var i = leg['boardIndex'] as int; i < leg['alightIndex']; i++) {
-        final a = trip + numValue(route['offsets'][i]);
-        final b = trip + numValue(route['offsets'][i + 1]);
+        final a = trip + numValue(route['offsets'][i]) + shift;
+        final b = trip + numValue(route['offsets'][i + 1]) + shift;
         if (b > a && a <= minute && minute < b) {
           if (network.data['geometryVersion'] != null) {
             final raw = route['shapeSegments'] as List?;

@@ -1,0 +1,9 @@
+{
+  "observedRuns": 1187,
+  "chunks": 1979,
+  "missingStopGeometry": 896,
+  "method": "Two-state Viterbi with heading and distance agreement; reject matched travel over 130km/h plus 5m GPS tolerance per interval; stationary jitter held; gaps over 120 seconds split",
+  "forcedStopAnchors": false,
+  "gpsExternalTransmission": false,
+  "elapsedSeconds": 90.11
+}

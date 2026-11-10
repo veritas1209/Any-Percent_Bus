@@ -1,0 +1,40 @@
+{
+  "passed": [
+    "place and road-address selection",
+    "arbitrary map pin retains coordinates",
+    "point query sent to Jetson API",
+    "fractional GPS clock playback",
+    "pause retains clock",
+    "playback ends without wrapping"
+  ],
+  "errors": [],
+  "playbackMinutes": {
+    "initial": 430.0,
+    "advanced": 430.4,
+    "nearEnd": 456.85,
+    "ended": 459.03333333333336
+  },
+  "tiles": "Only in-memory PNG fixtures; no live map requests",
+  "origin": {
+    "id": "osm:n4749463403",
+    "name": "울산광역시 삼산로 288",
+    "address": "울산광역시 삼산로 288",
+    "kind": "주소",
+    "lat": 35.53881,
+    "lon": 129.33884,
+    "searchText": "     울산광역시  삼산로 288",
+    "queryKey": "울산광역시삼산로288울산광역시삼산로288울산광역시삼산로288",
+    "direction": "울산광역시 삼산로 288",
+    "isLocation": true
+  },
+  "destination": {
+    "id": "picked-map",
+    "name": "지도에서 선택한 지점",
+    "lat": 35.554611059460946,
+    "lon": 129.31980749206542,
+    "address": "지도에서 선택",
+    "kind": "지도 지점",
+    "direction": "지도에서 선택",
+    "isLocation": true
+  }
+}

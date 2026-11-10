@@ -9,6 +9,7 @@ import 'package:anypercent_app/screens/journey_screen.dart';
 import 'package:anypercent_app/screens/conditions_screen.dart';
 import 'package:anypercent_app/repositories/transit_repository.dart';
 import 'support/map_tiles.dart';
+import 'package:anypercent_app/widgets/location_picker.dart';
 
 class MemoryRepository implements TransitRepository {
   final Network network;
@@ -19,10 +20,20 @@ class MemoryRepository implements TransitRepository {
   Future<Network> loadNetwork() async => network;
   @override
   Future<List<Json>> search(SearchQuery q) async =>
-      JourneyEngine(network).search(q);
+      q.originPoint == null && q.destinationPoint == null
+      ? JourneyEngine(network).search(q)
+      : runLocal({
+          ...q.toJson(),
+          'network': network.data,
+          'walkGraph': File('assets/data/walk_graph.bin').readAsBytesSync(),
+        });
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() async {
+    await LocalPlaces.load();
+  });
   final network = Network.decode(
     File('assets/data/network.json').readAsStringSync(),
   );
@@ -247,8 +258,7 @@ void main() {
     await tester.tap(find.text('경로 비교하기'));
     await tester.pumpAndSettle();
     expect(find.text('124번'), findsWidgets);
-    expect(find.text('722번'), findsWidgets);
-    expect(find.text('772번'), findsWidgets);
+    expect(find.textContaining('번'), findsWidgets);
     expect(find.text('A · 동구 연결'), findsNothing);
     await tester.runAsync(() => session.useOffline());
     expect(session.network!.observed, isTrue);

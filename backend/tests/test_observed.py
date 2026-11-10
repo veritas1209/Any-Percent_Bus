@@ -41,7 +41,7 @@ def test_default_api_uses_bustracker_numbers_and_recorded_routes():
     journeys=response.json()['journeys']
     assert journeys and all(j['source']=='replay_observed' for j in journeys)
     assert all(l['routeId'].startswith('obs:') for j in journeys for l in j['legs'] if l['kind']=='ride')
-    assert client.get('/v1/vehicles').json()['positionMethod']=='road_shape_interpolation'
+    assert client.get('/v1/vehicles').json()['positionMethod']=='gps_trace_interpolation'
 
 
 def test_raw_replay_keeps_latest_nonfuture_sample_and_separates_cycles(tmp_path):

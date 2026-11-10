@@ -9,6 +9,7 @@ import '../models/transit.dart';
 import '../theme.dart';
 import 'route_map_geometry.dart';
 import 'transit_diagram.dart';
+import 'motion_curve.dart';
 
 typedef MapTileProviderFactory = TileProvider Function();
 
@@ -29,6 +30,21 @@ class TransitMap extends StatefulWidget {
 }
 
 class _TransitMapState extends State<TransitMap> {
+  RouteMapGeometry? _geometry;
+  String _geometryKey = '';
+  Network? _network;
+  RouteMapGeometry get geometry {
+    final key = geometryKey(widget.legs);
+    if (_geometry == null ||
+        _network != widget.network ||
+        key != _geometryKey) {
+      _network = widget.network;
+      _geometryKey = key;
+      _geometry = RouteMapGeometry(widget.network, widget.legs);
+    }
+    return _geometry!;
+  }
+
   bool diagram = false;
   int retry = 0;
   @override
@@ -137,7 +153,7 @@ class _TransitMapState extends State<TransitMap> {
       ),
       const SizedBox(height: 8),
       Text(
-        RouteMapGeometry(widget.network, widget.legs).description,
+        geometry.description,
         style: const TextStyle(fontSize: 10, color: muted, height: 1.5),
       ),
     ],
@@ -165,6 +181,21 @@ class _RouteMap extends StatefulWidget {
 }
 
 class _RouteMapState extends State<_RouteMap> {
+  RouteMapGeometry? _geometry;
+  String _geometryKey = '';
+  Network? _network;
+  RouteMapGeometry get geometry {
+    final key = geometryKey(widget.legs);
+    if (_geometry == null ||
+        _network != widget.network ||
+        key != _geometryKey) {
+      _network = widget.network;
+      _geometryKey = key;
+      _geometry = RouteMapGeometry(widget.network, widget.legs);
+    }
+    return _geometry!;
+  }
+
   final controller = MapController();
   late final TileProvider tiles =
       widget.tileProviderFactory?.call() ??
@@ -256,7 +287,7 @@ class _RouteMapState extends State<_RouteMap> {
 
   @override
   Widget build(BuildContext context) {
-    final geometry = RouteMapGeometry(widget.network, widget.legs);
+    final geometry = this.geometry;
     if (geometry.stopIds.isEmpty) {
       return const ColoredBox(
         color: paper,
@@ -357,14 +388,15 @@ class _RouteMapState extends State<_RouteMap> {
                 markers: [
                   for (final id in markerIds)
                     Marker(
-                      point: geometry.point(id),
+                      point: geometry.markerPoints[id]!,
                       width: geometry.importantStops.contains(id) ? 38 : 18,
                       height: geometry.importantStops.contains(id) ? 38 : 18,
                       child: Tooltip(
                         message: widget.network.stops[id]!['name'],
                         child: Semantics(
                           button: true,
-                          label: '정류장 정보: ${widget.network.stops[id]!['name']}',
+                          label:
+                              '${widget.network.stops[id]!['isLocation'] == true ? '지점 정보' : '정류장 정보'}: ${widget.network.stops[id]!['name']}',
                           child: GestureDetector(
                             onTap: () => showStop(id),
                             child: Container(

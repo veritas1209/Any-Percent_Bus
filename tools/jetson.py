@@ -42,7 +42,7 @@ try:
                     try:sftp.mkdir(base+'/'+folder)
                     except OSError:pass
                 upload(ROOT/'backend/app',base+'/backend/app')
-                for name in ('network.json','observed_network.json','bustracker_catalog.json'):
+                for name in ('network.json','observed_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
                     upload(ROOT/'shared'/name,base+'/shared/'+name)
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             elif args.action=='deploy-web':

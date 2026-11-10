@@ -1,5 +1,32 @@
 """Schedule-free route connections. Never manufacture arrival times or probabilities."""
 from collections import defaultdict
+import heapq
+
+
+def walking_bounds(routes,footpaths,destination,rides):
+    """Admissible remaining walk budget; ignores clocks and permits walk chains."""
+    incoming=defaultdict(list)
+    for f in footpaths:incoming[f['to']].append((f['from'],f['meters']))
+    def spread(values):
+        queue=[(v,k) for k,v in values.items()];heapq.heapify(queue)
+        while queue:
+            cost,node=heapq.heappop(queue)
+            if cost!=values[node]:continue
+            for other,meters in incoming[node]:
+                new=cost+meters
+                if new<values.get(other,float('inf')):
+                    values[other]=new;heapq.heappush(queue,(new,other))
+        return values
+    layers=[spread({destination:0.0})]
+    for _ in range(rides):
+        previous=layers[-1];values=dict(previous)
+        for route in routes:
+            downstream=float('inf')
+            for sid in reversed(route['stops']):
+                if downstream<values.get(sid,float('inf')):values[sid]=downstream
+                downstream=min(downstream,previous.get(sid,float('inf')))
+        layers.append(spread(values))
+    return layers
 
 
 def reachable(routes,footpaths,destination,rides,max_walk):
@@ -43,7 +70,7 @@ def connections(network,q):
             accesses=[(stop,cost,[],walked)]
             for f in walks[stop]:
                 if walked+f['meters']<=q.max_walk:
-                    accesses.append((f['to'],cost+f['meters']*2,[dict(kind='walk',from_=stop,to=f['to'],meters=f['meters'])],walked+f['meters']))
+                    accesses.append((f['to'],cost+f['meters']*2,[dict(kind='walk',from_=stop,to=f['to'],meters=f['meters'],shape=f.get('shape'))],walked+f['meters']))
             for board,access_cost,walk_legs,total_walk in accesses:
                 for r,bi in boards[board]:
                     if r['id'] in used:continue
@@ -56,7 +83,7 @@ def connections(network,q):
                         leg=dict(kind='ride',routeId=r['id'],from_=board,to=end,boardIndex=bi,alightIndex=ai)
                         newlegs=legs+walk_legs+[leg]
                         tails=[([],total_walk,newcost)] if end==q.destination else [
-                            ([dict(kind='walk',from_=end,to=q.destination,meters=f['meters'])],total_walk+f['meters'],newcost+f['meters']*2)
+                            ([dict(kind='walk',from_=end,to=q.destination,meters=f['meters'],shape=f.get('shape'))],total_walk+f['meters'],newcost+f['meters']*2)
                             for f in walks[end] if f['to']==q.destination and total_walk+f['meters']<=q.max_walk]
                         for tail,budget,score in tails:
                             full=[dict(l,**{'from':l['from_']}) for l in newlegs+tail]

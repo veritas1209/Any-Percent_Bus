@@ -1,0 +1,7 @@
+{
+  "source": "https://tiles.osm.kr/download/gyeongsang-non-military.osm.pbf",
+  "placeCount": 37427,
+  "walkGraphSha256": "d28d9f05007a15060e456df805238b0491b5dac328becbf28f7392ffec3dfc3e",
+  "placesSha256": "21f2706a1c6468c895ae8985ef8e5cc812e24b64435b1c738a015d7b9e6affd1",
+  "note": "Local public OSM place/address index; not a complete commercial geocoder or verified entrance database."
+}

@@ -29,6 +29,15 @@ with httpx.Client(timeout=30) as client:
         assert all('statisticsIncludeFailurePenalty' in j for j in data['journeys'])
         rows.append({'dataset':dataset,'samples':300,'measuredRequests':1,'clientRoundTripMs':elapsed,'serverElapsedMs':data['elapsedMs'],
                      'candidateCount':len(data['journeys']),'source':data['source'],'networkSha256':hashlib.sha256(raw.content).hexdigest()})
+        if dataset=='observed':
+            stops={s['id']:s for s in local['stops']}
+            query.update(origin_point=stops[query['origin']],destination_point=stops[query['destination']])
+            client.post(args.url+'/v1/journeys/search',json=query).raise_for_status()
+            started=time.perf_counter();response=client.post(args.url+'/v1/journeys/search',json=query);response.raise_for_status()
+            data=response.json()
+            assert data['journeys'] and all(j.get('places') for j in data['journeys'])
+            rows.append({'dataset':'observed-points','samples':300,'measuredRequests':1,'clientRoundTripMs':round((time.perf_counter()-started)*1000,2),'serverElapsedMs':data['elapsedMs'],
+                         'candidateCount':len(data['journeys']),'source':data['source'],'networkSha256':hashlib.sha256(raw.content).hexdigest()})
 result={'recordedAt':datetime.now(timezone.utc).isoformat(),'platform':'NVIDIA Jetson Orin Nano Super','cases':rows,
         'note':'One warmed request per dataset; not a percentile latency estimate. Both remote API and web datasets match delivered assets.'}
 (ROOT/'artifacts/jetson-benchmark.json').write_text(json.dumps(result,indent=2),encoding='utf-8')

@@ -291,6 +291,6 @@
   "inferredPartialSections": [
     "196000810"
   ],
-  "elapsedSeconds": 9.55,
+  "elapsedSeconds": 15.54,
   "scope": "One directed catalog edge per usable route; not every origin/destination pair or real-world route validation."
 }

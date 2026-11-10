@@ -51,7 +51,7 @@ class JourneyScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(height: 16),
-        if (session.network!.hasInferredRoute(journey['legs'])) ...[
+        if (session.displayNetwork.hasInferredRoute(journey['legs'])) ...[
           const Text(
             'GPS 근접 추정 구간입니다. 실제 정차·탑승 가능 여부와 전체 노선은 확인되지 않았습니다.',
             style: TextStyle(fontSize: 12, color: muted, height: 1.6),
@@ -59,9 +59,18 @@ class JourneyScreen extends StatelessWidget {
           const SizedBox(height: 12),
         ],
         TransitMap(
-          network: session.network!,
+          network: session.displayNetwork,
           legs: List<Json>.from(journey['legs']),
-          minute: query.departure + 10,
+          minute:
+              (journey['legs'] as List)
+                  .where((l) => l['kind'] == 'ride' && l['depart'] != null)
+                  .isEmpty
+              ? query.departure
+              : numValue(
+                  (journey['legs'] as List).firstWhere(
+                    (l) => l['kind'] == 'ride' && l['depart'] != null,
+                  )['depart'],
+                ),
           tileProviderFactory: session.mapTileProviderFactory,
         ),
         const SizedBox(height: 28),
@@ -98,6 +107,7 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
   double? lastArrival;
   for (final l in legs) {
     final isWalk = l['kind'] == 'walk';
+    if (isWalk && numValue(l['meters']) < .5) continue;
     if (!isWalk && lastArrival != null && l['depart'] != null) {
       final margin = numValue(l['depart']) - lastArrival - .5;
       widgets.add(
@@ -141,12 +151,12 @@ List<Widget> timeline(AppSession session, List<dynamic> raw) {
                   Text(
                     isWalk
                         ? '도보 ${l['meters']}m'
-                        : session.network!.routeLabel(l['routeId']),
+                        : session.displayNetwork.routeLabel(l['routeId']),
                     style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '${session.network!.stops[l['from']]!['name']} → ${session.network!.stops[l['to']]!['name']}',
+                    '${session.displayNetwork.stops[l['from']]!['name']} → ${session.displayNetwork.stops[l['to']]!['name']}',
                     style: const TextStyle(fontSize: 12),
                   ),
                   if (l['depart'] != null)
