@@ -8,6 +8,7 @@ import 'package:anypercent_app/screens/results_screen.dart';
 import 'package:anypercent_app/screens/journey_screen.dart';
 import 'package:anypercent_app/screens/conditions_screen.dart';
 import 'package:anypercent_app/repositories/transit_repository.dart';
+import 'support/map_tiles.dart';
 
 class MemoryRepository implements TransitRepository {
   final Network network;
@@ -217,6 +218,7 @@ void main() {
     tester,
   ) async {
     final session = AppSession()
+      ..mapTileProviderFactory = MemoryMapTiles.new
       ..network = network
       ..repository = MemoryRepository(network);
     const q = SearchQuery(origin: 'uc', destination: 'tower', samples: 20);

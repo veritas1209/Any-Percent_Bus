@@ -49,6 +49,7 @@ class JourneyScreen extends StatelessWidget {
           network: session.network!,
           legs: List<Json>.from(journey['legs']),
           minute: query.departure + 10,
+          tileProviderFactory: session.mapTileProviderFactory,
         ),
         const SizedBox(height: 28),
         const Eyebrow('TRANSFER TIMELINE'),
@@ -68,7 +69,7 @@ class JourneyScreen extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         Text(
-          '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 개략도의 선은 실제 도로가 아닙니다.',
+          '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 지도선은 정류장 연결 기준입니다.',
           style: const TextStyle(fontSize: 10, color: muted),
         ),
       ],

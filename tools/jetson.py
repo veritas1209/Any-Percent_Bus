@@ -1,5 +1,6 @@
 """Task-scoped SSH helper. Password is read from stdin and never written to disk."""
 import argparse
+import json
 import shlex
 import sys
 from pathlib import Path
@@ -48,7 +49,13 @@ try:
                 upload(ROOT/'app/build/web',base+'/web')
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             else:
-                upload(ROOT/'release/AnyPercent-0.1.0.apk',base+'/web/AnyPercent.apk')
+                manifest=json.loads((ROOT/'release/manifest.json').read_text())
+                apk=next(item for item in manifest['files'] if item['name'].endswith('.apk'))
+                upload(ROOT/'release'/apk['name'],base+'/web/AnyPercent.apk')
+                _,check,check_err=client.exec_command('sha256sum '+shlex.quote(base+'/web/AnyPercent.apk'),timeout=20)
+                if check.read().decode().split()[0]!=apk['sha256']:
+                    raise RuntimeError('Uploaded APK checksum mismatch')
+                print('APK SHA256 verified')
         sftp.close()
         action={'deploy-backend':'start-backend','deploy-web':'start-web','deploy-apk':'status','status':'status'}[args.action]
         _,out,err=client.exec_command('python3 '+base+'/tools/remote_runtime.py '+action,timeout=30)

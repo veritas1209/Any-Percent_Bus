@@ -15,8 +15,12 @@ async def run():
         page=await browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1,record_video_dir=str(ROOT/'artifacts/video'),record_video_size={'width':390,'height':844})
         errors=[]
         external=[]
+        blocked_tiles=[]
         async def block_external(route):
-            external.append(route.request.url)
+            if route.request.url.startswith('https://tile.openstreetmap.org/'):
+                blocked_tiles.append(route.request.url)
+            else:
+                external.append(route.request.url)
             await route.abort()
         await page.route('https://**/*',block_external)
         page.on('pageerror',lambda e:errors.append(str(e)))
@@ -35,6 +39,13 @@ async def run():
         await page.screenshot(path=str(OUT/'03-results-mobile.png'))
         await page.get_by_role('button',name='ANY% 경로 상세 보기',exact=False).first.click()
         await page.wait_for_timeout(700)
+        try:
+            await page.get_by_role('button',name='개략도로 보기',exact=True).wait_for(timeout=10000)
+        except Exception:
+            print('MAP_FAILURE_STATE',json.dumps({'blockedTiles':blocked_tiles,'aria':await page.locator('body').aria_snapshot()},ensure_ascii=False),flush=True)
+            await page.screenshot(path=str(OUT/'map-failure-debug.png'))
+            raise
+        await page.get_by_role('button',name='개략도로 보기',exact=True).click()
         await page.screenshot(path=str(OUT/'04-details-mobile.png'))
         await page.get_by_role('button',name='버스가 늦는다면?',exact=True).click(force=True)
         await page.wait_for_timeout(700)
@@ -112,7 +123,8 @@ async def run():
         if video:
             import shutil
             shutil.copyfile(await video.path(),ROOT/'artifacts/AnyPercent-demo.webm')
-        result={'passed':['offline search with external HTTPS blocked','conditions','Any% vs Safe','timeline','3-minute delay / 20-minute arrival penalty','Jetson API search','API retry after interrupted request','invalid backend connection recovery','observed replay dataset','unknown arrival outside observation range','cancelled connection preserves selected stops'],'errors':errors,'externalRequests':external,'screenshotDirectory':str(OUT)}
+        assert blocked_tiles, 'Map failure recovery was not exercised'
+        result={'passed':['offline routing with map tiles unavailable','conditions','Any% vs Safe','timeline','3-minute delay / 20-minute arrival penalty','Jetson API search','API retry after interrupted request','invalid backend connection recovery','observed replay dataset','unknown arrival outside observation range','cancelled connection preserves selected stops','map failure to diagram fallback'],'errors':errors,'externalRequests':external,'mapTilesBlocked':len(blocked_tiles),'screenshotDirectory':str(OUT)}
         (ROOT/'artifacts/browser-acceptance.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
         print(json.dumps(result,ensure_ascii=False))
 

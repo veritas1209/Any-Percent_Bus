@@ -1,6 +1,6 @@
 {
   "passed": [
-    "offline search with external HTTPS blocked",
+    "offline routing with map tiles unavailable",
     "conditions",
     "Any% vs Safe",
     "timeline",
@@ -10,9 +10,11 @@
     "invalid backend connection recovery",
     "observed replay dataset",
     "unknown arrival outside observation range",
-    "cancelled connection preserves selected stops"
+    "cancelled connection preserves selected stops",
+    "map failure to diagram fallback"
   ],
   "errors": [],
   "externalRequests": [],
+  "mapTilesBlocked": 40,
   "screenshotDirectory": "C:\\Users\\hajin\\Downloads\\anypercent\\artifacts\\screenshots"
 }

@@ -159,6 +159,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
             network: widget.session.network!,
             legs: List<Json>.from(scenario['legs']),
             minute: widget.query.departure + elapsed,
+            tileProviderFactory: widget.session.mapTileProviderFactory,
           ),
           const SizedBox(height: 8),
           Text(

@@ -4,7 +4,7 @@
 
 ## 구성
 
-- `app/`: Flutter, 5개 화면, 로컬 데이터 계산과 API 연결, 위경도 기반 노선 개략도 및 가상 차량 재생
+- `app/`: Flutter, 5개 화면, 로컬 데이터 계산과 API 연결, OpenStreetMap 지도·경로·정류장·가상 차량 및 오프라인 개략도
 - `backend/`: 시간표 경로 탐색, 여정 단위 몬테카를로, REST API, BusTracker 정적 노선망 동기화
 - `shared/network.json`: 두 구현이 함께 사용하는 시연용 5개 노선·9개 정류장·가상 시간표
 - `shared/observed_network.json`: Jetson의 한 시간 GPS에서 추출한 5개 실제 노선 계열·83개 운행 구간·437개 정류장 지점 ID (같은 장소의 중복 지점 포함 가능)
@@ -94,9 +94,9 @@ flutter build apk --release
 | 항목 | 결과 |
 |---|---|
 | Python 자동 테스트 | 13개 통과. 환승·보행·막차·입력 검증·관측 중복 제거·출처·확률 계산 |
-| Flutter 자동 테스트 | 9개 통과. 계산·좁은 모바일 화면의 선택·빈 결과·지연·관측 시간 범위 |
+| Flutter 자동 테스트 | 12개 통과. 기존 흐름과 지도 경로·차량·확대·정류장 상세·전체 화면·오프라인 전환 |
 | Flutter 정적 분석 | 오류·경고·정보 항목 없음 |
-| 실제 Chrome 시연 | 외부 HTTPS 차단 상태에서 11개 흐름 통과, 페이지 예외 0건 |
+| 실제 Chrome 시연 | 지도 연결 실패를 포함한 오프라인 12개 흐름과 실제 지도 1개 초기 화면 확인, 페이지 예외 0건 |
 | Android | APK 빌드, 앱 이름·버전·권한·번들 데이터 정적 확인 완료 |
 | 물리 Android 기기 | 연결된 기기가 없어 설치·실기기 조작은 미검증 |
 | 원격 Jetson | 독립 API·웹 실행, 노선 동기화·GPS 리플레이·관측 저장·경로 계산 확인 |
@@ -152,6 +152,14 @@ SSH 비밀번호는 코드·설정에 저장하지 않습니다. 원격 연동 �
 
 ## Flutter 사용 기술과 AI 활용
 
-Flutter Material 3, `StatefulWidget`과 세션 객체, `Navigator` 화면 전환, Repository 인터페이스, `http` REST 통신, JSON 자산, `compute`를 통한 로컬 계산 분리, `CustomPainter` 노선 개략도, `Timer` 가상 운행, 한국어 로컬라이제이션과 Pretendard 글꼴을 사용합니다. 웹·Android에서 같은 Dart 화면과 계산 규칙을 사용합니다. 지도 SDK 없이 좌표 기반 개략도로 시연하며 선은 실제 도로가 아닙니다.
+Flutter Material 3, `StatefulWidget`과 세션 객체, `Navigator` 화면 전환, Repository 인터페이스, `http` REST 통신, JSON 자산, `compute`를 통한 로컬 계산 분리, `flutter_map` 실제 지도, `CustomPainter` 오프라인 개략도, `Timer` 가상 운행, 한국어 로컬라이제이션과 Pretendard 글꼴을 사용합니다. 웹·Android에서 같은 Dart 화면과 계산 규칙을 사용합니다.
+
+## 경로 지도 (0.1.1)
+
+경로 상세와 지연 화면에 OpenStreetMap을 표시합니다. A/B 출발·도착, 환승 정류장, 노선별 색상, 점선 도보와 선택 차량의 보간 위치를 겹쳐 표시합니다. 드래그·확대·축소, 전체 경로 맞춤, 정류장 탑승·하차 시각, 전체 화면을 지원합니다. 선은 정류장 좌표를 연결한 것으로 실제 도로를 따라간 버스 운행 궤적은 아닙니다.
+
+실제 지도는 인터넷 연결이 필요합니다. 계산과 개략도는 오프라인에서 동작하며, 지도 연결에 실패하면 재시도 또는 개략도 전환을 제공합니다. 지도 타일은 화면에 보이는 범위만 요청하고 출처를 항상 표시합니다. Android는 `flutter_map`의 HTTP 헤더 기반 캐시(50MB 상한), 웹은 브라우저 캐시를 사용하며 별도 오프라인 지도 다운로드는 제공하지 않습니다. 제공자 변경은 `--dart-define=MAP_TILE_URL=...`로 지정할 수 있으며 다른 제공자의 표시·사용 조건은 별도로 확인해야 합니다.
+
+참조: [flutter_map 캐시](https://docs.fleaflet.dev/layers/raster-tile-layer/caching), [OpenStreetMap 타일 사용 정책](https://operations.osmfoundation.org/policies/tiles/). 자동 지도 조작 검증은 메모리 타일로 실행합니다.
 
 AI(Codex)는 요구사항 정리, Python·Dart 구현, 테스트 시나리오 작성과 오류 수정, 화면 검토 및 개발 설명 정리에 활용했습니다. 생성 운행 시각과 지연 표본은 실측과 구분했습니다. 개발자가 원본 데이터와 계산 가정, 결과의 정확성·적용 범위를 검토해야 하며 AI가 생성한 코드를 교통 서비스의 정확도 검증으로 간주하지 않습니다.

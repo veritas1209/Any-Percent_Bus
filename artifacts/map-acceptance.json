@@ -1,0 +1,13 @@
+{
+  "passed": [
+    "real map tiles loaded in one initial viewport",
+    "visible OpenStreetMap attribution",
+    "selected route stop markers"
+  ],
+  "tileResponses": 4,
+  "statuses": [
+    200
+  ],
+  "errors": [],
+  "note": "No automated live-tile panning/zooming, offline downloads or tile archive. Camera interaction tests use in-memory tiles."
+}

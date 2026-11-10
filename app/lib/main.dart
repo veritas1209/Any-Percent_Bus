@@ -4,6 +4,7 @@ import 'models/transit.dart';
 import 'repositories/transit_repository.dart';
 import 'screens/search_screen.dart';
 import 'theme.dart';
+import 'widgets/transit_map.dart';
 
 void main() => runApp(const AnyPercentApp());
 
@@ -23,6 +24,7 @@ class AnyPercentApp extends StatelessWidget {
 }
 
 class AppSession {
+  MapTileProviderFactory? mapTileProviderFactory;
   TransitRepository repository = AssetTransitRepository();
   Network? network;
   Future<void> initialize() async {

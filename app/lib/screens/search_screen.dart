@@ -97,7 +97,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 12),
-                const Text('기본 데모는 인터넷 없이 동작합니다. 백엔드를 실행했다면 주소를 입력하세요.'),
+                const Text(
+                  '경로 계산은 오프라인으로 가능합니다. 실제 지도는 인터넷 연결이 필요하며, 백엔드 주소는 아래에서 설정합니다.',
+                ),
                 const SizedBox(height: 16),
                 SegmentedButton<String>(
                   segments: const [
