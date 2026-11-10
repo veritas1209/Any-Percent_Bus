@@ -22,7 +22,8 @@ result={'origin':'Authorized read-only copy from the user Jetson BusTracker dire
                       'method':'First sample after passed-point ID changes; split duplicate-point loops and gaps over 8 minutes',
                       'arrivalQuality':'Passage-time proxy; boarding service at each point is not field-validated',
                       'futureTrips':'Not extrapolated beyond the recording',
-                      'walking':'Geometric distance x1.5 for point pairs within 100m; not surveyed pedestrian paths',
+                      'walking':'Candidate point pairs within 100m; lengths from local OSM pedestrian graph, not surveyed paths; disconnected pairs excluded',
+                      'roadGeometry':'Local OSM road matching constrained by recorded GPS; no external GPS transmission; see road-geometry.json',
                       'uncertainty':'Synthetic delay samples, not fitted or calibrated to historical prediction errors'},
         'warning':'A replay loop is not a new independent calendar day. The recording is not a current official timetable.'}
 (ROOT/'artifacts/provenance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')

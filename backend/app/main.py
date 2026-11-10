@@ -15,6 +15,7 @@ from pydantic import BaseModel, Field
 from .engine import Engine, Query
 from . import bustracker
 from .history import generate_history
+from .geometry import point_along
 
 ROOT = Path(__file__).resolve().parents[2]
 NETWORK = json.loads((ROOT/'shared/network.json').read_text(encoding='utf-8'))
@@ -23,7 +24,7 @@ OBSERVED = json.loads((ROOT/'shared/observed_network.json').read_text(encoding='
 NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
 ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.1.0')
+app = FastAPI(title='Any% journey planner', version='0.1.2')
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
     from .replay_feed import create_router
@@ -82,8 +83,12 @@ def vehicles(minute: float=540,dataset: Literal['demo','observed']='demo'):
                 if start<=minute<end:
                     a,b=selected_engine.stops[r['stops'][i]],selected_engine.stops[r['stops'][i+1]]
                     f=(minute-start)/(end-start)
-                    rows.append({'vehicleId':r.get('vehicleId',f"{r['id']}:{trip}"),'routeId':r['id'],'lat':a['lat']+(b['lat']-a['lat'])*f,'lon':a['lon']+(b['lon']-a['lon'])*f,'source':selected['source'],'positionMethod':'stop_segment_interpolation','tripId':str(trip)})
-    return {'vehicles':rows,'virtualMinute':minute,'source':selected['source'],'positionMethod':'stop_segment_interpolation'}
+                    position=[a['lat']+(b['lat']-a['lat'])*f,a['lon']+(b['lon']-a['lon'])*f]
+                    if selected.get('geometryVersion'):
+                        position=point_along(r['shapeSegments'][i]['points'],f)
+                        if position is None:continue
+                    rows.append({'vehicleId':r.get('vehicleId',f"{r['id']}:{trip}"),'routeId':r['id'],'lat':position[0],'lon':position[1],'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation','tripId':str(trip)})
+    return {'vehicles':rows,'virtualMinute':minute,'source':selected['source'],'positionMethod':'road_shape_interpolation' if selected.get('geometryVersion') else 'stop_segment_interpolation'}
 
 
 @app.post('/v1/integration/sync')

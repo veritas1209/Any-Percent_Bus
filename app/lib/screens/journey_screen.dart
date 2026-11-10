@@ -69,7 +69,7 @@ class JourneyScreen extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         Text(
-          '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 지도선은 정류장 연결 기준입니다.',
+          '${session.network!.observed ? 'GPS 통과시각 근사 · 지연 가상' : '시뮬레이션 운행'} · 30초 탑승 여유 포함 · 운행 GPS와 도로망 기반 경로입니다.',
           style: const TextStyle(fontSize: 10, color: muted),
         ),
       ],

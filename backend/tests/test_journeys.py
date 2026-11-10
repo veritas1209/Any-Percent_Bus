@@ -35,7 +35,7 @@ def test_delay_causes_missed_connection_and_next_vehicle(engine):
     assert not ok['missed']
     assert late['missed']==['demo-b']
     assert late['arrival']-ok['arrival']==20
-    assert late['legs'][-1]['trip']==585
+    assert late['legs'][-1]['trip']==pytest.approx(j['legs'][-1]['trip']+20)
 
 
 def test_walking_and_transfer_constraints(engine):

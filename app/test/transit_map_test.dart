@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:anypercent_app/models/transit.dart';
 import 'package:anypercent_app/services/journey_engine.dart';
 import 'package:anypercent_app/widgets/route_map_geometry.dart';
@@ -19,6 +20,87 @@ void main() {
       )
       .firstWhere((j) => (j['tags'] as List).contains('ANY%'));
   final legs = List<Json>.from(journey['legs']);
+
+  test(
+    'road interpolation follows bends and never bridges missing geometry',
+    () {
+      final road = [
+        const LatLng(35.50, 129.30),
+        const LatLng(35.50, 129.31),
+        const LatLng(35.51, 129.31),
+      ];
+      final position = pointAlongRoad(road, .25)!;
+      expect(position.latitude, 35.50);
+      expect(position.longitude, greaterThan(129.30));
+      expect(pointAlongRoad([], .5), isNull);
+    },
+  );
+
+  test(
+    'boarding and alighting clip the road shape to the selected portion',
+    () {
+      final data = <String, dynamic>{
+        'geometryVersion': 'test',
+        'stops': [
+          {'id': 'a', 'lat': 35.50, 'lon': 129.30},
+          {'id': 'b', 'lat': 35.51, 'lon': 129.31},
+          {'id': 'c', 'lat': 35.52, 'lon': 129.32},
+        ],
+        'routes': [
+          {
+            'id': 'r',
+            'stops': ['a', 'b', 'c'],
+            'offsets': [0, 5, 10],
+            'shapeSegments': [
+              {
+                'source': 'gps_road_matched',
+                'points': [
+                  [35.50, 129.30],
+                  [35.50, 129.31],
+                  [35.51, 129.31],
+                ],
+              },
+              {
+                'source': 'gps_road_matched',
+                'points': [
+                  [35.51, 129.31],
+                  [35.51, 129.32],
+                  [35.52, 129.32],
+                ],
+              },
+            ],
+          },
+        ],
+        'footpaths': [],
+      };
+      final selected = <Json>[
+        {
+          'kind': 'ride',
+          'routeId': 'r',
+          'from': 'b',
+          'to': 'c',
+          'boardIndex': 1,
+          'alightIndex': 2,
+          'trip': 540,
+        },
+      ];
+      final geometry = RouteMapGeometry(Network(data), selected);
+      expect(
+        geometry.segments.single.points.first,
+        const LatLng(35.51, 129.31),
+      );
+      expect(geometry.segments.single.points, hasLength(3));
+      expect(geometry.stopIds, isNot(contains('a')));
+      expect(geometry.vehicles(546).single.latitude, 35.51);
+      (data['routes'][0]['shapeSegments'] as List)[1] = {
+        'source': 'unavailable',
+        'points': [],
+      };
+      final unavailable = RouteMapGeometry(Network(data), selected);
+      expect(unavailable.segments.single.paths, isEmpty);
+      expect(unavailable.vehicles(546), isEmpty);
+    },
+  );
 
   testWidgets(
     'tile failures offer an offline diagram without breaking the journey',
@@ -53,8 +135,9 @@ void main() {
     );
     expect(geometry.stopIds, isNot(contains('seongnam')));
     expect(geometry.vehicles(550), hasLength(1));
-    expect(geometry.vehicles(550).single.latitude, greaterThan(35.501));
-    expect(geometry.vehicles(550).single.latitude, lessThan(35.5394));
+    expect(geometry.segments.first.points.length, greaterThan(100));
+    expect(geometry.vehicles(550).single.latitude, greaterThan(35.49));
+    expect(geometry.vehicles(550).single.latitude, lessThan(35.55));
   });
 
   testWidgets(

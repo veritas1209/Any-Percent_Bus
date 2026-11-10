@@ -55,7 +55,7 @@ class _TransitMapState extends State<TransitMap> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Text(
-                          '정류장 연결선 · 시연시각 ${clock(widget.minute)}',
+                          '도로 경로 · 시연시각 ${clock(widget.minute)}',
                           style: const TextStyle(fontSize: 11, color: muted),
                         ),
                       ),
@@ -102,9 +102,9 @@ class _TransitMapState extends State<TransitMap> {
               ),
       ),
       const SizedBox(height: 8),
-      const Text(
-        '실제 지도 · 선은 정류장 연결 기준 · 차량은 시연시각 기준 보간',
-        style: TextStyle(fontSize: 10, color: muted, height: 1.5),
+      Text(
+        RouteMapGeometry(widget.network, widget.legs).description,
+        style: const TextStyle(fontSize: 10, color: muted, height: 1.5),
       ),
     ],
   );
@@ -149,7 +149,7 @@ class _RouteMapState extends State<_RouteMap> {
   }
 
   CameraFit fit(RouteMapGeometry geometry) {
-    final points = geometry.stopIds.map(geometry.point).toList();
+    final points = geometry.boundsPoints;
     final south = points.map((p) => p.latitude).reduce(min),
         north = points.map((p) => p.latitude).reduce(max);
     final west = points.map((p) => p.longitude).reduce(min),
@@ -293,29 +293,30 @@ class _RouteMapState extends State<_RouteMap> {
               PolylineLayer(
                 polylines: [
                   for (final s in geometry.segments)
-                    Polyline(
-                      points: s.points,
-                      strokeWidth: s.walking ? 4 : 5,
-                      color: s.walking
-                          ? blue
-                          : Color(
-                              int.parse(
-                                (widget.network.routes[s
-                                                .leg['routeId']]!['color']
-                                            as String? ??
-                                        '#CEF75F')
-                                    .replaceFirst('#', 'FF'),
-                                radix: 16,
+                    for (final path in s.paths.where((p) => p.length >= 2))
+                      Polyline(
+                        points: path,
+                        strokeWidth: s.walking ? 4 : 5,
+                        color: s.walking
+                            ? blue
+                            : Color(
+                                int.parse(
+                                  (widget.network.routes[s
+                                                  .leg['routeId']]!['color']
+                                              as String? ??
+                                          '#CEF75F')
+                                      .replaceFirst('#', 'FF'),
+                                  radix: 16,
+                                ),
                               ),
-                            ),
-                      borderStrokeWidth: s.walking ? 1.5 : 2,
-                      borderColor: s.walking
-                          ? Colors.white
-                          : ink.withValues(alpha: .8),
-                      pattern: s.walking
-                          ? StrokePattern.dashed(segments: [6, 5])
-                          : const StrokePattern.solid(),
-                    ),
+                        borderStrokeWidth: s.walking ? 1.5 : 2,
+                        borderColor: s.walking
+                            ? Colors.white
+                            : ink.withValues(alpha: .8),
+                        pattern: s.walking
+                            ? StrokePattern.dashed(segments: [6, 5])
+                            : const StrokePattern.solid(),
+                      ),
                 ],
               ),
               MarkerLayer(

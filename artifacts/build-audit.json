@@ -1,16 +1,16 @@
 {
-  "apkBytes": 58431390,
-  "apkSha256": "880b9466734a1ab11391dbc0d2271a3f6048217affc5bf4f082ea6d504c6d9c4",
+  "apkBytes": 58762914,
+  "apkSha256": "9bf1f651b63835749b399aa0f20a740346cd939805e9e5c7cb6752d50fcbb3bb",
   "datasets": [
     {
       "name": "network.json",
-      "sha256": "33140dd2474e9c7315a70a82fcb251c8f0550fce76231c562d91566b78aba84c",
+      "sha256": "55f698603f500f12942bd831d9b91a6603dc6b0f61400a4e68ac6c0d60e78a5f",
       "routes": 5,
       "stops": 9
     },
     {
       "name": "observed_network.json",
-      "sha256": "ba84611ac8f055fe2a1008616b257752679f3b7975e92ec6d5c3f0545fcd810a",
+      "sha256": "5d3b42ca61e905ad5e2a90d8cbea32739adf5a680bf5074f78fb036b39fc70a8",
       "routes": 83,
       "stops": 437
     }

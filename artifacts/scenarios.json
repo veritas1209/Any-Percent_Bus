@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T03:40:38.338307+00:00",
+  "generatedAt": "2026-11-10T05:10:47.185923+00:00",
   "seed": 42,
   "samples": 300,
   "warning": "Simulation and recorded passage-time examples; not measured travel-time prediction accuracy.",
@@ -13,17 +13,17 @@
           "tags": [
             "ANY%"
           ],
-          "plannedArrival": 576,
-          "scenarioArrival": 576,
+          "plannedArrival": 576.0,
+          "scenarioArrival": 576.0,
           "successProbability": 0.3233333333333333,
           "noServiceProbability": 0.0,
-          "p90Arrival": 599,
+          "p90Arrival": 599.0,
           "routes": [
             "A",
             "B"
           ],
           "transfers": 1,
-          "walkingMeters": 220.0
+          "walkingMeters": 287.7
         },
         {
           "tags": [
@@ -52,17 +52,17 @@
           "tags": [
             "ANY%"
           ],
-          "plannedArrival": 576,
-          "scenarioArrival": 596,
+          "plannedArrival": 576.0,
+          "scenarioArrival": 596.0,
           "successProbability": 0.023333333333333334,
           "noServiceProbability": 0.0,
-          "p90Arrival": 599,
+          "p90Arrival": 599.0,
           "routes": [
             "A",
             "B"
           ],
           "transfers": 1,
-          "walkingMeters": 220.0
+          "walkingMeters": 287.7
         },
         {
           "tags": [
@@ -114,17 +114,17 @@
           "tags": [
             "ANY%"
           ],
-          "plannedArrival": 576,
-          "scenarioArrival": 576,
+          "plannedArrival": 576.0,
+          "scenarioArrival": 576.0,
           "successProbability": 0.5133333333333333,
           "noServiceProbability": 0.0,
-          "p90Arrival": 598,
+          "p90Arrival": 598.0,
           "routes": [
             "A",
             "B"
           ],
           "transfers": 1,
-          "walkingMeters": 220.0
+          "walkingMeters": 287.7
         },
         {
           "tags": [
@@ -223,7 +223,7 @@
             "114"
           ],
           "transfers": 2,
-          "walkingMeters": 96.0
+          "walkingMeters": 63.1
         },
         {
           "tags": [
