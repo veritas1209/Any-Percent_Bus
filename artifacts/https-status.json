@@ -1,0 +1,14 @@
+{
+  "url": "https://hajin-desktop.tailfb939b.ts.net:9443",
+  "httpsPort": 9443,
+  "handlers": {
+    "/": {
+      "Proxy": "http://100.119.23.4:8080"
+    },
+    "/v1": {
+      "Proxy": "http://100.119.23.4:8001/v1"
+    }
+  },
+  "privateOnly": true,
+  "existingServicesPreserved": true
+}

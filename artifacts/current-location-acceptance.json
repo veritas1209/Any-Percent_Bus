@@ -1,0 +1,17 @@
+{
+  "url": "https://hajin-desktop.tailfb939b.ts.net:9443",
+  "passed": [
+    "GPS not read before a user action",
+    "one position read sets origin",
+    "map recenter and current-location dot",
+    "same-origin HTTPS API configuration",
+    "coordinate retained in actual journey request",
+    "route map location control",
+    "permission denial preserves prior origin",
+    "out-of-area location preserves prior origin"
+  ],
+  "httpRecovery": "Old HTTP URL shows HTTPS launch action without reading GPS",
+  "errors": [],
+  "geolocation": "Simulated browser coordinates in Ulsan; no actual user GPS read",
+  "tiles": "Memory PNG fixtures only"
+}

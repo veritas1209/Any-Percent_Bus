@@ -10,10 +10,15 @@ import '../theme.dart';
 import 'route_map_geometry.dart';
 import 'transit_diagram.dart';
 import 'motion_curve.dart';
+import '../services/device_location.dart';
+import 'current_location_button.dart';
 
 typedef MapTileProviderFactory = TileProvider Function();
 
 class TransitMap extends StatefulWidget {
+  final DeviceLocation? locationService;
+  final Json? devicePosition;
+  final ValueChanged<Json>? onDeviceLocated;
   final Network network;
   final List<Json> legs;
   final double minute;
@@ -24,12 +29,21 @@ class TransitMap extends StatefulWidget {
     required this.legs,
     this.minute = 540,
     this.tileProviderFactory,
+    this.locationService,
+    this.devicePosition,
+    this.onDeviceLocated,
   });
   @override
   State<TransitMap> createState() => _TransitMapState();
 }
 
 class _TransitMapState extends State<TransitMap> {
+  late Json? gps = widget.devicePosition;
+  void located(Json p) {
+    setState(() => gps = p);
+    widget.onDeviceLocated?.call(p);
+  }
+
   RouteMapGeometry? _geometry;
   String _geometryKey = '';
   Network? _network;
@@ -83,6 +97,9 @@ class _TransitMapState extends State<TransitMap> {
                       legs: widget.legs,
                       minute: widget.minute,
                       tileProviderFactory: widget.tileProviderFactory,
+                      locationService: widget.locationService,
+                      devicePosition: gps,
+                      onDeviceLocated: located,
                       onDiagram: () {
                         setState(() => diagram = true);
                         Navigator.pop(context);
@@ -146,6 +163,9 @@ class _TransitMapState extends State<TransitMap> {
                   legs: widget.legs,
                   minute: widget.minute,
                   tileProviderFactory: widget.tileProviderFactory,
+                  locationService: widget.locationService,
+                  devicePosition: gps,
+                  onDeviceLocated: located,
                   onDiagram: () => setState(() => diagram = true),
                   onRetry: () => setState(() => retry++),
                 ),
@@ -161,6 +181,9 @@ class _TransitMapState extends State<TransitMap> {
 }
 
 class _RouteMap extends StatefulWidget {
+  final DeviceLocation? locationService;
+  final Json? devicePosition;
+  final ValueChanged<Json>? onDeviceLocated;
   final Network network;
   final List<Json> legs;
   final double minute;
@@ -175,12 +198,24 @@ class _RouteMap extends StatefulWidget {
     required this.onDiagram,
     this.onRetry,
     this.tileProviderFactory,
+    this.locationService,
+    this.devicePosition,
+    this.onDeviceLocated,
   });
   @override
   State<_RouteMap> createState() => _RouteMapState();
 }
 
 class _RouteMapState extends State<_RouteMap> {
+  late Json? gps = widget.devicePosition;
+  @override
+  void didUpdateWidget(covariant _RouteMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.devicePosition != oldWidget.devicePosition) {
+      gps = widget.devicePosition;
+    }
+  }
+
   RouteMapGeometry? _geometry;
   String _geometryKey = '';
   Network? _network;
@@ -489,8 +524,44 @@ class _RouteMapState extends State<_RouteMap> {
                     ),
                 ],
               ),
+              if (gps != null)
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: LatLng(
+                        numValue(gps!['lat']),
+                        numValue(gps!['lon']),
+                      ),
+                      width: 32,
+                      height: 32,
+                      child: const DeviceLocationDot(),
+                    ),
+                  ],
+                ),
             ],
           ),
+          if (widget.locationService != null)
+            Positioned(
+              right: 12,
+              bottom: 36,
+              child: Material(
+                color: Colors.white,
+                elevation: 2,
+                shape: const CircleBorder(),
+                child: CurrentLocationButton(
+                  service: widget.locationService!,
+                  iconOnly: true,
+                  onLocated: (p) {
+                    setState(() => gps = p);
+                    widget.onDeviceLocated?.call(p);
+                    controller.move(
+                      LatLng(numValue(p['lat']), numValue(p['lon'])),
+                      16,
+                    );
+                  },
+                ),
+              ),
+            ),
           Positioned(
             right: 10,
             top: 10,

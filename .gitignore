@@ -12,6 +12,7 @@ local.properties
 tools/flutter/
 tmp/
 app/.idea/
+app/android/.kotlin/
 .integration-key
 .*.pid
 release/

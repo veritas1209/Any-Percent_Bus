@@ -103,7 +103,7 @@ flutter build apk --release
 | 항목 | 결과 |
 |---|---|
 | Python 자동 테스트 | 29개 통과. 기존 계산과 전체 노선, 지점 접근 보행·보행 속도·거리 예산, GPS 정차·공백·방향 보정 |
-| Flutter 자동 테스트 | 22개 통과. 기존 검색·지도·계산, 지도 핀 선택, 복수 정류장 보행 접근, GPS 정차와 지연 위치 반영 |
+| Flutter 자동 테스트 | 29개 통과. 기존 검색·지도·계산과 위치 권한·오류·중복 요청 방지·출발지 반영·지도 재중앙 |
 | Flutter 정적 분석 | 오류·경고·정보 항목 없음 |
 | 실제 Chrome 시연 | 기존 13개 흐름, 장소·핀 입력과 재생 6개 흐름, 복구 노선 4개 흐름, 실제 지도 1개 초기 화면 확인. 페이지 예외 0건 |
 | Android | APK 빌드, 앱 이름·버전·권한·번들 데이터 정적 확인 완료 |
@@ -114,10 +114,18 @@ flutter build apk --release
 
 Windows에서는 `tools/start_backend.ps1`, `tools/serve_web.ps1`로 이미 준비된 가상환경·웹 빌드를 실행할 수도 있습니다. 빌드 후 `python tools/package_release.py`는 APK·웹·소스 ZIP과 SHA-256 목록을 `release/`에 만듭니다. 소스 ZIP은 개발 캐시, SSH 비밀번호, 운영 DB, 원본 GPS CSV를 포함하지 않습니다.
 
+## 현재 위치 (0.3.1)
+
+첫 화면에서 **현재 위치를 출발지로**를 누르면 기기 위치 권한을 요청하고 확인한 위경도를 출발지로 사용합니다. 장소 선택 창에서도 현재 위치를 선택할 수 있고, 지점 선택 지도와 경로 지도에는 현재 위치로 이동하는 버튼과 파란 점이 있습니다. 위치 확인은 버튼을 누를 때 한 번 수행하며 앱 시작이나 백그라운드에서 계속 추적하지 않습니다. 경로 지도의 현재 위치 버튼은 지도만 이동시키고 이미 계산한 여정은 바꾸지 않습니다.
+
+권한 거절·차단, 위치 기능 꺼짐, 시간 초과, 시연 범위 밖 위치를 안내하며 실패 시 기존 출발지를 유지합니다. Android는 대략적·정확한 위치 권한을 함께 요청하며 위치 정확도를 표시합니다. 실제 기기 설치와 실내외 GPS 품질은 미검증이며, 브라우저 검증은 주입한 울산 좌표를 사용합니다.
+
+웹 현재 위치는 **https://hajin-desktop.tailfb939b.ts.net:9443**에서 사용합니다. 기존 HTTP 주소에서는 HTTPS 앱 열기를 안내합니다. HTTPS 웹의 API는 같은 주소의 `/v1`로 연결하여 혼합 콘텐츠 없이 동작합니다. Tailscale Serve의 별도 9443 포트만 추가했으며 다른 서비스 설정은 유지합니다. 이 포트에 Funnel은 활성화하지 않았습니다. 참고: [Geolocator 문서](https://pub.dev/packages/geolocator), [Tailscale Serve](https://tailscale.com/docs/reference/tailscale-cli/serve).
+
 ## Jetson 시연 서버
 
-- 앱: `http://100.119.23.4:8080` (같은 Tailscale 네트워크에서 접속)
-- Android 설치파일: `http://100.119.23.4:8080/AnyPercent.apk` (Tailscale 연결된 휴대폰에서 다운로드 가능)
+- 앱: `https://hajin-desktop.tailfb939b.ts.net:9443` (같은 Tailscale 네트워크에서 접속)
+- Android 설치파일: `https://hajin-desktop.tailfb939b.ts.net:9443/AnyPercent.apk` (Tailscale 연결된 휴대폰에서 다운로드 가능)
 - Any% API와 Swagger: `http://100.119.23.4:8001/docs`
 - 위치: `/home/hajin/anypercent`, 기존 BusTracker와 별도 디렉터리·프로세스·SQLite
 - 기본 앱은 오프라인 BusTracker 운행 기록으로 실행됩니다. 백엔드 연결과 오프라인 모두 실제 번호·정류장·관측 경로를 사용합니다.

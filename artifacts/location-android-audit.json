@@ -1,0 +1,8 @@
+{
+  "version": "0.3.1",
+  "versionCode": 8,
+  "preciseLocationPermission": true,
+  "approximateLocationPermission": true,
+  "backgroundLocationPermission": false,
+  "note": "APK static inspection; physical-device GPS not tested"
+}

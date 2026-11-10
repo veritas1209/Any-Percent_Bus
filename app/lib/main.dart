@@ -5,6 +5,7 @@ import 'repositories/transit_repository.dart';
 import 'screens/search_screen.dart';
 import 'theme.dart';
 import 'widgets/transit_map.dart';
+import 'services/device_location.dart';
 
 void main() => runApp(const AnyPercentApp());
 
@@ -24,6 +25,8 @@ class AnyPercentApp extends StatelessWidget {
 }
 
 class AppSession {
+  DeviceLocation locationService = GeolocatorLocation();
+  Json? devicePosition;
   MapTileProviderFactory? mapTileProviderFactory;
   TransitRepository repository = AssetTransitRepository();
   Network? network;

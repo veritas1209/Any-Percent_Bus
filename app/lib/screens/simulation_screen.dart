@@ -213,6 +213,9 @@ class _SimulationScreenState extends State<SimulationScreen> {
             legs: List<Json>.from(scenario['legs']),
             minute: widget.query.departure + displayed,
             tileProviderFactory: widget.session.mapTileProviderFactory,
+            locationService: widget.session.locationService,
+            devicePosition: widget.session.devicePosition,
+            onDeviceLocated: (p) => widget.session.devicePosition = p,
           ),
           const SizedBox(height: 8),
           Text(

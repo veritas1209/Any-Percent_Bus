@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/transit.dart';
 import '../theme.dart';
 import 'transit_map.dart';
+import '../services/device_location.dart';
+import 'current_location_button.dart';
 
 typedef AdvancedLocationBuilder =
     Widget Function(
@@ -66,6 +68,9 @@ class LocationPicker extends StatefulWidget {
   final Json initial;
   final AdvancedLocationBuilder advancedBuilder;
   final MapTileProviderFactory? tileProviderFactory;
+  final DeviceLocation? locationService;
+  final Json? devicePosition;
+  final ValueChanged<Json>? onDeviceLocated;
   const LocationPicker({
     super.key,
     required this.network,
@@ -73,6 +78,9 @@ class LocationPicker extends StatefulWidget {
     required this.initial,
     required this.advancedBuilder,
     this.tileProviderFactory,
+    this.locationService,
+    this.devicePosition,
+    this.onDeviceLocated,
   });
   @override
   State<LocationPicker> createState() => _LocationPickerState();
@@ -132,6 +140,9 @@ class _LocationPickerState extends State<LocationPicker> {
         tileProviderFactory: widget.tileProviderFactory,
         back: () => setState(() => mode = 'place'),
         picked: pick,
+        locationService: widget.locationService,
+        devicePosition: widget.devicePosition,
+        onDeviceLocated: widget.onDeviceLocated,
       );
     }
     final matches = LocalPlaces.search(places ?? [], query, widget.initial);
@@ -174,6 +185,14 @@ class _LocationPickerState extends State<LocationPicker> {
               Wrap(
                 spacing: 8,
                 children: [
+                  if (widget.locationService != null)
+                    CurrentLocationButton(
+                      service: widget.locationService!,
+                      onLocated: (p) {
+                        widget.onDeviceLocated?.call(p);
+                        pick(p);
+                      },
+                    ),
                   TextButton.icon(
                     onPressed: () => setState(() => mode = 'map'),
                     icon: const Icon(Icons.map_outlined),
@@ -246,18 +265,26 @@ class _LocationMap extends StatefulWidget {
   final MapTileProviderFactory? tileProviderFactory;
   final VoidCallback back;
   final ValueChanged<Json> picked;
+  final DeviceLocation? locationService;
+  final Json? devicePosition;
+  final ValueChanged<Json>? onDeviceLocated;
   const _LocationMap({
     required this.title,
     required this.initial,
     required this.back,
     required this.picked,
     this.tileProviderFactory,
+    this.locationService,
+    this.devicePosition,
+    this.onDeviceLocated,
   });
   @override
   State<_LocationMap> createState() => _LocationMapState();
 }
 
 class _LocationMapState extends State<_LocationMap> {
+  final mapController = MapController();
+  late Json? gps = widget.devicePosition;
   late LatLng point = LatLng(
     numValue(widget.initial['lat']),
     numValue(widget.initial['lon']),
@@ -275,6 +302,7 @@ class _LocationMapState extends State<_LocationMap> {
   bool failed = false;
   @override
   void dispose() {
+    mapController.dispose();
     name.dispose();
     super.dispose();
   }
@@ -318,6 +346,7 @@ class _LocationMapState extends State<_LocationMap> {
                   children: [
                     FlutterMap(
                       key: const Key('location-picker-map'),
+                      mapController: mapController,
                       options: MapOptions(
                         initialCenter: point,
                         initialZoom: 16,
@@ -374,10 +403,46 @@ class _LocationMapState extends State<_LocationMap> {
                                 size: 44,
                               ),
                             ),
+                            if (gps != null)
+                              Marker(
+                                point: LatLng(
+                                  numValue(gps!['lat']),
+                                  numValue(gps!['lon']),
+                                ),
+                                width: 32,
+                                height: 32,
+                                child: const DeviceLocationDot(),
+                              ),
                           ],
                         ),
                       ],
                     ),
+                    if (widget.locationService != null)
+                      Positioned(
+                        right: 12,
+                        bottom: 38,
+                        child: Material(
+                          elevation: 3,
+                          color: Colors.white,
+                          shape: const CircleBorder(),
+                          child: CurrentLocationButton(
+                            service: widget.locationService!,
+                            iconOnly: true,
+                            onLocated: (p) {
+                              widget.onDeviceLocated?.call(p);
+                              setState(() {
+                                gps = p;
+                                point = LatLng(
+                                  numValue(p['lat']),
+                                  numValue(p['lon']),
+                                );
+                                name.text = '현재 위치';
+                              });
+                              mapController.move(point, 17);
+                            },
+                          ),
+                        ),
+                      ),
                     Positioned(
                       right: 2,
                       bottom: 2,

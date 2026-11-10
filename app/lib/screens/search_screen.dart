@@ -4,6 +4,8 @@ import '../models/transit.dart';
 import '../theme.dart';
 import 'conditions_screen.dart';
 import '../widgets/location_picker.dart';
+import '../widgets/current_location_button.dart';
+import '../services/device_location.dart';
 
 class SearchScreen extends StatefulWidget {
   final AppSession? session;
@@ -79,6 +81,9 @@ class _SearchScreenState extends State<SearchScreen> {
           title: from ? '출발 지점' : '도착 지점',
           initial: (from ? originPoint : destinationPoint)!,
           tileProviderFactory: session.mapTileProviderFactory,
+          locationService: session.locationService,
+          devicePosition: session.devicePosition,
+          onDeviceLocated: (point) => session.devicePosition = point,
           advancedBuilder: (routes, picked, back) => _StopPicker(
             session.network!,
             from ? '출발 정류장' : '도착 정류장',
@@ -131,12 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> settings() async {
-    final controller = TextEditingController(
-      text: const String.fromEnvironment(
-        'API_URL',
-        defaultValue: 'http://100.119.23.4:8001',
-      ),
-    );
+    final controller = TextEditingController(text: defaultApiUrl);
     String? problem;
     bool connecting = false;
     await showModalBottomSheet(
@@ -316,6 +316,20 @@ class _SearchScreenState extends State<SearchScreen> {
                         originPoint!,
                         () => select(true),
                         lime,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: CurrentLocationButton(
+                          key: const Key('use-current-origin'),
+                          service: session.locationService,
+                          color: lime,
+                          label: '현재 위치를 출발지로',
+                          onLocated: (point) => setState(() {
+                            session.devicePosition = point;
+                            originPoint = point;
+                            origin = point['id'];
+                          }),
+                        ),
                       ),
                       Row(
                         children: [
