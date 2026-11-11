@@ -29,11 +29,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
     });
     try {
       final r = await widget.session.repository.search(widget.query);
+      if (!mounted) return;
+      final base = (await widget.session.repository.loadNetwork())
+          .forServiceDay(widget.query.serviceDay);
+      if (!mounted) return;
       if (r.isNotEmpty && r.first['places'] != null) {
-        final base = await widget.session.repository.loadNetwork();
         widget.session.journeyNetwork = base.withPlaces(r.first['places']);
       } else {
-        widget.session.journeyNetwork = null;
+        widget.session.journeyNetwork = base;
       }
       if (mounted) setState(() => rows = r);
     } catch (e) {
@@ -49,18 +52,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
     child: ListView(
       padding: const EdgeInsets.all(24),
       children: [
-        const Eyebrow('A BETTER WAY TO ARRIVE.'),
-        const SizedBox(height: 10),
-        Text(
-          '빠름과 여유,\n당신의 선택은?',
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-        const SizedBox(height: 16),
         if (widget.query.originPoint != null ||
             widget.query.destinationPoint != null)
           Text(
             '${widget.query.originPoint?['name'] ?? ''} → ${widget.query.destinationPoint?['name'] ?? ''}',
-            style: const TextStyle(fontSize: 12, color: muted),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
           ),
         Text(
           '${clock(widget.query.departure)} 출발 · 보행 ${widget.query.walkingSpeed}m/s · ${widget.query.maxTransfers}회 이내 환승',
@@ -106,7 +102,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           const Text('연결할 수 있는 경로가 없습니다.', textAlign: TextAlign.center),
           const SizedBox(height: 10),
           const Text(
-            '보행거리·환승 횟수를 늘리거나 지점을 출입구 쪽으로 옮겨보세요. 보행 연결이나 원본 운행 자료가 부족하면 경로가 없을 수 있습니다.',
+            '보행거리나 환승 횟수를 늘려보세요.',
             textAlign: TextAlign.center,
             style: TextStyle(color: muted),
           ),
@@ -131,12 +127,13 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
           ),
         const SizedBox(height: 12),
-        Text(
-          widget.session.network!.observed
-              ? '기록 연결은 가상 지연을 적용한 비교입니다. 기록으로 연결되지 않으면 시각·성공률 없는 노선 연결 후보를 제공합니다. 실측 환승 성공률이 아닙니다.'
-              : '성공률은 입력한 지연 표본으로 계산한 시뮬레이션 추정입니다. 90백분위 도착시각은 실제 도착 보장이 아닙니다.',
-          style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
-        ),
+        if (!widget.session.network!.official)
+          Text(
+            widget.session.network!.observed
+                ? '기록 연결은 가상 지연을 적용한 비교입니다. 기록으로 연결되지 않으면 시각·성공률 없는 노선 연결 후보를 제공합니다. 실측 환승 성공률이 아닙니다.'
+                : '성공률은 입력한 지연 표본으로 계산한 시뮬레이션 추정입니다. 90백분위 도착시각은 실제 도착 보장이 아닙니다.',
+            style: const TextStyle(fontSize: 11, color: muted, height: 1.7),
+          ),
       ],
     ),
   );
@@ -292,7 +289,7 @@ class JourneyCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _metric(
-                        journey['transfers'] == 0 ? '환승' : '환승 성공 추정',
+                        journey['transfers'] == 0 ? '환승' : '시나리오 성공률',
                         journey['transfers'] == 0
                             ? '없음'
                             : '${((journey['successProbability'] as num) * 100).round()}%',
@@ -300,13 +297,13 @@ class JourneyCard extends StatelessWidget {
                       _metric(
                         '평균 도착',
                         (journey['noServiceProbability'] as num) > 0
-                            ? '추정 불가'
+                            ? '확인 불가'
                             : clock(journey['expectedArrival']),
                       ),
                       _metric(
-                        '90백분위',
+                        '여유 도착',
                         (journey['noServiceProbability'] as num) > .1
-                            ? '추정 불가'
+                            ? '확인 불가'
                             : clock(journey['p90Arrival']),
                       ),
                     ],

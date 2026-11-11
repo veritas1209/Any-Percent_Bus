@@ -81,13 +81,6 @@ class _SimulationScreenState extends State<SimulationScreen> {
       child: ListView(
         padding: const EdgeInsets.all(24),
         children: [
-          const Eyebrow('WHAT IF YOUR BUS IS LATE?'),
-          const SizedBox(height: 12),
-          Text(
-            '3분이 바꾸는\n나의 도착시간.',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          const SizedBox(height: 24),
           Row(
             children: [
               const Expanded(
@@ -175,7 +168,12 @@ class _SimulationScreenState extends State<SimulationScreen> {
           const SizedBox(height: 24),
           Row(
             children: [
-              const Expanded(child: Eyebrow('RECORDING CLOCK')),
+              const Expanded(
+                child: Text(
+                  '버스 재생',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
               DropdownButton<double>(
                 value: rate,
                 items: [
@@ -193,7 +191,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
               TextButton.icon(
                 onPressed: play,
                 icon: Icon(ticker == null ? Icons.play_arrow : Icons.pause),
-                label: Text(ticker == null ? '버스 재생' : '일시정지'),
+                label: Text(ticker == null ? '재생' : '일시정지'),
               ),
             ],
           ),
@@ -219,16 +217,12 @@ class _SimulationScreenState extends State<SimulationScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${widget.session.network!.observed ? '기록 시각' : '시연 시각'} ${clockSeconds(widget.query.departure + displayed)} · ${rate.toInt()}배속 · 현재 운행 위치가 아닙니다.',
+            '${clockSeconds(widget.query.departure + displayed)} · ${rate.toInt()}배속',
             style: const TextStyle(fontSize: 10, color: muted),
           ),
           const SizedBox(height: 24),
           ...timeline(widget.session, scenario['legs']),
           const SizedBox(height: 12),
-          const Text(
-            '이 화면은 선택한 경로를 유지하며 후속 차량을 다시 선택합니다. 다른 경로를 비교하려면 결과 화면으로 돌아가 조건을 변경하세요.',
-            style: TextStyle(fontSize: 11, color: muted, height: 1.7),
-          ),
         ],
       ),
     );

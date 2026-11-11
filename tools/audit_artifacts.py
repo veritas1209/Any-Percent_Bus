@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 apk=ROOT/'app/build/app/outputs/flutter-apk/app-release.apk'
 result={'apkBytes':apk.stat().st_size,'apkSha256':hashlib.sha256(apk.read_bytes()).hexdigest(),'datasets':[]}
 with zipfile.ZipFile(apk) as archive:
-    for name in ('network.json','observed_network.json','places.json','walk_graph.bin'):
+    for name in ('network.json','observed_network.json','service_network.json','places.json','walk_graph.bin'):
         raw=(ROOT/'shared'/name).read_bytes()
         assert archive.read('assets/flutter_assets/assets/data/'+name)==raw, f'Outdated APK asset: {name}'
         assert (ROOT/'app/build/web/assets/assets/data'/name).read_bytes()==raw, f'Outdated web asset: {name}'

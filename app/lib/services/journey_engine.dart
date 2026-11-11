@@ -2,6 +2,19 @@ import 'dart:math';
 import '../models/transit.dart';
 import 'topology.dart';
 
+int firstDeparture(List<num> departures, double minimum) {
+  var low = 0, high = departures.length;
+  while (low < high) {
+    final middle = (low + high) ~/ 2;
+    if (departures[middle] < minimum - 1e-9) {
+      low = middle + 1;
+    } else {
+      high = middle;
+    }
+  }
+  return low;
+}
+
 class JourneyEngine {
   final Network network;
   JourneyEngine(this.network);
@@ -31,6 +44,8 @@ class JourneyEngine {
   }
 
   List<Json> search(SearchQuery q) {
+    final selected = network.forServiceDay(q.serviceDay);
+    if (!identical(selected, network)) return JourneyEngine(selected).search(q);
     if (q.origin == q.destination) return [];
     final layers = reachableStops(
       timedRoutes,
@@ -146,18 +161,19 @@ class JourneyEngine {
         for (final access in accesses) {
           for (final (route, bi) in boards[access['stop']] ?? <(Json, int)>[]) {
             final used = state['used'] as Set<String>;
-            final stops = List<String>.from(route['stops']);
+            final stops = (route['stops'] as List).cast<String>();
             if (used.contains(route['id']) || !stops.contains(access['stop'])) {
               continue;
             }
-            final departures = List<num>.from(route['departures']);
-            final offsets = List<num>.from(route['offsets']);
+            final departures = (route['departures'] as List).cast<num>();
+            final offsets = (route['offsets'] as List).cast<num>();
             final buffer = used.isEmpty ? 0.0 : 0.5;
-            final options = departures.where(
-              (d) => d + offsets[bi] >= numValue(access['now']) + buffer,
+            final index = firstDeparture(
+              departures,
+              numValue(access['now']) + buffer - offsets[bi],
             );
-            if (options.isEmpty) continue;
-            final trip = options.first;
+            if (index == departures.length) continue;
+            final trip = departures[index];
             for (var ai = bi + 1; ai < stops.length; ai++) {
               if (trip + offsets[ai] > cutoff) continue;
               if (!layers[q.maxTransfers - round].contains(stops[ai])) continue;
@@ -262,7 +278,16 @@ class JourneyEngine {
     return evaluated;
   }
 
-  Json replay(Json journey, SearchQuery q, [Map<String, double>? draws]) {
+  Json replay(
+    Json journey,
+    SearchQuery q, [
+    Map<String, double>? draws,
+    double Function(Json, num)? sampleDelay,
+  ]) {
+    final selected = network.forServiceDay(q.serviceDay);
+    if (!identical(selected, network)) {
+      return JourneyEngine(selected).replay(journey, q, draws, sampleDelay);
+    }
     double now = q.departure;
     var first = true;
     double? margin;
@@ -277,9 +302,23 @@ class JourneyEngine {
         final bi = leg['boardIndex'] as int, ai = leg['alightIndex'] as int;
         num? chosen;
         double depart = 0, arrive = 0;
-        for (final num trip in r['departures']) {
+        final departures = (r['departures'] as List).cast<num>();
+        final maximumDelay = draws != null || sampleDelay != null
+            ? (r['delaySamples'] as List).cast<num>().reduce(max).toDouble()
+            : 0.0;
+        final start = firstDeparture(
+          departures,
+          now +
+              (first ? 0 : .5) -
+              numValue(r['offsets'][bi]) -
+              maximumDelay -
+              (first ? q.delay : 0),
+        );
+        for (var index = start; index < departures.length; index++) {
+          final trip = departures[index];
           if (first && trip < (leg['trip'] as num)) continue;
-          final d = draws?['${r['id']}:$trip'] ?? 0;
+          final d =
+              sampleDelay?.call(r, trip) ?? draws?['${r['id']}:$trip'] ?? 0;
           final extra = first && trip == leg['trip'] ? q.delay : 0.0;
           final test = trip + numValue(r['offsets'][bi]) + d + extra;
           if (test >= now + (first ? 0 : 0.5)) {
@@ -323,14 +362,24 @@ class JourneyEngine {
     }.toList()..sort();
     for (var i = 0; i < q.samples; i++) {
       final draws = <String, double>{};
-      for (final id in relevant) {
+      for (final id in network.official ? <String>[] : relevant) {
         final r = network.routes[id]!;
         final ds = List<num>.from(r['delaySamples']);
         for (final trip in r['departures']) {
           draws['${r['id']}:$trip'] = ds[rng.nextInt(ds.length)].toDouble();
         }
       }
-      final sample = replay(j, q, draws);
+      final sample = network.official
+          ? replay(
+              j,
+              q,
+              null,
+              (route, trip) => draws.putIfAbsent('${route['id']}:$trip', () {
+                final delays = route['delaySamples'] as List;
+                return numValue(delays[rng.nextInt(delays.length)]);
+              }),
+            )
+          : replay(j, q, draws);
       if (sample['arrival'] == null) {
         noService++;
         times.add(max(q.departure + 240, 1440));

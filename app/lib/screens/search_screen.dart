@@ -138,6 +138,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> settings() async {
     final controller = TextEditingController(text: defaultApiUrl);
     String? problem;
+    String dataset = session.network!.official
+        ? 'service'
+        : session.network!.dataset;
     bool connecting = false;
     await showModalBottomSheet(
       context: context,
@@ -160,13 +163,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  '경로 계산은 오프라인으로 가능합니다. 실제 지도는 인터넷 연결이 필요하며, 백엔드 주소는 아래에서 설정합니다.',
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'BusTracker 실제 버스 번호·정류장·운행 기록을 사용합니다.\n2025.12.31 07:00~07:59 기록이며 현재 실시간 운행은 아닙니다.',
-                  style: TextStyle(fontSize: 12, color: muted, height: 1.6),
+                SegmentedButton<String>(
+                  segments: const [
+                    ButtonSegment(value: 'service', label: Text('공식 시간표')),
+                    ButtonSegment(value: 'observed', label: Text('GPS 기록')),
+                  ],
+                  selected: {dataset == 'demo' ? 'observed' : dataset},
+                  onSelectionChanged: connecting
+                      ? null
+                      : (v) => local(() => dataset = v.first),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -195,7 +200,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           try {
                             await session.connect(
                               controller.text.trim(),
-                              dataset: 'observed',
+                              dataset: dataset,
                               accept: () => context.mounted,
                             );
                             if (context.mounted) {
@@ -219,7 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ? null
                       : () async {
                           await session.useOffline(
-                            dataset: 'observed',
+                            dataset: dataset,
                             accept: () => context.mounted,
                           );
                           if (context.mounted) {
@@ -229,7 +234,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             }
                           }
                         },
-                  child: const Text('운행 기록을 오프라인으로 사용'),
+                  child: const Text('오프라인으로 사용'),
                 ),
               ],
             ),
@@ -285,24 +290,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                const Eyebrow('TRANSIT, BEYOND THE TRANSFER.'),
-                const SizedBox(height: 12),
-                const Text(
-                  '가장 빠르게.\n놓쳐도, 괜찮게.',
-                  style: TextStyle(
-                    fontSize: 38,
-                    height: 1.23,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: -1.8,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                const Text(
-                  '버스가 3분 늦으면 어떻게 될까요?\n환승의 다음까지 계산하는 나의 이동 플랜.',
-                  style: TextStyle(color: muted, height: 1.7),
-                ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 24),
                 Container(
                   decoration: BoxDecoration(
                     color: ink,
@@ -406,7 +394,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (n.observed) ...[
+                if (n.realRoutes) ...[
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,
@@ -427,7 +415,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   const SizedBox(height: 8),
                 ],
                 Text(
-                  n.observed
+                  n.official
+                      ? '울산교통관리센터 · ${n.data['retrievedDate']}'
+                      : n.observed
                       ? '2025.12.31 07:00~07:59 · ${n.data['observedRuns'] ?? n.routes.length}개 기록 구간\n전체 노선·정류장을 검색합니다. 시각 자료가 없으면 노선 연결 후보로 안내합니다.\n통과시각은 근사치, 지연은 가상, 보행은 도로망 추정입니다.'
                       : '운행시각과 지연은 시뮬레이션 데이터입니다.\n실제 버스 이용 안내로 사용할 수 없습니다.',
                   style: const TextStyle(
@@ -436,10 +426,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 1.6,
                   ),
                 ),
-                const SizedBox(height: 24),
-                const Divider(),
-                const SizedBox(height: 8),
-                const Eyebrow('01 / SEARCH  →  02 / PLAN  →  03 / GO'),
               ],
             ),
           ),
@@ -642,7 +628,9 @@ class _StopPickerState extends State<_StopPicker> {
                                 : rows[i]['name'],
                           ),
                           subtitle: Text(
-                            routeMode
+                            routeMode && n.official
+                                ? '${rows[i]['name']} · ${(rows[i]['stops'] as List).length}개 정류장'
+                                : routeMode
                                 ? (rows[i]['routeSource'] ==
                                           'gps_proximity_inferred'
                                       ? '${(rows[i]['stops'] as List).length}개 정류장 · GPS 근접 추정 · 부분 구간'

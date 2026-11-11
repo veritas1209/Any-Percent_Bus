@@ -486,7 +486,8 @@ class _RouteMapState extends State<_RouteMap> {
                       width: 72,
                       height: 28,
                       child: Semantics(
-                        label: '${vehicle.route['number']}번 기록시각 기준 버스 위치',
+                        label:
+                            '${vehicle.route['number']}번 ${widget.network.official ? '시간표' : '기록시각'} 기준 버스 위치',
                         child: Container(
                           decoration: BoxDecoration(
                             color: blue,

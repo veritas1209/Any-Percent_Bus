@@ -25,6 +25,7 @@ class WalkingGraph:
 
     def point(self,n):return self.coords[n*2]/1e6,self.coords[n*2+1]/1e6
 
+    @lru_cache(maxsize=8192)
     def snap(self,point):
         x,y=math.floor(point[1]*910),math.floor(point[0]*1110);edges=set()
         for dx in (-1,0,1):

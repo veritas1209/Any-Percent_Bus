@@ -72,9 +72,12 @@ class RouteMapGeometry {
     for (final id in stopIds) markerPoints[id]!,
     for (final segment in segments) ...segment.points,
   ];
-  String get description =>
-      legs.any((l) => l['kind'] == 'ride') &&
-          legs.where((l) => l['kind'] == 'ride').every((l) => l['trip'] == null)
+  String get description => network.official
+      ? '울산교통관리센터'
+      : legs.any((l) => l['kind'] == 'ride') &&
+            legs
+                .where((l) => l['kind'] == 'ride')
+                .every((l) => l['trip'] == null)
       ? 'BusTracker 노선 연결 · 도로망 보정·추정 · 운행시각 미확인'
       : network.data['geometryVersion'] == null
       ? '정류장 연결선 · 차량은 시연시각 기준 보간'
@@ -157,6 +160,8 @@ class RouteMapGeometry {
         ? 'unavailable'
         : shapes.any((s) => s['source'] == 'road_estimate')
         ? 'road_estimate'
+        : network.official
+        ? 'ulsan_its'
         : 'gps_road_matched';
     return RouteMapSegment(leg, ids, paths, source);
   }

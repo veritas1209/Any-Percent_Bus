@@ -204,13 +204,14 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      final session = AppSession();
+      final session = AppSession()
+        ..repository = AssetTransitRepository(dataset: 'observed');
       await tester.runAsync(session.initialize);
       expect(session.network!.observed, isTrue);
       session.repository = MemoryRepository(session.network!);
       await tester.pumpWidget(AnyPercentApp(session: session));
       await tester.pumpAndSettle();
-      expect(find.text('가장 빠르게.\n놓쳐도, 괜찮게.'), findsOneWidget);
+      expect(find.text('현재 위치를 출발지로'), findsOneWidget);
       expect(find.text('성남동'), findsOneWidget);
       expect(session.network!.routeNumbers, contains('722'));
       expect(find.text('가상 시연'), findsNothing);
@@ -226,7 +227,7 @@ void main() {
       await tester.ensureVisible(find.text('나의 경로 만들기'));
       await tester.tap(find.text('나의 경로 만들기'));
       await tester.pumpAndSettle();
-      expect(find.text('어떤 속도로\n이동할까요?'), findsOneWidget);
+      expect(find.byType(ConditionsScreen), findsOneWidget);
       expect(find.text('07:10'), findsOneWidget);
       await tester.tap(find.text('느리게 0.8m/s'));
       await tester.pumpAndSettle();
@@ -240,7 +241,9 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    final session = AppSession()..mapTileProviderFactory = MemoryMapTiles.new;
+    final session = AppSession()
+      ..repository = AssetTransitRepository(dataset: 'observed')
+      ..mapTileProviderFactory = MemoryMapTiles.new;
     await tester.runAsync(session.initialize);
     session.repository = MemoryRepository(session.network!);
     await tester.pumpWidget(AnyPercentApp(session: session));
@@ -260,7 +263,7 @@ void main() {
     expect(find.text('124번'), findsWidgets);
     expect(find.textContaining('번'), findsWidgets);
     expect(find.text('A · 동구 연결'), findsNothing);
-    await tester.runAsync(() => session.useOffline());
+    await tester.runAsync(() => session.useOffline(dataset: 'observed'));
     expect(session.network!.observed, isTrue);
     expect(
       session.network!.routeLabel(session.network!.routes.keys.first),

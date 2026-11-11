@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import math
 import random
+from bisect import bisect_left
 from collections import defaultdict
 from dataclasses import dataclass,replace
 from .topology import connections,reachable,labels,walking_bounds
@@ -22,6 +23,7 @@ class Query:
     seed: int = 42
     origin_point: dict | None = None
     destination_point: dict | None = None
+    service_day: str = 'weekday'
 
 
 def quantile(values, q):
@@ -29,10 +31,24 @@ def quantile(values, q):
     return ordered[min(len(ordered)-1, math.ceil(len(ordered)*q)-1)]
 
 
+class SampleDelays:
+    """Draw a trip's delay when the simulation first reaches that trip."""
+    def __init__(self, routes, rng):
+        self.routes = routes
+        self.rng = rng
+        self.values = {}
+
+    def get(self, key, default=0):
+        if key not in self.values:
+            self.values[key] = self.rng.choice(self.routes[key[0]]['delaySamples'])
+        return self.values[key]
+
+
 class Engine:
     def __init__(self, network,walking_graph=None):
         self.network = network
         self.walking_graph=walking_graph
+        self.day_engines = {}
         self.stops = {s['id']: s for s in network['stops']}
         self.routes = {r['id']: r for r in network['routes']}
         self.timed_routes=[r for r in self.routes.values() if r['departures']]
@@ -42,6 +58,11 @@ class Engine:
         for f in network.get('footpaths',[]):self.walks[f['from']].append(f)
 
     def search(self, q: Query):
+        if self.network.get('timetableDays') and q.service_day != self.network.get('serviceDay', 'weekday'):
+            if q.service_day not in self.day_engines:
+                routes = [dict(r, departures=r['departuresByDay'].get(q.service_day, [])) for r in self.network['routes']]
+                self.day_engines[q.service_day] = Engine(dict(self.network, routes=routes, serviceDay=q.service_day), self.walking_graph)
+            return self.day_engines[q.service_day].search(q)
         if q.origin_point is not None or q.destination_point is not None:
             from .walking import default_graph,prepare_locations
             augmented,places=prepare_locations(self.network,q,self.walking_graph or default_graph())
@@ -85,9 +106,10 @@ class Engine:
                         if r['id'] in used:
                             continue
                         buffer = 0.5 if used else 0
-                        trip = next((d for d in r['departures'] if d+r['offsets'][bi] >= ready+buffer), None)
-                        if trip is None:
+                        index = bisect_left(r['departures'], ready + buffer - r['offsets'][bi] - 1e-9)
+                        if index == len(r['departures']):
                             continue
+                        trip = r['departures'][index]
                         for ai in range(bi+1,len(r['stops'])):
                             if trip+r['offsets'][ai]>cutoff:continue
                             endstop = r['stops'][ai]
@@ -132,7 +154,10 @@ class Engine:
                 bi, ai = leg['boardIndex'],leg['alightIndex']
                 # A scenario delay belongs to a vehicle trip and is shared by every stop on it.
                 selected = None
-                for trip in r['departures']:
+                maximum_delay = max(r['delaySamples']) if draws is not None else 0
+                earliest_trip = now + (0 if first else .5) - r['offsets'][bi] - maximum_delay - (q.delay if first else 0)
+                start = bisect_left(r['departures'], earliest_trip - 1e-9)
+                for trip in r['departures'][start:]:
                     if first and trip < leg['trip']:
                         continue
                     d = (draws or {}).get((r['id'],trip),0)
@@ -163,7 +188,10 @@ class Engine:
         rng = random.Random(q.seed)
         relevant={l['routeId'] for l in j['legs'] if l['kind']=='ride'}
         for _ in range(q.samples):
-            draws = {(rid,trip): rng.choice(self.routes[rid]['delaySamples']) for rid in sorted(relevant) for trip in self.routes[rid]['departures']}
+            draws = SampleDelays(self.routes, rng) if self.network.get('dataset') == 'service' else {
+                (rid, trip): rng.choice(self.routes[rid]['delaySamples'])
+                for rid in sorted(relevant) for trip in self.routes[rid]['departures']
+            }
             sample = self.replay(j,q,draws)
             if sample['arrival'] is None:
                 no_service += 1

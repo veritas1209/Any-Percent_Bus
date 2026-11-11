@@ -25,7 +25,9 @@ List<Json> runLocal(Json payload) {
     destinationPoint: payload['destination_point'] == null
         ? null
         : Json.from(payload['destination_point']),
+    serviceDay: payload['service_day'] ?? 'weekday',
   );
+  network = network.forServiceDay(q.serviceDay);
   var places = <Json>[];
   if (q.originPoint != null || q.destinationPoint != null) {
     (network, places) = prepareLocations(
@@ -46,6 +48,7 @@ List<Json> runLocal(Json payload) {
       delay: q.delay,
       samples: q.samples,
       seed: q.seed,
+      serviceDay: q.serviceDay,
     ),
   );
   for (final j in rows) {
@@ -62,15 +65,21 @@ abstract class TransitRepository {
 
 class AssetTransitRepository implements TransitRepository {
   final String dataset;
-  AssetTransitRepository({this.dataset = 'observed'});
+  AssetTransitRepository({this.dataset = 'service'});
   Network? _network;
   Future<Uint8List>? _walk;
   @override
-  String get label => dataset == 'observed' ? 'BusTracker 운행 기록' : '로컬 데모';
+  String get label => dataset == 'service'
+      ? '울산 공식 시간표 · 오프라인'
+      : dataset == 'observed'
+      ? 'BusTracker 운행 기록'
+      : '로컬 데모';
   @override
   Future<Network> loadNetwork() async => _network ??= Network.decode(
     await rootBundle.loadString(
-      dataset == 'observed'
+      dataset == 'service'
+          ? 'assets/data/service_network.json'
+          : dataset == 'observed'
           ? 'assets/data/observed_network.json'
           : 'assets/data/network.json',
     ),
@@ -80,7 +89,7 @@ class AssetTransitRepository implements TransitRepository {
     final network = await loadNetwork();
     return compute(runLocal, <String, dynamic>{
       ...query.toJson(),
-      'network': network.data,
+      'network': network.routingData,
       if (query.originPoint != null || query.destinationPoint != null)
         'walkGraph': await (_walk ??= rootBundle
             .load('assets/data/walk_graph.bin')
@@ -95,10 +104,14 @@ class ApiTransitRepository implements TransitRepository {
   Network? _network;
   final String baseUrl;
   final String dataset;
-  ApiTransitRepository(String baseUrl, {this.dataset = 'observed'})
+  ApiTransitRepository(String baseUrl, {this.dataset = 'service'})
     : baseUrl = baseUrl.replaceAll(RegExp(r'/+$'), '');
   @override
-  String get label => dataset == 'observed' ? 'BusTracker · 백엔드 연결' : '백엔드 연결';
+  String get label => dataset == 'service'
+      ? '울산 공식 시간표 · 서버 연결'
+      : dataset == 'observed'
+      ? 'BusTracker · 백엔드 연결'
+      : '백엔드 연결';
   @override
   Future<Network> loadNetwork() async {
     if (_network != null) return _network!;

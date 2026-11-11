@@ -23,10 +23,19 @@ class ConditionsScreen extends StatefulWidget {
 class _ConditionsScreenState extends State<ConditionsScreen> {
   double departure = 540, speed = 1.2, walk = 500;
   int transfers = 2;
+  String serviceDay = 'weekday';
   @override
   void initState() {
     super.initState();
-    departure = widget.session.network!.defaultDeparture;
+    final now = DateTime.now();
+    departure = widget.session.network!.official
+        ? (now.hour * 60 + now.minute).toDouble()
+        : widget.session.network!.defaultDeparture;
+    serviceDay = now.weekday == 6
+        ? 'saturday'
+        : now.weekday == 7
+        ? 'holiday'
+        : 'weekday';
   }
 
   @override
@@ -49,6 +58,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               walkingSpeed: speed,
               maxWalk: walk,
               maxTransfers: transfers,
+              serviceDay: serviceDay,
             ),
           ),
         ),
@@ -57,13 +67,18 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
     child: ListView(
       padding: const EdgeInsets.all(24),
       children: [
-        const Eyebrow('YOUR PACE, YOUR ROUTE.'),
-        const SizedBox(height: 12),
-        Text(
-          '어떤 속도로\n이동할까요?',
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-        const SizedBox(height: 28),
+        if (widget.session.network!.official) ...[
+          SegmentedButton<String>(
+            segments: const [
+              ButtonSegment(value: 'weekday', label: Text('평일')),
+              ButtonSegment(value: 'saturday', label: Text('토요일')),
+              ButtonSegment(value: 'holiday', label: Text('일·공휴일')),
+            ],
+            selected: {serviceDay},
+            onSelectionChanged: (v) => setState(() => serviceDay = v.first),
+          ),
+          const SizedBox(height: 24),
+        ],
         _label('출발 시각'),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -85,12 +100,13 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
             }
           },
         ),
-        Text(
-          widget.session.network!.observed
-              ? '관측 범위 07:00~07:59 · 기본 07:10. 범위 밖 운행은 알 수 없습니다.'
-              : '시연 추천 시간 09:00 · 운영 종료 이후에는 경로가 없을 수 있어요.',
-          style: const TextStyle(fontSize: 11, color: muted),
-        ),
+        if (!widget.session.network!.official)
+          Text(
+            widget.session.network!.observed
+                ? '관측 범위 07:00~07:59 · 기본 07:10. 범위 밖 운행은 알 수 없습니다.'
+                : '시연 추천 시간 09:00 · 운영 종료 이후에는 경로가 없을 수 있어요.',
+            style: const TextStyle(fontSize: 11, color: muted),
+          ),
         const SizedBox(height: 28),
         _label('보행 속도'),
         const SizedBox(height: 12),
@@ -127,18 +143,6 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
           ],
           selected: {transfers},
           onSelectionChanged: (v) => setState(() => transfers = v.first),
-        ),
-        const SizedBox(height: 32),
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: const Text(
-            'Any%는 기준 예측에서 빠른 경로를, Safe는 지연 시나리오에서 도착시간이 안정적인 경로를 보여줍니다.',
-            style: TextStyle(fontSize: 13, height: 1.7),
-          ),
         ),
       ],
     ),

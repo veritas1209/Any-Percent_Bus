@@ -1,0 +1,2734 @@
+{
+  "sourceUrl": "https://its.ulsan.kr/route/timetable.do",
+  "retrievedDate": "2026-11-11",
+  "routes": 534,
+  "busNumbers": 203,
+  "stops": 3670,
+  "footpaths": 7818,
+  "departuresByDay": {
+    "weekday": 8122,
+    "saturday": 6689,
+    "holiday": 6401
+  },
+  "routesMissingAllTimetables": [
+    "196000776",
+    "195000233",
+    "388023001",
+    "388023002",
+    "193000059",
+    "196000761",
+    "196000764",
+    "196000765"
+  ],
+  "omittedRoutesWithoutTwoStops": [],
+  "excludedSpecialCalendarRoutes": [
+    {
+      "routeId": "193000066",
+      "number": "9001",
+      "reason": "Tour service requires a separate operating-date calendar"
+    },
+    {
+      "routeId": "193000067",
+      "number": "9002",
+      "reason": "Tour service requires a separate operating-date calendar"
+    },
+    {
+      "routeId": "196000749",
+      "number": "9003",
+      "reason": "Tour service requires a separate operating-date calendar"
+    }
+  ],
+  "skippedTimeValues": [],
+  "sha256": "e198b65970ada6e175cc3a51e136fe8035e38daabdea832ad994369c4b3d1538",
+  "estimatedStopTimes": {
+    "movingKmh": 22,
+    "dwellSecondsPerStop": 20
+  },
+  "files": [
+    {
+      "routeId": "388000131",
+      "sha256": "212e7dc3b37f43b4bbd4331aa5853ffdaa4123670e3fac3da45523c19d120571",
+      "retrievedAt": "2026-11-11T01:16:52.152079+00:00"
+    },
+    {
+      "routeId": "388000132",
+      "sha256": "b038a2c6da9ab0914dbcf1664dcf4ca6fc658257da97924ba539852ce02a8aa9",
+      "retrievedAt": "2026-11-11T01:16:52.155071+00:00"
+    },
+    {
+      "routeId": "194000076",
+      "sha256": "caddb13076813cad35000b594c076fd140d0937b29727be5d32118c906774a9d",
+      "retrievedAt": "2026-11-11T01:16:52.160764+00:00"
+    },
+    {
+      "routeId": "194000077",
+      "sha256": "5f447f6e4c6614c7dc64ab74ec129f282c8613f0f2fa3147e7b8844320da264c",
+      "retrievedAt": "2026-11-11T01:16:52.164605+00:00"
+    },
+    {
+      "routeId": "194000078",
+      "sha256": "a76da5380d31b2b864951700bd5da6c5532190d20dff7f7a596d89748a7dfbbd",
+      "retrievedAt": "2026-11-11T01:16:52.167616+00:00"
+    },
+    {
+      "routeId": "194000079",
+      "sha256": "430a3f72816538831c9bbd8b68015ec90a327b5983aa8f2aebd45be718f0183c",
+      "retrievedAt": "2026-11-11T01:16:52.172313+00:00"
+    },
+    {
+      "routeId": "194000080",
+      "sha256": "eaa6e45e33698f281ba48f221fba3b76fbdc893fd3908f890fc73e6117d2ecb9",
+      "retrievedAt": "2026-11-11T01:17:08.226118+00:00"
+    },
+    {
+      "routeId": "194000081",
+      "sha256": "1af2898df777ba01f42a9c2bd1976503b5f2ad060272a90966e68970b07e9118",
+      "retrievedAt": "2026-11-11T01:17:08.229623+00:00"
+    },
+    {
+      "routeId": "194000082",
+      "sha256": "984b73fefdcf6e32eab7ca11d1c25821e0ca7aba8565997e9c033fe2016133b9",
+      "retrievedAt": "2026-11-11T01:17:08.233141+00:00"
+    },
+    {
+      "routeId": "194000083",
+      "sha256": "d1d2968618901316310a1504be2659e18ac12d2183bb93fd7c04ecf6b44bc6cf",
+      "retrievedAt": "2026-11-11T01:17:08.237268+00:00"
+    },
+    {
+      "routeId": "194000084",
+      "sha256": "6da476f9ef3ba7b28cb284f98b266baedb68964b21abb2db4bc68639b033bbd6",
+      "retrievedAt": "2026-11-11T01:17:08.241124+00:00"
+    },
+    {
+      "routeId": "194000085",
+      "sha256": "a8a2bb9fa703a8a14e0c9fdaf300bf88ba11116414486fe73b4fe832020c7680",
+      "retrievedAt": "2026-11-11T01:17:08.244121+00:00"
+    },
+    {
+      "routeId": "194000475",
+      "sha256": "7a8746d45d39c931cd10ae1f21ccfba75375679460e7334af79131e428ff4ad9",
+      "retrievedAt": "2026-11-11T01:17:20.163326+00:00"
+    },
+    {
+      "routeId": "194000476",
+      "sha256": "b6f01db919d986e5613e14dae171d679c0a7dcc9a5a96f6cbee9a09edf6f9538",
+      "retrievedAt": "2026-11-11T01:17:20.165851+00:00"
+    },
+    {
+      "routeId": "194000086",
+      "sha256": "9d2b0f3529262c27e4b198d9a807e6862ce1aee3436acdf23bef4bb8850be70f",
+      "retrievedAt": "2026-11-11T01:17:20.168851+00:00"
+    },
+    {
+      "routeId": "194000087",
+      "sha256": "80fdbd5be5aae7d3960f92e80ff5fba8e63a5320ce136c0ccb5d967f301ae8fe",
+      "retrievedAt": "2026-11-11T01:17:20.171846+00:00"
+    },
+    {
+      "routeId": "194000088",
+      "sha256": "1d114573e2b3e84b4479ba61b8c0705a8021258286d11bc4449f1f8a2fb18d69",
+      "retrievedAt": "2026-11-11T01:17:20.175857+00:00"
+    },
+    {
+      "routeId": "194000089",
+      "sha256": "d61df1e4e558b376dac4530a4f9e6c3f133be6cf65ea3c7079e547a2ddf8afc0",
+      "retrievedAt": "2026-11-11T01:17:20.183538+00:00"
+    },
+    {
+      "routeId": "194000090",
+      "sha256": "6b1983707fbe1f8c03c8284353b8c004185aa9414d05ae20969c79d83a857bbc",
+      "retrievedAt": "2026-11-11T01:17:25.353786+00:00"
+    },
+    {
+      "routeId": "194000777",
+      "sha256": "30deea3aa70a22593eb7fac3cb47ab8f10a0830c67f8171b33d6766b1d87440b",
+      "retrievedAt": "2026-11-11T01:17:25.359871+00:00"
+    },
+    {
+      "routeId": "194000778",
+      "sha256": "0b62028987ea9ae525f65eccb590dce5490ea5fb425d593794a55584c42e8e70",
+      "retrievedAt": "2026-11-11T01:17:25.366147+00:00"
+    },
+    {
+      "routeId": "194000779",
+      "sha256": "8633a5279433fa4afac101877c8fe45537c3d76fea606c9810298a8da89e0a99",
+      "retrievedAt": "2026-11-11T01:17:25.371716+00:00"
+    },
+    {
+      "routeId": "194000091",
+      "sha256": "2305b33423d65de057bc860442107e48ad491a74321bdfc7ccc42102bb17b8bd",
+      "retrievedAt": "2026-11-11T01:17:25.376764+00:00"
+    },
+    {
+      "routeId": "194000092",
+      "sha256": "0cef70b841eb3eb44d75adec22c8f46d63438da6c781af9f55c99ad75588e8c8",
+      "retrievedAt": "2026-11-11T01:17:25.381569+00:00"
+    },
+    {
+      "routeId": "194000093",
+      "sha256": "d86eb6d18783fc6119f6621c5db88c72b2fd0a5eb7811340b602fc4882b826f2",
+      "retrievedAt": "2026-11-11T01:17:29.104218+00:00"
+    },
+    {
+      "routeId": "194000772",
+      "sha256": "adf242e4651c00ddf518ad90459394e4b7c854dcc5a705cd0fd32fdc4f31bd41",
+      "retrievedAt": "2026-11-11T01:17:29.108565+00:00"
+    },
+    {
+      "routeId": "194000773",
+      "sha256": "9f299e303b9c565730560f82452f06973a14c0d6b8af655ea2502ef179804ed0",
+      "retrievedAt": "2026-11-11T01:17:29.113311+00:00"
+    },
+    {
+      "routeId": "194000636",
+      "sha256": "01a8336871fe9adcab62547c0ce6367768737f20c7bc1ba01ac76cfb92994211",
+      "retrievedAt": "2026-11-11T01:17:29.116781+00:00"
+    },
+    {
+      "routeId": "194000637",
+      "sha256": "ef583267b9c04a3cbf394cedd857431e9b2f22929062dcc3ed92ab6532119322",
+      "retrievedAt": "2026-11-11T01:17:29.120561+00:00"
+    },
+    {
+      "routeId": "194000097",
+      "sha256": "2fd9b21b802ddc5ca105c11d38ed5394b15ccdce57d5c2eaa427f61f907e946a",
+      "retrievedAt": "2026-11-11T01:17:29.125581+00:00"
+    },
+    {
+      "routeId": "194000098",
+      "sha256": "a68e2810e784ad9d0527e7031a4d9b3be4b3da4a8e6be167996beb0b662bae90",
+      "retrievedAt": "2026-11-11T01:17:32.403452+00:00"
+    },
+    {
+      "routeId": "194000099",
+      "sha256": "8a9b883f8629854a677aa02b279b8c37a5bf6dbf692733321b28c49fe9b02919",
+      "retrievedAt": "2026-11-11T01:17:32.408454+00:00"
+    },
+    {
+      "routeId": "194000100",
+      "sha256": "776aafa9c660bad9c549c0fabb19d74aa53c0f83e813c2371ddc65aad72b9445",
+      "retrievedAt": "2026-11-11T01:17:32.412464+00:00"
+    },
+    {
+      "routeId": "194000101",
+      "sha256": "2851c9662323ca29ae5213394b342ce8484beb06ae34316d77c0d68bf5890adb",
+      "retrievedAt": "2026-11-11T01:17:32.417447+00:00"
+    },
+    {
+      "routeId": "194000102",
+      "sha256": "10d139b834066f7e248ac370c3f6313c28adfdcb9b315600f17de53eaa0d01d5",
+      "retrievedAt": "2026-11-11T01:17:32.420452+00:00"
+    },
+    {
+      "routeId": "194000103",
+      "sha256": "fb2ff76ff8cb70b9e0352263eab14645a9079b4c450e79e93d4ebbe6b33b60e6",
+      "retrievedAt": "2026-11-11T01:17:32.424464+00:00"
+    },
+    {
+      "routeId": "195000146",
+      "sha256": "c06bd00023fe728e3306f7fb46897d8a59ed5fbc3717c92d5dc21f2ffd74e9b5",
+      "retrievedAt": "2026-11-11T01:17:35.211821+00:00"
+    },
+    {
+      "routeId": "195000147",
+      "sha256": "5f6fd87f35fa08cbea401c25587c080084a418c304391e5777e519b0be66fc6d",
+      "retrievedAt": "2026-11-11T01:17:35.215828+00:00"
+    },
+    {
+      "routeId": "195000148",
+      "sha256": "b97c3c1745a62db76e7f2e4dce6f6b515e30be1f7ce1b587d759a998761014b4",
+      "retrievedAt": "2026-11-11T01:17:35.218831+00:00"
+    },
+    {
+      "routeId": "195000149",
+      "sha256": "c95d3b2fb9ad18bcc41e14ad0b2b33425da771bcb5977adcff4d8a25ee38f855",
+      "retrievedAt": "2026-11-11T01:17:35.221830+00:00"
+    },
+    {
+      "routeId": "195000150",
+      "sha256": "fa8d6489562f07c06cb6b66fcc2aa54e653e2c38823d79a57066fcd430a03825",
+      "retrievedAt": "2026-11-11T01:17:35.225832+00:00"
+    },
+    {
+      "routeId": "195000151",
+      "sha256": "a6f8975325a6b42dd0b19c8a055777bc8b345854c8930f5a68e5412fbd5dde48",
+      "retrievedAt": "2026-11-11T01:17:35.228827+00:00"
+    },
+    {
+      "routeId": "195000152",
+      "sha256": "dd44a5c3cb373b131081166fac5038d010657582c6cf143675933f8727fb6422",
+      "retrievedAt": "2026-11-11T01:17:37.769065+00:00"
+    },
+    {
+      "routeId": "195000153",
+      "sha256": "487d74157d4e98fef19c7a627c977adf37c9d546ba4c5f923f725d5cd54e6321",
+      "retrievedAt": "2026-11-11T01:17:37.774082+00:00"
+    },
+    {
+      "routeId": "195000154",
+      "sha256": "aa348ecbb5913352eed8f708f7a7761c9209208d53bb5c6f6bb0068da1bba89d",
+      "retrievedAt": "2026-11-11T01:17:37.778077+00:00"
+    },
+    {
+      "routeId": "195000155",
+      "sha256": "11db52830b6282baec5419099d48a9ad14ef607cc4a4af2faeb05df7b39ee910",
+      "retrievedAt": "2026-11-11T01:17:37.782321+00:00"
+    },
+    {
+      "routeId": "195000156",
+      "sha256": "d2fbbe7474b4b316afb30a07ef9eb9a5c49b8ebb729bd4de7bc9f8c96a15df4d",
+      "retrievedAt": "2026-11-11T01:17:37.786711+00:00"
+    },
+    {
+      "routeId": "195000157",
+      "sha256": "fd6d3db10516c09096c7f0dcae903c354333cb82cce6f98353d0728157928a30",
+      "retrievedAt": "2026-11-11T01:17:37.790704+00:00"
+    },
+    {
+      "routeId": "195000158",
+      "sha256": "6e67a212bff15e0d783f600b5f55f22da5e6f2e53a77c0270c32ae67d7f1d729",
+      "retrievedAt": "2026-11-11T01:17:40.604265+00:00"
+    },
+    {
+      "routeId": "195000159",
+      "sha256": "4a3ab2bbe15396c55a1943b8d3a9e7625d08c4990973ae05717a2d24fa34de00",
+      "retrievedAt": "2026-11-11T01:17:40.611074+00:00"
+    },
+    {
+      "routeId": "195000160",
+      "sha256": "a6ca84eb321aca4dc99424f12f9febca7565b1845ed09bd662a758ab1c5019e9",
+      "retrievedAt": "2026-11-11T01:17:40.615379+00:00"
+    },
+    {
+      "routeId": "195000161",
+      "sha256": "06b0d1591011690db5fe386676e7eeff6423008e5b77f64a104786ead87324d7",
+      "retrievedAt": "2026-11-11T01:17:40.619383+00:00"
+    },
+    {
+      "routeId": "195000162",
+      "sha256": "d28c104e154e7feb3b3edf9149d033800eae267983d1c28829229145b9ba1ec3",
+      "retrievedAt": "2026-11-11T01:17:40.623376+00:00"
+    },
+    {
+      "routeId": "195000163",
+      "sha256": "b4295ff5e5a45e471277d4797b2fa4500dac90637a03f4cbc2a042ab62b57f68",
+      "retrievedAt": "2026-11-11T01:17:40.627757+00:00"
+    },
+    {
+      "routeId": "195000164",
+      "sha256": "fded8ad00de6c8b17fa70454afed7061cf83ebf1e5c9a5b03e4ba6a375fdfeb2",
+      "retrievedAt": "2026-11-11T01:17:54.157547+00:00"
+    },
+    {
+      "routeId": "195000165",
+      "sha256": "66ed658d28cc8231b43f2bfd03be797d82686c1c452ae244b6466b3999e0d850",
+      "retrievedAt": "2026-11-11T01:17:54.162129+00:00"
+    },
+    {
+      "routeId": "195000166",
+      "sha256": "afddbaafc554fb6f4dbc8f573fc5189d4afda2f0171583bf6b73ab56c7bcc240",
+      "retrievedAt": "2026-11-11T01:17:54.165731+00:00"
+    },
+    {
+      "routeId": "195000167",
+      "sha256": "997304911b1ec6454af36ff3a53b86785748347c8c859e65d459745b54d71322",
+      "retrievedAt": "2026-11-11T01:17:54.169035+00:00"
+    },
+    {
+      "routeId": "195000569",
+      "sha256": "7212417fded69e64f946a02530ec087d04992d7c516610d5126d8499a32a9f0a",
+      "retrievedAt": "2026-11-11T01:17:54.173447+00:00"
+    },
+    {
+      "routeId": "195000168",
+      "sha256": "737b069e874930b9ca5e4f8171aedca324cc6ba95ba5259a936cbe546b4cb994",
+      "retrievedAt": "2026-11-11T01:17:54.177960+00:00"
+    },
+    {
+      "routeId": "195000485",
+      "sha256": "8d9853730f5c62a107cebf6b4960da54e63e06b53be8eb07d626796cc82e03b2",
+      "retrievedAt": "2026-11-11T01:17:57.636635+00:00"
+    },
+    {
+      "routeId": "195000169",
+      "sha256": "b0697212eb5b1cbfbee5bd96bc8802569dcfd6ade464d8bc102eb09e787ff544",
+      "retrievedAt": "2026-11-11T01:17:57.640995+00:00"
+    },
+    {
+      "routeId": "195000170",
+      "sha256": "0accb4f2a7febb5470f04e572142b7ca07f2d7c94817c694c67a003755ed4beb",
+      "retrievedAt": "2026-11-11T01:17:57.644997+00:00"
+    },
+    {
+      "routeId": "195000171",
+      "sha256": "92ca51506b780842766e1a525e19f39ebc0664990841c081e79cd74d3f0ebd5c",
+      "retrievedAt": "2026-11-11T01:17:57.649422+00:00"
+    },
+    {
+      "routeId": "196000338",
+      "sha256": "5d9d66c064ac716e06995245faa78592efe21fa9003e63f7b979bb145d13c932",
+      "retrievedAt": "2026-11-11T01:17:57.653688+00:00"
+    },
+    {
+      "routeId": "196000341",
+      "sha256": "2833e262645d1dd15732b492a6c4978b97ce4db3d1c054e54b5973af370a3730",
+      "retrievedAt": "2026-11-11T01:17:57.658052+00:00"
+    },
+    {
+      "routeId": "196000339",
+      "sha256": "3fe00e2e54e89e8b0d1e6f6e6664904a6cd443d58680d541998f261e5d8a6e7a",
+      "retrievedAt": "2026-11-11T01:18:01.214599+00:00"
+    },
+    {
+      "routeId": "196000342",
+      "sha256": "5aebd250ace1d6a9d4b293b2bcc9e7d30ed2b76dfce58db9ddd4203f1c889082",
+      "retrievedAt": "2026-11-11T01:18:01.218590+00:00"
+    },
+    {
+      "routeId": "196000340",
+      "sha256": "3273f54a1cd3dff8f89f323e6bed1f677506497de5f2f3ee72f178a9eab84235",
+      "retrievedAt": "2026-11-11T01:18:01.223823+00:00"
+    },
+    {
+      "routeId": "196000343",
+      "sha256": "d4c1726d0ef9cb23184004eaef6b37766bb8a5e5bf62c8e6c73f4da0c867c220",
+      "retrievedAt": "2026-11-11T01:18:01.231164+00:00"
+    },
+    {
+      "routeId": "196000715",
+      "sha256": "575b62d3f9139808a8030bc683aa4eb15743387bbd855efac3ece700ee009a91",
+      "retrievedAt": "2026-11-11T01:18:01.237177+00:00"
+    },
+    {
+      "routeId": "196000716",
+      "sha256": "b40ce6eb2aaa0f3719b8a85af9f9b93be9a88c5bcf8a25af81bc77dc86da51c2",
+      "retrievedAt": "2026-11-11T01:18:01.243254+00:00"
+    },
+    {
+      "routeId": "196900710",
+      "sha256": "4a3ff534cebe11abbc105ed7db64224ad0a6dd6297e92a3b3cc8cad701f4b362",
+      "retrievedAt": "2026-11-11T01:18:05.374272+00:00"
+    },
+    {
+      "routeId": "196900711",
+      "sha256": "be207c19c6a3cd13588be3ab50cc103c41e5f734435d72a388026984e4e79060",
+      "retrievedAt": "2026-11-11T01:18:05.378749+00:00"
+    },
+    {
+      "routeId": "196000344",
+      "sha256": "84ba9062ab2a135a764bcfe63f1e3f60a07d4d13457240ba13fd4527993319e9",
+      "retrievedAt": "2026-11-11T01:18:05.385962+00:00"
+    },
+    {
+      "routeId": "196000345",
+      "sha256": "b1075e92536fb5909cd2bb91d1b0abd44872a877fdbceffd5ebed5028478ec3d",
+      "retrievedAt": "2026-11-11T01:18:05.392350+00:00"
+    },
+    {
+      "routeId": "196000346",
+      "sha256": "309ac2895f2240d2295df7e89e1f85b8990bb503d7642ef595ffecf62089e54f",
+      "retrievedAt": "2026-11-11T01:18:05.396997+00:00"
+    },
+    {
+      "routeId": "196000347",
+      "sha256": "d414a0f61daf49b6ffa71ea7d986f133086b22e4d5b31b3efd81bac8411d60ee",
+      "retrievedAt": "2026-11-11T01:18:05.401294+00:00"
+    },
+    {
+      "routeId": "196000348",
+      "sha256": "e444020f8152a58555a57de5458a070d7533ef7382e32d329acd390c253d48d5",
+      "retrievedAt": "2026-11-11T01:18:09.158836+00:00"
+    },
+    {
+      "routeId": "196000349",
+      "sha256": "f27de01e7a7573bb5a8b0c0c83936b6741cf6f84eaed0b0deb5a64d6e0b37ff1",
+      "retrievedAt": "2026-11-11T01:18:09.162762+00:00"
+    },
+    {
+      "routeId": "196000350",
+      "sha256": "434fd3ad5e4dac90b0744a3eae66e5c2c209bcf2c13e3c180490888b54c11434",
+      "retrievedAt": "2026-11-11T01:18:09.169337+00:00"
+    },
+    {
+      "routeId": "196000351",
+      "sha256": "4a9e9acece9ff87563a60d3043c8cb861a1af1dd276f32bd315f55955f9ea2a1",
+      "retrievedAt": "2026-11-11T01:18:09.172259+00:00"
+    },
+    {
+      "routeId": "196000352",
+      "sha256": "c754b5373866d197fbe1ed25ad91b92f3d2e68f50ad0d9ec4e0dcadc66384530",
+      "retrievedAt": "2026-11-11T01:18:09.174266+00:00"
+    },
+    {
+      "routeId": "196000353",
+      "sha256": "22e6f99a0fc06ebd45e1d0f4c4d3d842035cbb91f2b39b0528f30901a7cc20ab",
+      "retrievedAt": "2026-11-11T01:18:09.180459+00:00"
+    },
+    {
+      "routeId": "196000354",
+      "sha256": "23e4af3bd27b1e4fa23828bec71e0563888d78dd0394f700a3f93db5a0efcbbf",
+      "retrievedAt": "2026-11-11T01:18:12.207859+00:00"
+    },
+    {
+      "routeId": "196000355",
+      "sha256": "b72dbea96b8c8bae4dd516077b546b3819f94fc4ffaa08b06c1daa01e1d2cac3",
+      "retrievedAt": "2026-11-11T01:18:12.211871+00:00"
+    },
+    {
+      "routeId": "196000357",
+      "sha256": "eed6ee61ec72a98b74f0726bf8b59a3b14351b064a1dd4d85f74718ea7a3a3e8",
+      "retrievedAt": "2026-11-11T01:18:12.218063+00:00"
+    },
+    {
+      "routeId": "196000359",
+      "sha256": "b7fdf6c920d931ad34fd8ce6db5dda029bdd682ecd91aa3c4c4207a8e2d5c6e9",
+      "retrievedAt": "2026-11-11T01:18:12.221499+00:00"
+    },
+    {
+      "routeId": "196000356",
+      "sha256": "f12ed216016a1ae8b6c6f5d35d1091a5ee921097340bf570344807030d4dcbbb",
+      "retrievedAt": "2026-11-11T01:18:12.225872+00:00"
+    },
+    {
+      "routeId": "196000358",
+      "sha256": "0abbba0b2342a3dc287a8879fe61031f8d8156ae418b1cbf650d6c6daeff23fa",
+      "retrievedAt": "2026-11-11T01:18:12.230849+00:00"
+    },
+    {
+      "routeId": "196000360",
+      "sha256": "ef33f86a339d0be6d433ac81219db59779ad48a4602f0713b225756ad3e917aa",
+      "retrievedAt": "2026-11-11T01:18:15.802606+00:00"
+    },
+    {
+      "routeId": "196000361",
+      "sha256": "7321bed28a71e7158887c2ac8f3c8acd9e28e626c1289a5013a7dd73244389df",
+      "retrievedAt": "2026-11-11T01:18:15.805609+00:00"
+    },
+    {
+      "routeId": "196000362",
+      "sha256": "5c90b5322b8872f0b7f1b982af541ff55dfd9e888a32ca902d3e09bf8f5f505f",
+      "retrievedAt": "2026-11-11T01:18:15.810912+00:00"
+    },
+    {
+      "routeId": "352000114",
+      "sha256": "7fcaace123d2b1d3e4ed7975d84b549ed3dcd14758bb54b84234b44bce922156",
+      "retrievedAt": "2026-11-11T01:18:15.814909+00:00"
+    },
+    {
+      "routeId": "196000364",
+      "sha256": "6ad50ab70b2f010c0f916c0c2da752390994253e0e5d67584adeaad7d9eec812",
+      "retrievedAt": "2026-11-11T01:18:15.820328+00:00"
+    },
+    {
+      "routeId": "196000366",
+      "sha256": "c00e737d0ec489ee19d16cbe29d8cba046869f224cd850f5c9478846d1f4f751",
+      "retrievedAt": "2026-11-11T01:18:15.825326+00:00"
+    },
+    {
+      "routeId": "196000365",
+      "sha256": "b2470dc72cca5017d262d370cd37a71bb69a068162c774f456f7dceb40eae119",
+      "retrievedAt": "2026-11-11T01:18:18.694136+00:00"
+    },
+    {
+      "routeId": "196000367",
+      "sha256": "55646e15278d830547b4936450ae757b2a92288d30e8b7c85fd97a9ca928c93f",
+      "retrievedAt": "2026-11-11T01:18:18.700150+00:00"
+    },
+    {
+      "routeId": "196000368",
+      "sha256": "665615ba9c14255d128d4892865ae54e76e7b849055af64ce11b569e1f1a6630",
+      "retrievedAt": "2026-11-11T01:18:18.706148+00:00"
+    },
+    {
+      "routeId": "196000675",
+      "sha256": "02b14f40c31d42ac332b1eee926071add0e2d25275c12af430cd42f290059efd",
+      "retrievedAt": "2026-11-11T01:18:18.709145+00:00"
+    },
+    {
+      "routeId": "196000369",
+      "sha256": "19c9c4591b1de9f1efb30a938e2727009081c1f1c4769f0fd513e21e444819b3",
+      "retrievedAt": "2026-11-11T01:18:18.721685+00:00"
+    },
+    {
+      "routeId": "196000370",
+      "sha256": "7b785a695f3cdf86533cf0f2bb69feb887cbea0ec0b6312a99f482cae4c4928f",
+      "retrievedAt": "2026-11-11T01:18:18.725303+00:00"
+    },
+    {
+      "routeId": "196000371",
+      "sha256": "c31c9ad6ea9fbd8dc615fbadb69e93bf5120beacd24a2e4eb043d1d454c5baff",
+      "retrievedAt": "2026-11-11T01:18:21.658576+00:00"
+    },
+    {
+      "routeId": "196000372",
+      "sha256": "d9eebb6f2dc9289d420a4cb36dac31fad1696d096a9175101fec47f439e247d3",
+      "retrievedAt": "2026-11-11T01:18:21.661888+00:00"
+    },
+    {
+      "routeId": "196000373",
+      "sha256": "1f273e30e2d93328b001a2c18ba9a6195c4807c1a8dce2a55681302a3e847da8",
+      "retrievedAt": "2026-11-11T01:18:21.664887+00:00"
+    },
+    {
+      "routeId": "196000374",
+      "sha256": "b92a533eb55b17b9156005b98690c07ecf077c9f571fa40c264bec2f9e530143",
+      "retrievedAt": "2026-11-11T01:18:21.667886+00:00"
+    },
+    {
+      "routeId": "196000375",
+      "sha256": "e6854bf1d5b054cda28a38eb9457052ab24b2c38fa96b7a81c63ba4e912df9e8",
+      "retrievedAt": "2026-11-11T01:18:21.672971+00:00"
+    },
+    {
+      "routeId": "196000376",
+      "sha256": "b0ee6b2994d394ab26282e166287909cee044630ebe66024e805c4852223e614",
+      "retrievedAt": "2026-11-11T01:18:21.675970+00:00"
+    },
+    {
+      "routeId": "196000377",
+      "sha256": "63c1b245fb39efac259d33e3eb98a20b4b849918776770eb5019773699739345",
+      "retrievedAt": "2026-11-11T01:18:24.710918+00:00"
+    },
+    {
+      "routeId": "196000378",
+      "sha256": "626b855307bc6a23dc76742f93f68160abe8e37ae83c71bc2618db89d46b8f08",
+      "retrievedAt": "2026-11-11T01:18:24.713921+00:00"
+    },
+    {
+      "routeId": "196000379",
+      "sha256": "2490bae9e93a9faf5342344ce89ebf29cfea5f8ae61f40fe8f941c2cdf4b2bac",
+      "retrievedAt": "2026-11-11T01:18:24.718960+00:00"
+    },
+    {
+      "routeId": "196000380",
+      "sha256": "f2011d2f34a912487d873823a7e4e68da64b60074de767d2899d3f581403897c",
+      "retrievedAt": "2026-11-11T01:18:24.725861+00:00"
+    },
+    {
+      "routeId": "196000381",
+      "sha256": "73bca7c1d566ecfb320e16119c100cdc494357bea8ae94b53a54475aba0a5216",
+      "retrievedAt": "2026-11-11T01:18:24.731863+00:00"
+    },
+    {
+      "routeId": "196000486",
+      "sha256": "7579e4264bc2137591e4fd1e8b31dca1fe2df5ee8a5a31bb193bf97876259ed5",
+      "retrievedAt": "2026-11-11T01:18:24.737860+00:00"
+    },
+    {
+      "routeId": "196000487",
+      "sha256": "6a1f8b8a7b754f429bd5190299d9c2ce36eb714436e58d71d79d531a41beda07",
+      "retrievedAt": "2026-11-11T01:18:27.832517+00:00"
+    },
+    {
+      "routeId": "196000504",
+      "sha256": "c514410c0cb5326b5d1cd6f4c3de2537947887327f9eee82ee9311bbd4131659",
+      "retrievedAt": "2026-11-11T01:18:27.836514+00:00"
+    },
+    {
+      "routeId": "196000382",
+      "sha256": "b844f0337f465184b8455ec933876fdb4a5d86b5748d45de53e1b85ae813df2c",
+      "retrievedAt": "2026-11-11T01:18:27.841500+00:00"
+    },
+    {
+      "routeId": "196000383",
+      "sha256": "fee79522e43117aa33336b064115a41ad6f6b4c0dfb36739d366c813e9cfb147",
+      "retrievedAt": "2026-11-11T01:18:27.846011+00:00"
+    },
+    {
+      "routeId": "196000384",
+      "sha256": "c559593931f4400079768a720feb2323f6af4452f318adc9a6efa97b3590a07f",
+      "retrievedAt": "2026-11-11T01:18:27.852012+00:00"
+    },
+    {
+      "routeId": "196000385",
+      "sha256": "2e30af2c025047702a3f7581380ce30e1e6c4df5ddad68b61de828eefef1110f",
+      "retrievedAt": "2026-11-11T01:18:27.857153+00:00"
+    },
+    {
+      "routeId": "196000386",
+      "sha256": "824701641391dbf0fc19f35e03584b1c96d1dcdd66742253d7bf6a0f264e98e7",
+      "retrievedAt": "2026-11-11T01:18:30.042411+00:00"
+    },
+    {
+      "routeId": "196000387",
+      "sha256": "fc17dfefa665045fc8d896e55ea6c7fe06e63132e51cba40513440330720c92a",
+      "retrievedAt": "2026-11-11T01:18:30.045181+00:00"
+    },
+    {
+      "routeId": "196000388",
+      "sha256": "f15fea7fb9d46b37905eb17c0878fac32199d2ccd0692b231937e816a8f6fabf",
+      "retrievedAt": "2026-11-11T01:18:30.045181+00:00"
+    },
+    {
+      "routeId": "196000389",
+      "sha256": "8ec76eb7227c823995415115485a072d5ef8a52e1c76db1d3b04414430753ada",
+      "retrievedAt": "2026-11-11T01:18:30.053458+00:00"
+    },
+    {
+      "routeId": "196000390",
+      "sha256": "9055128078ccd85cdabac0c1b4ed86107fc4d15e904d44b46de4e14e9274ad0b",
+      "retrievedAt": "2026-11-11T01:18:30.055801+00:00"
+    },
+    {
+      "routeId": "196000391",
+      "sha256": "25a1e79101674307a18d5ddbbf41538552b8257e124f1245df0412dd6f65bb6d",
+      "retrievedAt": "2026-11-11T01:18:30.060003+00:00"
+    },
+    {
+      "routeId": "196000392",
+      "sha256": "454e59a2ce6774002fd172fc6ff518eea509d4e2fb934664d3088abe5cb6d9bc",
+      "retrievedAt": "2026-11-11T01:18:32.938673+00:00"
+    },
+    {
+      "routeId": "196000393",
+      "sha256": "b435a3ecb89ea3008833d6abdb3ee17d3c2a609ae907ca226e4302888c188cbe",
+      "retrievedAt": "2026-11-11T01:18:32.941478+00:00"
+    },
+    {
+      "routeId": "196000394",
+      "sha256": "780701e32e54e371ef7a694612a79742037dfa8e2e30d1a6de99bd04a976bec0",
+      "retrievedAt": "2026-11-11T01:18:32.947641+00:00"
+    },
+    {
+      "routeId": "196000395",
+      "sha256": "6d27d97bf8c27ea5c152d2528a8d9e91613353aaa62dd1a444574c1697e8f709",
+      "retrievedAt": "2026-11-11T01:18:32.952698+00:00"
+    },
+    {
+      "routeId": "196000396",
+      "sha256": "e71b212777bd9d0aab607997992479a225b8afe0caf305e4040252083b7dd496",
+      "retrievedAt": "2026-11-11T01:18:32.954711+00:00"
+    },
+    {
+      "routeId": "196000397",
+      "sha256": "719133c85f5c349c8c838c977195e6ef5f3951b84ba4daf656b6f1cea831a82a",
+      "retrievedAt": "2026-11-11T01:18:32.962295+00:00"
+    },
+    {
+      "routeId": "196000398",
+      "sha256": "222c38ec354ffd65cebce1d56e8f1886fe07b9e3b5f1341ecd806987f5882fa2",
+      "retrievedAt": "2026-11-11T01:18:35.871595+00:00"
+    },
+    {
+      "routeId": "196000399",
+      "sha256": "6f39896cfbcca8152d1d5f450fa9e669a854825983114cd473366e6454efe978",
+      "retrievedAt": "2026-11-11T01:18:35.876650+00:00"
+    },
+    {
+      "routeId": "196000400",
+      "sha256": "5b123ca60f2db5b7e0efba607415c128e56dae3cf28c695652dc926a6b72c19b",
+      "retrievedAt": "2026-11-11T01:18:35.880646+00:00"
+    },
+    {
+      "routeId": "196000401",
+      "sha256": "1f256a957b1fcee0d81cff3b4568e25efc1153a10f10b5db6afc9f22ad354112",
+      "retrievedAt": "2026-11-11T01:18:35.885651+00:00"
+    },
+    {
+      "routeId": "196000402",
+      "sha256": "d62d764e44054b00b394396214feed25eb694ba5b0fc83bdc42f601f053020c1",
+      "retrievedAt": "2026-11-11T01:18:35.892649+00:00"
+    },
+    {
+      "routeId": "196000403",
+      "sha256": "4e9e34938b57629510711a46e0e3c5fc7cb6af395d20db7a7ec4dd3e847fa5a6",
+      "retrievedAt": "2026-11-11T01:18:35.897651+00:00"
+    },
+    {
+      "routeId": "196000404",
+      "sha256": "bc905495489af18330958ae7a4fa05e61b5b652750da7db4e81739f82285df80",
+      "retrievedAt": "2026-11-11T01:18:38.052452+00:00"
+    },
+    {
+      "routeId": "196000405",
+      "sha256": "c6d4d8e9746c741d96e13f4fd00e0a8d7737ad02a585b87f03974bc510e90357",
+      "retrievedAt": "2026-11-11T01:18:38.052452+00:00"
+    },
+    {
+      "routeId": "196000406",
+      "sha256": "051b812015bcffd78fa62d96a2fb30f7c136c6891ce8e1131a127962d7ea4387",
+      "retrievedAt": "2026-11-11T01:18:38.060867+00:00"
+    },
+    {
+      "routeId": "196000407",
+      "sha256": "91a7a7712983af5500c6795d89ee0046fa7ba2031350fb03b945862cd8baa83d",
+      "retrievedAt": "2026-11-11T01:18:38.060867+00:00"
+    },
+    {
+      "routeId": "196000408",
+      "sha256": "a0d2772ba3dd1057f26229af05364decff05e08d5caf8cf38e8a46412631b821",
+      "retrievedAt": "2026-11-11T01:18:38.068970+00:00"
+    },
+    {
+      "routeId": "196000409",
+      "sha256": "84c7ef5ec03e800e14e216b2cc1ba25487c3a5c536d4496f6147dd479763b8dc",
+      "retrievedAt": "2026-11-11T01:18:38.068970+00:00"
+    },
+    {
+      "routeId": "196000410",
+      "sha256": "36ae0f5cb6962f1c90234cfede94fb040d9e44fe7d7a94484238113b13717633",
+      "retrievedAt": "2026-11-11T01:18:40.830444+00:00"
+    },
+    {
+      "routeId": "196000411",
+      "sha256": "e360c5f2b68c1dbe0b44d05d15454660ae57397a7df5344674eb0170aa4b11f2",
+      "retrievedAt": "2026-11-11T01:18:40.836445+00:00"
+    },
+    {
+      "routeId": "196000412",
+      "sha256": "401361ee09824b1fd060050bca28d796c32a4fceb2431fb577b184b70198cff7",
+      "retrievedAt": "2026-11-11T01:18:40.841463+00:00"
+    },
+    {
+      "routeId": "196000413",
+      "sha256": "32da314140251dc57ac43b0979aea6ae9ebd9df00540ac38c174af32867ce410",
+      "retrievedAt": "2026-11-11T01:18:40.845461+00:00"
+    },
+    {
+      "routeId": "196000414",
+      "sha256": "0492e65b57b9c1b3b407c2fa8a4fdf48c95a9298bb8d939e0cc8d84cfcaf878a",
+      "retrievedAt": "2026-11-11T01:18:40.849460+00:00"
+    },
+    {
+      "routeId": "196000415",
+      "sha256": "6bf7787959491ac3cbecfd742073695f80d74e645ee048b313d402b9ce7e9fd3",
+      "retrievedAt": "2026-11-11T01:18:40.853464+00:00"
+    },
+    {
+      "routeId": "196000416",
+      "sha256": "0b4a88904718d381d1473f01ca014fc0888beac002f720c32d191cffcefdb375",
+      "retrievedAt": "2026-11-11T01:18:43.453971+00:00"
+    },
+    {
+      "routeId": "196000417",
+      "sha256": "54c0dbf543f4cce88eeb89e2c64ccc72038e675c718fe3b11406988633c913a2",
+      "retrievedAt": "2026-11-11T01:18:43.457511+00:00"
+    },
+    {
+      "routeId": "196000418",
+      "sha256": "482afd155dab56161e6a55be5b67e835a87a5fba6bba83b1b0e4e5e81573e4c4",
+      "retrievedAt": "2026-11-11T01:18:43.462508+00:00"
+    },
+    {
+      "routeId": "196000419",
+      "sha256": "0ea5d18c10222e5bb862084677c27b588781b00460b02e7b725baf1c4c3d2ac2",
+      "retrievedAt": "2026-11-11T01:18:43.468510+00:00"
+    },
+    {
+      "routeId": "196000420",
+      "sha256": "02e61fcc33cf99c2a92325ce4a09355492bcf528caf27c14af53e783edbdd0a1",
+      "retrievedAt": "2026-11-11T01:18:43.471502+00:00"
+    },
+    {
+      "routeId": "196000717",
+      "sha256": "bd0636c3b755a8c21670b6a18a0324ef6fcc4de86841189710878fb500e7b307",
+      "retrievedAt": "2026-11-11T01:18:43.474757+00:00"
+    },
+    {
+      "routeId": "196000718",
+      "sha256": "042e89deb128748b40f8ab1d3135a68a7f815fe348cf0fbf9b6dc7603943b83b",
+      "retrievedAt": "2026-11-11T01:18:46.476638+00:00"
+    },
+    {
+      "routeId": "196000421",
+      "sha256": "6b5de645594a631faa054cac65691cd1b75867b5a986a9d0810c54384a26411f",
+      "retrievedAt": "2026-11-11T01:18:46.481369+00:00"
+    },
+    {
+      "routeId": "196000422",
+      "sha256": "153b7d17af35c19cfe82834bd93b1137b4105ad5fc0acb4192edb720379abd71",
+      "retrievedAt": "2026-11-11T01:18:46.487993+00:00"
+    },
+    {
+      "routeId": "196000423",
+      "sha256": "0d1e970f2aa696ae66da643c82bbf035e4d7f717b3e86ae99f6a87b8f840455d",
+      "retrievedAt": "2026-11-11T01:18:46.493995+00:00"
+    },
+    {
+      "routeId": "196000424",
+      "sha256": "a0dcb8c1465d18f2aac318ce09a65fdb8a2c9e8c96b90683ee9062a7b28922ba",
+      "retrievedAt": "2026-11-11T01:18:46.498462+00:00"
+    },
+    {
+      "routeId": "196000425",
+      "sha256": "d8a722b93625004c524efdec5c9d075cf1285e77fbc582e29248f8e490890953",
+      "retrievedAt": "2026-11-11T01:18:46.502912+00:00"
+    },
+    {
+      "routeId": "196000426",
+      "sha256": "0abb48ff525edbc1144b387c7b934728bd51f7c8004aa887a157ea7ad49a6332",
+      "retrievedAt": "2026-11-11T01:18:49.564213+00:00"
+    },
+    {
+      "routeId": "196000427",
+      "sha256": "435a113a084120a73640c47a9e96762abd9f179a934872ae143bd2ee5c4dc0e3",
+      "retrievedAt": "2026-11-11T01:18:49.571453+00:00"
+    },
+    {
+      "routeId": "196000428",
+      "sha256": "891fdceb1050c8400b56009a2a2eebbbaba33f5c701e7340757aafa432d111ae",
+      "retrievedAt": "2026-11-11T01:18:49.577450+00:00"
+    },
+    {
+      "routeId": "196000429",
+      "sha256": "6081f53bebd8b138ee274e9daa3d600963e9ae1a59d12062bd49a58ddc3da29f",
+      "retrievedAt": "2026-11-11T01:18:49.585216+00:00"
+    },
+    {
+      "routeId": "196000430",
+      "sha256": "a2c16452dc54b0b0d7844d2a4536e7ea4a80b4f7efa195bf4ec5b40972637455",
+      "retrievedAt": "2026-11-11T01:18:49.593217+00:00"
+    },
+    {
+      "routeId": "196000431",
+      "sha256": "ffccb191cf7bb28dafa75d83400e8a7af8f73860d7064206e139cc898b004a60",
+      "retrievedAt": "2026-11-11T01:18:49.600212+00:00"
+    },
+    {
+      "routeId": "196000432",
+      "sha256": "9f6ccf5c1451dd08809dc5cb34fc503f2e83a173833499e6be08fe58ccbb514f",
+      "retrievedAt": "2026-11-11T01:18:52.502001+00:00"
+    },
+    {
+      "routeId": "196000433",
+      "sha256": "a226875dcd1bc613795e66696126afa91a6a20e64630d48dfb7417aa5a995d28",
+      "retrievedAt": "2026-11-11T01:18:52.508000+00:00"
+    },
+    {
+      "routeId": "196000434",
+      "sha256": "967a321befd26eae1ec462a8c0c1cfbe9707ca2e9ecb0e9c825344d4f2212026",
+      "retrievedAt": "2026-11-11T01:18:52.514013+00:00"
+    },
+    {
+      "routeId": "196000435",
+      "sha256": "94e6fe28b1ee70619db071792836745a6312b20d26ad8ef3ca6d598d9ba1ea17",
+      "retrievedAt": "2026-11-11T01:18:52.523460+00:00"
+    },
+    {
+      "routeId": "196000436",
+      "sha256": "b20c383f183bdb1cb43f9e7e0de8b005870203252807823f1389f94f956b86b8",
+      "retrievedAt": "2026-11-11T01:18:52.529459+00:00"
+    },
+    {
+      "routeId": "196000775",
+      "sha256": "f81a43348f35218f4a539c51f6f686bfbd4663fa588ff516799151e7f01c787d",
+      "retrievedAt": "2026-11-11T01:18:52.535260+00:00"
+    },
+    {
+      "routeId": "196000437",
+      "sha256": "12c86d5d0482b2da714fabfdd6119285120db77e26c9ebf119a5c85ab23944a1",
+      "retrievedAt": "2026-11-11T01:18:55.200375+00:00"
+    },
+    {
+      "routeId": "196000776",
+      "sha256": "6ea9d938cae0c73ae659506f1603ab138b15dd9538be9830e313d100b064585a",
+      "retrievedAt": "2026-11-11T01:18:55.204357+00:00"
+    },
+    {
+      "routeId": "196000439",
+      "sha256": "795db65bc1bf13fa81f032a7dcc07f20dd7e078e705a431eb6c9a0c10aa8793d",
+      "retrievedAt": "2026-11-11T01:18:55.208362+00:00"
+    },
+    {
+      "routeId": "196000440",
+      "sha256": "db29ae3b748a3b30a2df600c9327aebfc5df25552ee5e3ff80223c968d658f2a",
+      "retrievedAt": "2026-11-11T01:18:55.214355+00:00"
+    },
+    {
+      "routeId": "196000441",
+      "sha256": "4268dff00fd889ed2a8d3d2f2662a9f77b52ddb172e1789849618e001e4581d0",
+      "retrievedAt": "2026-11-11T01:18:55.215209+00:00"
+    },
+    {
+      "routeId": "195000527",
+      "sha256": "d325201530c6d0693681f7b12419c12524d475760bc4fee3d21c6daefec76513",
+      "retrievedAt": "2026-11-11T01:18:55.222841+00:00"
+    },
+    {
+      "routeId": "195000528",
+      "sha256": "1fbd0bddb2ed2a3cb304e12e166b56870568be701daccc2e2e6bac29c8c6b742",
+      "retrievedAt": "2026-11-11T01:18:57.638545+00:00"
+    },
+    {
+      "routeId": "195000175",
+      "sha256": "6922e3642b1d38dcebe16583efc83bc6ffb58892f4f55c9ec7b112e3413f7486",
+      "retrievedAt": "2026-11-11T01:18:57.643017+00:00"
+    },
+    {
+      "routeId": "195000176",
+      "sha256": "02ff94cdbfe7e568f8b948c2e51084465d9c58f3138084fba2110781f1502ef2",
+      "retrievedAt": "2026-11-11T01:18:57.648240+00:00"
+    },
+    {
+      "routeId": "195000177",
+      "sha256": "b25cfb49041ecc391897c2e86f546223b50d11de0f6ad733caee58dfaa9a829b",
+      "retrievedAt": "2026-11-11T01:18:57.653244+00:00"
+    },
+    {
+      "routeId": "195000178",
+      "sha256": "9254ca118ba6d6eeec3a375a07e4c4f1ec0c4b98d221ef51c04198a65fa2065e",
+      "retrievedAt": "2026-11-11T01:18:57.657387+00:00"
+    },
+    {
+      "routeId": "195000490",
+      "sha256": "fcff01d17294dacdaed5134391e03dbb9fa7c360d4db389373a8a7355ae3aae5",
+      "retrievedAt": "2026-11-11T01:18:57.662621+00:00"
+    },
+    {
+      "routeId": "195000179",
+      "sha256": "969514422cf3134e1da451a0342c2add9809b1c94369e979b6f1bf1b8d23f331",
+      "retrievedAt": "2026-11-11T01:19:00.109541+00:00"
+    },
+    {
+      "routeId": "195000181",
+      "sha256": "0a6b9d822bd6db1c41385a36e1e1732a0e28c345fccb6bb6516f87e058610df0",
+      "retrievedAt": "2026-11-11T01:19:00.113481+00:00"
+    },
+    {
+      "routeId": "195000180",
+      "sha256": "8ab2a4db17fef6f3b9d6e51c502bb699156a1a802c96709424b63cc4fd937339",
+      "retrievedAt": "2026-11-11T01:19:00.116480+00:00"
+    },
+    {
+      "routeId": "195000182",
+      "sha256": "72f852a78558b9f682f58ab24fdee0ddedb88a9c7374513bba726e4748a9009a",
+      "retrievedAt": "2026-11-11T01:19:00.120482+00:00"
+    },
+    {
+      "routeId": "195000183",
+      "sha256": "292841ad36bb49c1fde6475cce726401074bbf893e6415e60bc87556b252727f",
+      "retrievedAt": "2026-11-11T01:19:00.123484+00:00"
+    },
+    {
+      "routeId": "195000184",
+      "sha256": "7e37f2fcee40d1157b0176b0750ada93b5ea548aadbf065b7257c722e0444d56",
+      "retrievedAt": "2026-11-11T01:19:00.128485+00:00"
+    },
+    {
+      "routeId": "193000060",
+      "sha256": "6fb292e810006b0aa8c4b2ac37df36ea56a442e5e65337721ddb0a8b0946bde3",
+      "retrievedAt": "2026-11-11T01:19:02.643645+00:00"
+    },
+    {
+      "routeId": "193000061",
+      "sha256": "52070503a8cb5cda69850e02adaae373976140e6172065f6e8a63ed1e75377a5",
+      "retrievedAt": "2026-11-11T01:19:02.646641+00:00"
+    },
+    {
+      "routeId": "193000563",
+      "sha256": "023b59389def60bd192c7587f151c3161c51337d489488be0d9a34f05a532c67",
+      "retrievedAt": "2026-11-11T01:19:02.649641+00:00"
+    },
+    {
+      "routeId": "195000185",
+      "sha256": "272ced6c046004c2cd1782f9a028066cb3383be0009826bd43d96c76a7851cca",
+      "retrievedAt": "2026-11-11T01:19:02.653655+00:00"
+    },
+    {
+      "routeId": "195000186",
+      "sha256": "aedeeea3982519f0d9a6115acbc37e2b27e29912bb860ef98e451da72d875529",
+      "retrievedAt": "2026-11-11T01:19:02.656157+00:00"
+    },
+    {
+      "routeId": "195000671",
+      "sha256": "8b141ca568b74e355a5f688b779da898d79b16323a4963a15dc8f7fc5b54f134",
+      "retrievedAt": "2026-11-11T01:19:02.658938+00:00"
+    },
+    {
+      "routeId": "195000672",
+      "sha256": "a54e3b1f5064a8f787693d558d5d653f4ce838dfda995acfbfc597deaccb2607",
+      "retrievedAt": "2026-11-11T01:19:05.498739+00:00"
+    },
+    {
+      "routeId": "195000190",
+      "sha256": "7b52adedd0d06df4236dead45f51a9043fa76b3ecece4876f595392d95fc2c8d",
+      "retrievedAt": "2026-11-11T01:19:05.500004+00:00"
+    },
+    {
+      "routeId": "195000191",
+      "sha256": "5e8eff78cb6d625efc3d810076671ce6eca2f4a4f7ce52028bdefe1874cb3db2",
+      "retrievedAt": "2026-11-11T01:19:05.506491+00:00"
+    },
+    {
+      "routeId": "195000192",
+      "sha256": "253aa7fdb76269cec0b3c8a210473b7abecd7a5c23e1ece7a280f8b97ec60958",
+      "retrievedAt": "2026-11-11T01:19:05.514125+00:00"
+    },
+    {
+      "routeId": "195000194",
+      "sha256": "a2636310e19f0fc31bd7348c897b6df87f671c36d4ba10f935880495799b8eb7",
+      "retrievedAt": "2026-11-11T01:19:05.514125+00:00"
+    },
+    {
+      "routeId": "195000193",
+      "sha256": "2f1972c79ea78d69cef5597bcebf0a228a297b9c4af49b0684821660b9c8d504",
+      "retrievedAt": "2026-11-11T01:19:05.523303+00:00"
+    },
+    {
+      "routeId": "195000195",
+      "sha256": "2dd01866bb6f9ce2f3dafd69c5137428a66c86d2cd31da0c84f0849c13770b45",
+      "retrievedAt": "2026-11-11T01:19:08.056392+00:00"
+    },
+    {
+      "routeId": "195000196",
+      "sha256": "e4761bc2fb6ac1a49b5e819df2c9541a7658d4e6b3f8c8833d568fb3dddbb79e",
+      "retrievedAt": "2026-11-11T01:19:08.061873+00:00"
+    },
+    {
+      "routeId": "195000197",
+      "sha256": "e4ba02c35d047cba94762a48ab643ed4d22eb5304097e7019d49031ce7af7c00",
+      "retrievedAt": "2026-11-11T01:19:08.064429+00:00"
+    },
+    {
+      "routeId": "195000198",
+      "sha256": "27253b82c214108868ad1bdc34e0f8fa067420795c78a144e63e4344e883ce3b",
+      "retrievedAt": "2026-11-11T01:19:08.069651+00:00"
+    },
+    {
+      "routeId": "195000200",
+      "sha256": "a106354f0320aca711027082abd838edf46a61f00e31cd9620c958fc365450dd",
+      "retrievedAt": "2026-11-11T01:19:08.073653+00:00"
+    },
+    {
+      "routeId": "195000199",
+      "sha256": "4b073603fd36c978377f52f2a96142364ddddc4b17343c43c012171b56be3492",
+      "retrievedAt": "2026-11-11T01:19:08.079416+00:00"
+    },
+    {
+      "routeId": "195000201",
+      "sha256": "7c8bf74f3747f5a2b54cf424e82fae79768f99c4404520d10b7eb5e2aee16f5c",
+      "retrievedAt": "2026-11-11T01:19:10.395002+00:00"
+    },
+    {
+      "routeId": "195000202",
+      "sha256": "1f9e7a2bb6044702d435ba2fc816897f865a36c4beab317938ab4905a99a8932",
+      "retrievedAt": "2026-11-11T01:19:10.402485+00:00"
+    },
+    {
+      "routeId": "195000203",
+      "sha256": "eeac874d32fcdc153a323d2be5072432c62a44878f8ab3a1901d3ccf85d3473b",
+      "retrievedAt": "2026-11-11T01:19:10.406995+00:00"
+    },
+    {
+      "routeId": "195000204",
+      "sha256": "6c61fa0242a3d7741e1c44f20f4a437fd154c09635b630b7754b858a24a03dfa",
+      "retrievedAt": "2026-11-11T01:19:10.410026+00:00"
+    },
+    {
+      "routeId": "195000205",
+      "sha256": "41cdfb65161bd0fffd774d33e87d079c80bb24295c5369e1caa0c3f25d8e6009",
+      "retrievedAt": "2026-11-11T01:19:10.410026+00:00"
+    },
+    {
+      "routeId": "194000505",
+      "sha256": "c556a9548bb8c5ca4dfc68838791fe2640a4065d86698edcb741734a5e69d590",
+      "retrievedAt": "2026-11-11T01:19:10.419338+00:00"
+    },
+    {
+      "routeId": "194000506",
+      "sha256": "7bca283ece8d7e91e4c45f4da9adaa9bc26adc19ba38f8d03f52e55a81de1532",
+      "retrievedAt": "2026-11-11T01:19:12.723612+00:00"
+    },
+    {
+      "routeId": "194000507",
+      "sha256": "0dffea8d8734b27a679d64fce3f1ea1dc308d0385e735b5a0c9afad9fce1dc67",
+      "retrievedAt": "2026-11-11T01:19:12.728845+00:00"
+    },
+    {
+      "routeId": "195000206",
+      "sha256": "b57eb4a8979e2cdf8362a1471f98d40ec49ada97958340c12e9ed05d4a7e014d",
+      "retrievedAt": "2026-11-11T01:19:12.733988+00:00"
+    },
+    {
+      "routeId": "195000207",
+      "sha256": "0b65ad522257baf2f8daeea6d1c49542e63b7ae60b9c7b2145864db4ef99da92",
+      "retrievedAt": "2026-11-11T01:19:12.740566+00:00"
+    },
+    {
+      "routeId": "195000208",
+      "sha256": "d267d80a9180d6f968f094f5a047f4f3bcb6d54eb6e58906b5d35afcdb6d002b",
+      "retrievedAt": "2026-11-11T01:19:12.746263+00:00"
+    },
+    {
+      "routeId": "195000209",
+      "sha256": "273003095d83fa4c954247f17bc5d49b055604f145a71ff6dbfaa0ad29aa0383",
+      "retrievedAt": "2026-11-11T01:19:12.753168+00:00"
+    },
+    {
+      "routeId": "195000210",
+      "sha256": "3efb57f761a562a1b682d6509d354c72699d9127793918faf74c24662727aa85",
+      "retrievedAt": "2026-11-11T01:19:15.711324+00:00"
+    },
+    {
+      "routeId": "195000211",
+      "sha256": "ff9a7d33936f23a33efcb9a30420bd9f3c09582fa738a8a28aab21b835559f0c",
+      "retrievedAt": "2026-11-11T01:19:15.717327+00:00"
+    },
+    {
+      "routeId": "195000673",
+      "sha256": "e4a68e5d9581acf8a5cdbb12495413dcfa2e2bdfbba44837e868f4da85f1dcbf",
+      "retrievedAt": "2026-11-11T01:19:15.722747+00:00"
+    },
+    {
+      "routeId": "195000674",
+      "sha256": "b3af7829a4358464a6b81d9c965fb2e4d7ed96488c417af0723d2f94f6255123",
+      "retrievedAt": "2026-11-11T01:19:15.726744+00:00"
+    },
+    {
+      "routeId": "195000212",
+      "sha256": "f1b6b7bf796343b1bfbde8356cd3985e84e1320de96ba609600514daad7b3ff5",
+      "retrievedAt": "2026-11-11T01:19:15.731066+00:00"
+    },
+    {
+      "routeId": "195000213",
+      "sha256": "7b65c5045ed0525803d936c89f4b1a6bdd8a2012a2612340eea4164e922d39b6",
+      "retrievedAt": "2026-11-11T01:19:15.736315+00:00"
+    },
+    {
+      "routeId": "195000214",
+      "sha256": "74f039e3b653251b0819de9f4eec16a4918b4dd4589e9034889b480d62acce64",
+      "retrievedAt": "2026-11-11T01:19:18.284812+00:00"
+    },
+    {
+      "routeId": "195000215",
+      "sha256": "12d1b6287e3bc0b0cef86fde9cbfca9f8b67a1cd2d1f4cee8ffd87e0e022481e",
+      "retrievedAt": "2026-11-11T01:19:18.286560+00:00"
+    },
+    {
+      "routeId": "195000216",
+      "sha256": "a354c62198b0df24534ce065f16f86a9028e83561e7dc10af1160c9f749ff50b",
+      "retrievedAt": "2026-11-11T01:19:18.294135+00:00"
+    },
+    {
+      "routeId": "195000217",
+      "sha256": "508aa7969e6cdb9d322e4662ebc9f31e11abb1635535fa7b7c52e4a99b34c79e",
+      "retrievedAt": "2026-11-11T01:19:18.295483+00:00"
+    },
+    {
+      "routeId": "195000218",
+      "sha256": "4b8567a36034bf08ca4e885d2c73e1192e23364ad0912f6234962c2b997fd7f8",
+      "retrievedAt": "2026-11-11T01:19:18.303358+00:00"
+    },
+    {
+      "routeId": "195000219",
+      "sha256": "5691669f54446e62df119699e6e5b0cd283570f0ab1fe5f46d8097b9f575f216",
+      "retrievedAt": "2026-11-11T01:19:18.306713+00:00"
+    },
+    {
+      "routeId": "195000220",
+      "sha256": "8f94632d955c39ee7f606fe656ba88814e25a20fc2065368fe98291806fc9145",
+      "retrievedAt": "2026-11-11T01:19:20.950006+00:00"
+    },
+    {
+      "routeId": "195000221",
+      "sha256": "e7cf2cec8295971d1ce17b6caa3cb85af2320f42fdc7a7b7752edffd04f95d82",
+      "retrievedAt": "2026-11-11T01:19:20.957192+00:00"
+    },
+    {
+      "routeId": "195000222",
+      "sha256": "17aa6239e86b6770c26ff169d8b5aedc99b16616a26d4a4c87ed98d368cc8501",
+      "retrievedAt": "2026-11-11T01:19:20.964544+00:00"
+    },
+    {
+      "routeId": "195000223",
+      "sha256": "653313a4473f4ccc00fe69416d8691bb171fb8d3f1bff69fa018645ae555a16c",
+      "retrievedAt": "2026-11-11T01:19:20.969627+00:00"
+    },
+    {
+      "routeId": "195000224",
+      "sha256": "c595f8a7680e777463bea5568049d919b37f21453b536c7a4eff04db6c841204",
+      "retrievedAt": "2026-11-11T01:19:20.977645+00:00"
+    },
+    {
+      "routeId": "195000225",
+      "sha256": "c23d8fa0d6c82f6abe815f95616768d88a7e644f70cef7631b28053fa09dee44",
+      "retrievedAt": "2026-11-11T01:19:21.016058+00:00"
+    },
+    {
+      "routeId": "195000226",
+      "sha256": "b7ada996908fcf6a3a14a58d4a700ce81e10f13608f6608bd55df81eceecfa37",
+      "retrievedAt": "2026-11-11T01:19:24.235898+00:00"
+    },
+    {
+      "routeId": "195000227",
+      "sha256": "acc16dfd1dcea019639f25a7111015ab84c465aa72feabe45287f54903c8eab9",
+      "retrievedAt": "2026-11-11T01:19:24.242058+00:00"
+    },
+    {
+      "routeId": "195000228",
+      "sha256": "4de5859f9d120f1a6662b6a09c44c18eef16f161e724278c12e18a4d42efa750",
+      "retrievedAt": "2026-11-11T01:19:24.251787+00:00"
+    },
+    {
+      "routeId": "195000229",
+      "sha256": "2210b9aa3d14a5a63098c23d2d2c9d0811e2b761bbf404651c973d8274092119",
+      "retrievedAt": "2026-11-11T01:19:24.261497+00:00"
+    },
+    {
+      "routeId": "195000230",
+      "sha256": "1789b1bcd0f42a2fbeef476f394d1ce99725b00ec7e2e1d009baf69933981c76",
+      "retrievedAt": "2026-11-11T01:19:24.269418+00:00"
+    },
+    {
+      "routeId": "195000232",
+      "sha256": "ed78e6c6d4c03ea16119e6714b6bd92ef704b045874242d67b1b47ae1b09acfc",
+      "retrievedAt": "2026-11-11T01:19:24.275860+00:00"
+    },
+    {
+      "routeId": "195000231",
+      "sha256": "016753682cc0674ec33842f4ad4415338f6c10a343e945124ec23de1ee19cf6c",
+      "retrievedAt": "2026-11-11T01:19:27.087793+00:00"
+    },
+    {
+      "routeId": "195000233",
+      "sha256": "e59e152bb6b1f6404e768cad5a0303e260a0c16e32659da2ccdc0e64ca8afbb2",
+      "retrievedAt": "2026-11-11T01:19:27.095150+00:00"
+    },
+    {
+      "routeId": "195000238",
+      "sha256": "c18321c782c4f088c1a1552c82c6fa20d2009be55a244108ad32588af3333e68",
+      "retrievedAt": "2026-11-11T01:19:27.101306+00:00"
+    },
+    {
+      "routeId": "195000239",
+      "sha256": "326481e8dabe8a3576892b7a241fae84ab43021fa59473f042e5b723b9f06b07",
+      "retrievedAt": "2026-11-11T01:19:27.108531+00:00"
+    },
+    {
+      "routeId": "195000240",
+      "sha256": "73307f77dce54bf512b5da340276fcbd983095e408db925193ac9966a1677fd9",
+      "retrievedAt": "2026-11-11T01:19:27.114784+00:00"
+    },
+    {
+      "routeId": "193000062",
+      "sha256": "9fc9123faadd0e8324eddfd5ecafab49a06ea4f69ca630195c183d56b89e3d77",
+      "retrievedAt": "2026-11-11T01:19:27.120838+00:00"
+    },
+    {
+      "routeId": "193000063",
+      "sha256": "6b93e841a022f189dad819a6d3b12d8a35e07b99e9b68bc673e92be622d66f18",
+      "retrievedAt": "2026-11-11T01:19:29.309072+00:00"
+    },
+    {
+      "routeId": "193000064",
+      "sha256": "4dc5ae6a591c2ee7c5ee6f2b00efa2e9e059f5afa9c02bd03b70be6d07730a97",
+      "retrievedAt": "2026-11-11T01:19:29.313068+00:00"
+    },
+    {
+      "routeId": "193000065",
+      "sha256": "e3fe5bc0442a04da966c0cf9dccff7619b433caff475e07603bb1f1485aeebad",
+      "retrievedAt": "2026-11-11T01:19:29.316075+00:00"
+    },
+    {
+      "routeId": "194000104",
+      "sha256": "7d78c0dfa86af41d8b40c9abbd9ed3f0364ed8cef67460a97a6c145503ead0fa",
+      "retrievedAt": "2026-11-11T01:19:29.319068+00:00"
+    },
+    {
+      "routeId": "194000105",
+      "sha256": "8428fb8823f256ac4a66f98e4e06676ac36c0f987ad0586c0373ecdc23f61c85",
+      "retrievedAt": "2026-11-11T01:19:29.323075+00:00"
+    },
+    {
+      "routeId": "194000106",
+      "sha256": "51d106466a45c5f8a79bba65f4593dba165bd719e60381dbc8a41ccb27b7078d",
+      "retrievedAt": "2026-11-11T01:19:29.328084+00:00"
+    },
+    {
+      "routeId": "194000107",
+      "sha256": "6fb3535e2c1d2eb310d73665e83d7f4ce0e8719a8323a172cb743a610cc8fc10",
+      "retrievedAt": "2026-11-11T01:19:31.941355+00:00"
+    },
+    {
+      "routeId": "194000108",
+      "sha256": "10a39ac0a75c33f6b1f5f888e0f750fff1f6900d988a98035093ccbddd5643e2",
+      "retrievedAt": "2026-11-11T01:19:31.946019+00:00"
+    },
+    {
+      "routeId": "194000109",
+      "sha256": "acf4b60efc454f6dd3bf1720ddba64fec995649d9d29e61e97a47e12a1cd70e4",
+      "retrievedAt": "2026-11-11T01:19:31.949016+00:00"
+    },
+    {
+      "routeId": "194000110",
+      "sha256": "7d57253a50a432fdf7a5e271e55bc3d062a23abed5f940f8023f02b0d73dc3b1",
+      "retrievedAt": "2026-11-11T01:19:31.954016+00:00"
+    },
+    {
+      "routeId": "194000111",
+      "sha256": "05b02dc613380db2f2b6f4d707a2086f4156aed65f2cbdd59236673830f4ee01",
+      "retrievedAt": "2026-11-11T01:19:31.958014+00:00"
+    },
+    {
+      "routeId": "195000241",
+      "sha256": "0c84fce7b56c4de199feb880a35ffc48ca8da4ca45474144c57579728c9ca9fc",
+      "retrievedAt": "2026-11-11T01:19:31.962020+00:00"
+    },
+    {
+      "routeId": "195000242",
+      "sha256": "8739c5750fb38a78907991966b9a8950c656b4b7a4118e1695027cb332b8d684",
+      "retrievedAt": "2026-11-11T01:19:34.812028+00:00"
+    },
+    {
+      "routeId": "195000243",
+      "sha256": "7238a48ea4e17151c6e197b38c2b5ba2f98ad3caa6a1d1d16516d89553223278",
+      "retrievedAt": "2026-11-11T01:19:34.816031+00:00"
+    },
+    {
+      "routeId": "195000244",
+      "sha256": "6d2a5129ca91c4ddebaa0e246a9c036a6ace677a823d1d04d8dbe9a68a0bfb87",
+      "retrievedAt": "2026-11-11T01:19:34.821027+00:00"
+    },
+    {
+      "routeId": "195000247",
+      "sha256": "e67422935bcd47c122d2f9ba93245458566931878decef78668c73822e86d650",
+      "retrievedAt": "2026-11-11T01:19:34.825027+00:00"
+    },
+    {
+      "routeId": "195000248",
+      "sha256": "5410e9efbc0d8e4b3ddeb88f967b7e8765df57d9e3387787c112c3f7edd0bf57",
+      "retrievedAt": "2026-11-11T01:19:34.829025+00:00"
+    },
+    {
+      "routeId": "195000713",
+      "sha256": "e238e2a2a76169f250fca21e50ee9bc352ee6f2662134acae3abdfe7b6606d6c",
+      "retrievedAt": "2026-11-11T01:19:34.833470+00:00"
+    },
+    {
+      "routeId": "195000714",
+      "sha256": "b48900877f48fb07a386f3f1e4476818592fd6bd9b887687aa6a6b9df0038b11",
+      "retrievedAt": "2026-11-11T01:19:37.817920+00:00"
+    },
+    {
+      "routeId": "196000442",
+      "sha256": "b832c999ad214d87535ede81ee8f606707d5ffb813452524b89ef33dde3ebd9e",
+      "retrievedAt": "2026-11-11T01:19:37.820921+00:00"
+    },
+    {
+      "routeId": "196000443",
+      "sha256": "a5a89951ccd836ca0f29ac7751087d850dcc84bb764da269e4c5f32d787e8bc9",
+      "retrievedAt": "2026-11-11T01:19:37.824917+00:00"
+    },
+    {
+      "routeId": "196000780",
+      "sha256": "013b9648ba55100aea9c859488803ab769895d396efa5135c27ede4d77ca6b13",
+      "retrievedAt": "2026-11-11T01:19:37.829926+00:00"
+    },
+    {
+      "routeId": "196000781",
+      "sha256": "b6771fdc75cd04c475bdb999157ec120204452a221a061426f1f40df8901a3e7",
+      "retrievedAt": "2026-11-11T01:19:37.833921+00:00"
+    },
+    {
+      "routeId": "196000444",
+      "sha256": "6f2f280033cb46482693cced495ff704f84654380c944a573ca617a18c30ce08",
+      "retrievedAt": "2026-11-11T01:19:37.838459+00:00"
+    },
+    {
+      "routeId": "196000445",
+      "sha256": "998655b619eaea4aff500fd7b295bbca1a0fc55d6420f4cd7566b5ce2edae577",
+      "retrievedAt": "2026-11-11T01:19:40.549116+00:00"
+    },
+    {
+      "routeId": "196000446",
+      "sha256": "6ded97ec1e1566950bca93f62ef9a37211f25722e308b78696465536cd70b886",
+      "retrievedAt": "2026-11-11T01:19:40.552624+00:00"
+    },
+    {
+      "routeId": "196000447",
+      "sha256": "76350d99715efa033f23594a3de7b91d22ab269550b7c7e105bf9ebf0e1cf00d",
+      "retrievedAt": "2026-11-11T01:19:40.555637+00:00"
+    },
+    {
+      "routeId": "196000448",
+      "sha256": "a7754cd8ba1dbee259e5996f13963c59427aaef27c104351a6ba819d9559fcec",
+      "retrievedAt": "2026-11-11T01:19:40.559635+00:00"
+    },
+    {
+      "routeId": "196000449",
+      "sha256": "2de4c8dab938b622f6da4a76c1f701710024cd7d5c80cb6d1065c54d23ac6b61",
+      "retrievedAt": "2026-11-11T01:19:40.563633+00:00"
+    },
+    {
+      "routeId": "196000450",
+      "sha256": "832e64af08b0f7350c70789478d968b60467a96f5def3b7178099bc84eaa8925",
+      "retrievedAt": "2026-11-11T01:19:40.566635+00:00"
+    },
+    {
+      "routeId": "196000479",
+      "sha256": "27ad6fc657417887e000fa64ce5967339239ef3b965f29ffe042120b12ff06ca",
+      "retrievedAt": "2026-11-11T01:19:43.482911+00:00"
+    },
+    {
+      "routeId": "196000480",
+      "sha256": "eedd901b2372ff922c38b63291c7ad77eeca108482fe4e4518253e7392048ac8",
+      "retrievedAt": "2026-11-11T01:19:43.487235+00:00"
+    },
+    {
+      "routeId": "195000249",
+      "sha256": "688bed33590e6c8967114fdacc7fb0fef6bf081f2316e1076de9ed8f30fe93e5",
+      "retrievedAt": "2026-11-11T01:19:43.491545+00:00"
+    },
+    {
+      "routeId": "195000250",
+      "sha256": "e7c1d9c0ef3a11034d24badcd4c45f2fb41983bb444dfb6ef9d64b15da6b1d67",
+      "retrievedAt": "2026-11-11T01:19:43.495586+00:00"
+    },
+    {
+      "routeId": "196000481",
+      "sha256": "92333b8a6ff6bd723a1c3a97fb1acfa8f8167fa57fd6b4a3b4537ac6bd5d8a8a",
+      "retrievedAt": "2026-11-11T01:19:43.500501+00:00"
+    },
+    {
+      "routeId": "196000482",
+      "sha256": "10636e6c82d212c5d19c2ea14846374bf1583357961507972c9a9e4a9d4210a6",
+      "retrievedAt": "2026-11-11T01:19:43.505514+00:00"
+    },
+    {
+      "routeId": "196000483",
+      "sha256": "ef2624adfe0c8fcd7c09b2045555a37471569e6a42c43f39bc291297330dfc41",
+      "retrievedAt": "2026-11-11T01:19:46.007757+00:00"
+    },
+    {
+      "routeId": "196000484",
+      "sha256": "fa88a5a79533b04043e94f4f3ad10fdb6b82f844147842bb671a5d1f783f2e59",
+      "retrievedAt": "2026-11-11T01:19:46.011721+00:00"
+    },
+    {
+      "routeId": "388021001",
+      "sha256": "d3d8dfa00a924683ba10d73cb6403ed629f99a69c0ee17d65caf342b5ddf6a29",
+      "retrievedAt": "2026-11-11T01:19:46.014929+00:00"
+    },
+    {
+      "routeId": "388021002",
+      "sha256": "7382709be2b19347b1119bad42d0d088715e1dbc53f98c974820421a92af5d96",
+      "retrievedAt": "2026-11-11T01:19:46.017931+00:00"
+    },
+    {
+      "routeId": "388023001",
+      "sha256": "d009d75a51b29775d7b2e7152bc51fa12dfe710a5d60e9d85eeae4ffd717b3f2",
+      "retrievedAt": "2026-11-11T01:19:46.021441+00:00"
+    },
+    {
+      "routeId": "388023002",
+      "sha256": "a6e146c4e5ea62a3a649421cbf17fd4e5a33365260de0f70af1bb876c6f092c5",
+      "retrievedAt": "2026-11-11T01:19:46.025441+00:00"
+    },
+    {
+      "routeId": "388030001",
+      "sha256": "c6d72bfb1fea513bb946ef942a70548635f8a0edc349c76105f7d0dfe5efd261",
+      "retrievedAt": "2026-11-11T01:19:48.600326+00:00"
+    },
+    {
+      "routeId": "388030002",
+      "sha256": "8fd4712af61240a880a8d5d59b38e7059d6c0d356179c974ee17fc636fb4c7f1",
+      "retrievedAt": "2026-11-11T01:19:48.603329+00:00"
+    },
+    {
+      "routeId": "388031001",
+      "sha256": "b855587b006b3ccc15588981792949738065f28b763fc7317eebc05dedd8eb20",
+      "retrievedAt": "2026-11-11T01:19:48.606329+00:00"
+    },
+    {
+      "routeId": "388031002",
+      "sha256": "21dd290ae0381c157303186f15b0573c8459f296b44a778b3412b460d47bb267",
+      "retrievedAt": "2026-11-11T01:19:48.610924+00:00"
+    },
+    {
+      "routeId": "196000455",
+      "sha256": "d1af6074e37101e00a2e9626b894bb46e773ca3ec75581a9a8b131be0a3f19ba",
+      "retrievedAt": "2026-11-11T01:19:48.614928+00:00"
+    },
+    {
+      "routeId": "196000456",
+      "sha256": "19521c8c56ed57d022bc014107d93333b375dc988a864143d887038f9b9c8102",
+      "retrievedAt": "2026-11-11T01:19:48.618475+00:00"
+    },
+    {
+      "routeId": "196000457",
+      "sha256": "41abeda135ad73c0110e4327f722d85bc16681019786a2f573cb2861ca0a6994",
+      "retrievedAt": "2026-11-11T01:19:51.595636+00:00"
+    },
+    {
+      "routeId": "196000458",
+      "sha256": "28cec6267fe33fe7c91a6dfe6a584250f7313e5bb5ebc6de9241dbc7e1e19503",
+      "retrievedAt": "2026-11-11T01:19:51.601639+00:00"
+    },
+    {
+      "routeId": "196000459",
+      "sha256": "7115812518b7fdd977e67159c0465f5de50bf065082d9cb03e5062c4f1b310eb",
+      "retrievedAt": "2026-11-11T01:19:51.607947+00:00"
+    },
+    {
+      "routeId": "196000460",
+      "sha256": "35669404cfe40825aa3be345ef7f21994864c1a2fc3dff78d0dbb3ae7b2a5935",
+      "retrievedAt": "2026-11-11T01:19:51.614025+00:00"
+    },
+    {
+      "routeId": "196000461",
+      "sha256": "d3aab6fcbd3d801b61c7ccec871bfac02907190a405355a979d144cd8bccd489",
+      "retrievedAt": "2026-11-11T01:19:51.618543+00:00"
+    },
+    {
+      "routeId": "196000462",
+      "sha256": "7dac73a726ce241d132089eb7159b047972c5a2a6b47a0398dc12919d3056208",
+      "retrievedAt": "2026-11-11T01:19:51.623873+00:00"
+    },
+    {
+      "routeId": "196000463",
+      "sha256": "cacf2374d2c6fc8ec48cd6165ee8b3528f84ae9f323edf917566d6564709c1f5",
+      "retrievedAt": "2026-11-11T01:19:53.757738+00:00"
+    },
+    {
+      "routeId": "196000464",
+      "sha256": "509d0abc78d3ca01ff9169e662d6e3c43c6a9cf7c5b84aa92902fa56c6303983",
+      "retrievedAt": "2026-11-11T01:19:53.761740+00:00"
+    },
+    {
+      "routeId": "193000066",
+      "sha256": "d15a66c6b85e9245fb9410054251738bff0567f4372a65a52f1a3b17393f7344",
+      "retrievedAt": "2026-11-11T01:19:53.765246+00:00"
+    },
+    {
+      "routeId": "193000067",
+      "sha256": "6321852a9bf58e3fd0ec953b153476b6f4b1ac7930447552a677b70512a56362",
+      "retrievedAt": "2026-11-11T01:19:53.769256+00:00"
+    },
+    {
+      "routeId": "193000033",
+      "sha256": "ce006b041d2987078578ee3629522fc7de4fb6cfd724aab5c558ecb5bf476f29",
+      "retrievedAt": "2026-11-11T01:19:53.773258+00:00"
+    },
+    {
+      "routeId": "193000034",
+      "sha256": "fadf87d0f442f0ef52edf0f1b91b07b107708e3ccf64bcfbb2288894db66fe3a",
+      "retrievedAt": "2026-11-11T01:19:53.778256+00:00"
+    },
+    {
+      "routeId": "193000035",
+      "sha256": "429f76d4e1cf6fba09caaceefa8943ea17b7f31786944a356bfe650cd716da83",
+      "retrievedAt": "2026-11-11T01:19:56.072558+00:00"
+    },
+    {
+      "routeId": "193000036",
+      "sha256": "0c326879956a8fb944053159df148d4e7c7a142f2c222fbbb89af05b0574945f",
+      "retrievedAt": "2026-11-11T01:19:56.081502+00:00"
+    },
+    {
+      "routeId": "193000037",
+      "sha256": "8a2bb95f7c51745f1220b3b768661fe82db3babb0a4cc04e1c503df1ef840229",
+      "retrievedAt": "2026-11-11T01:19:56.089032+00:00"
+    },
+    {
+      "routeId": "193000038",
+      "sha256": "8932e5515c0de0003697dacc5762c1dc9e042caf4ca2b764044065cc8ac99500",
+      "retrievedAt": "2026-11-11T01:19:56.097044+00:00"
+    },
+    {
+      "routeId": "193000488",
+      "sha256": "c1a8caa1392a60e621d3630ad5a54eff42058fffb57e2db3b20eec01840fe445",
+      "retrievedAt": "2026-11-11T01:19:56.104802+00:00"
+    },
+    {
+      "routeId": "193000489",
+      "sha256": "2ddbe23a320fc38ca0872b3c3900d07cf5d679a3e1ca361b015fc595bff10218",
+      "retrievedAt": "2026-11-11T01:19:56.116848+00:00"
+    },
+    {
+      "routeId": "193000039",
+      "sha256": "0048ed92e8480fd31f12136c5e42e1497bae3e5db67ad58062adb16c87fae6bf",
+      "retrievedAt": "2026-11-11T01:19:58.232640+00:00"
+    },
+    {
+      "routeId": "193000040",
+      "sha256": "11eee190849188028cf5f5d9aa0ee58533403d090ea6a6645774d537a53d3a2f",
+      "retrievedAt": "2026-11-11T01:19:58.234654+00:00"
+    },
+    {
+      "routeId": "193000041",
+      "sha256": "14aefbefd1b69b8877a163f82dfef2f78b0b883648be73d192e91ce5068f957e",
+      "retrievedAt": "2026-11-11T01:19:58.237654+00:00"
+    },
+    {
+      "routeId": "193000042",
+      "sha256": "720fbf306e928154bb9bb776e764395d7857d7586adb77a1a3ee556c7cf1a589",
+      "retrievedAt": "2026-11-11T01:19:58.239638+00:00"
+    },
+    {
+      "routeId": "193000043",
+      "sha256": "c39ecff81d72087ef5a2a10a875c079c561f03edb6af61fc7182d66c268a5257",
+      "retrievedAt": "2026-11-11T01:19:58.242175+00:00"
+    },
+    {
+      "routeId": "193000044",
+      "sha256": "91c7b89f335452635e9a97699ce7f93d4107847053f69e7ba4484c1cb3d87850",
+      "retrievedAt": "2026-11-11T01:19:58.245211+00:00"
+    },
+    {
+      "routeId": "193000045",
+      "sha256": "bae7396e5e24b3509c750dd86fb214b2acc0e632ae2ceac3e5020f7c8797335f",
+      "retrievedAt": "2026-11-11T01:20:00.095380+00:00"
+    },
+    {
+      "routeId": "193000046",
+      "sha256": "ff452dd0655d7f5ac1c7d94bf090adcea8f1847003b56a682f5dcc2627bea8e8",
+      "retrievedAt": "2026-11-11T01:20:00.099420+00:00"
+    },
+    {
+      "routeId": "193000047",
+      "sha256": "4e60a206fe758ec52b9e16746802da6862e2b40b2bac44fff96d6cb3971056cf",
+      "retrievedAt": "2026-11-11T01:20:00.103421+00:00"
+    },
+    {
+      "routeId": "193000048",
+      "sha256": "9260e47d132fd1cb6a742863ee28e63cbc7de5271dc932b5d633b7e992f237c2",
+      "retrievedAt": "2026-11-11T01:20:00.106945+00:00"
+    },
+    {
+      "routeId": "193000051",
+      "sha256": "6c3f1227c59bdf38dae7198cc3d5d446ca143a921d73ee2a55e1c9f50bd3d47a",
+      "retrievedAt": "2026-11-11T01:20:00.110953+00:00"
+    },
+    {
+      "routeId": "193000472",
+      "sha256": "f211528c792bc3cdbcea9860c8d073f2b6cafcc31d685c0d985b819a6fd72b53",
+      "retrievedAt": "2026-11-11T01:20:00.114151+00:00"
+    },
+    {
+      "routeId": "193000052",
+      "sha256": "a9f7819448501b91b57d4deb92a0dc77024c4c044777904b40f2830da6426772",
+      "retrievedAt": "2026-11-11T01:20:02.630241+00:00"
+    },
+    {
+      "routeId": "193000053",
+      "sha256": "49411bc8b4b0001402b173411eaca259f54f290b93c367c59200a2c04f1af832",
+      "retrievedAt": "2026-11-11T01:20:02.634009+00:00"
+    },
+    {
+      "routeId": "193000054",
+      "sha256": "e91b152f16bd4ac6adf1f5f10e560eceac72062e89b373ec533330b20fe9de15",
+      "retrievedAt": "2026-11-11T01:20:02.636019+00:00"
+    },
+    {
+      "routeId": "193000055",
+      "sha256": "4bea5383d4102d48edf563a5e9a2e0514911aa4a6d98fd55247a715132470f3a",
+      "retrievedAt": "2026-11-11T01:20:02.640043+00:00"
+    },
+    {
+      "routeId": "193000056",
+      "sha256": "265e5939ef475752abcd462716b119773b1fc0d834261bd5e3e1b6d74786a744",
+      "retrievedAt": "2026-11-11T01:20:02.642061+00:00"
+    },
+    {
+      "routeId": "193000057",
+      "sha256": "c430761cf594434b4165d046c3306414f8b390c8cedd93630b2bf27e6d3dff9e",
+      "retrievedAt": "2026-11-11T01:20:02.642061+00:00"
+    },
+    {
+      "routeId": "193000058",
+      "sha256": "b0e978c0c10961e9b07a8641ab076fdaab1c9aa25c70dd258f236041a9420216",
+      "retrievedAt": "2026-11-11T01:20:05.961701+00:00"
+    },
+    {
+      "routeId": "193000059",
+      "sha256": "7e9376f1eb16766eb198fdce41499b2569ee4163380f9497ed932f1b8e1870c9",
+      "retrievedAt": "2026-11-11T01:20:05.964698+00:00"
+    },
+    {
+      "routeId": "193000774",
+      "sha256": "6173d4c23816e6ee83938c5d399f6aa4b9ced8851fd397e180bdf8f539d5dc9b",
+      "retrievedAt": "2026-11-11T01:20:05.966699+00:00"
+    },
+    {
+      "routeId": "194000068",
+      "sha256": "23a4c012169f5193b6fc56a7f3a1254b9962ad9ffb094a7f34cc0cf5c6d508d5",
+      "retrievedAt": "2026-11-11T01:20:05.970101+00:00"
+    },
+    {
+      "routeId": "194000069",
+      "sha256": "40f3e56e4783c76cfb2a1f403f3de0fd7a9ff6ff61836ad6ebbd918b94fafc49",
+      "retrievedAt": "2026-11-11T01:20:05.974122+00:00"
+    },
+    {
+      "routeId": "194000070",
+      "sha256": "f8ebbd5ed768f9700f01650b50020d7f985a02dbb578ff343f6399296905d20a",
+      "retrievedAt": "2026-11-11T01:20:05.979121+00:00"
+    },
+    {
+      "routeId": "194000071",
+      "sha256": "e6124ba1d7d6f64c9037bafd30778fd52edeaadcadd4702272e4d2b34ff4f4c5",
+      "retrievedAt": "2026-11-11T01:20:08.420995+00:00"
+    },
+    {
+      "routeId": "194000072",
+      "sha256": "db0c53bc87d076b9e61262e36a5c332fe038a6494c9b3e347be06500f4db0fa6",
+      "retrievedAt": "2026-11-11T01:20:08.425009+00:00"
+    },
+    {
+      "routeId": "194000073",
+      "sha256": "f03ec9fc201731c1391c117356d06fca0eca41c3ca347fb16a3e36620fca2897",
+      "retrievedAt": "2026-11-11T01:20:08.427018+00:00"
+    },
+    {
+      "routeId": "194000074",
+      "sha256": "686eff40fd701b89c2f5e5076be30fff2e4439eeea9065f74234d2cb93d2c644",
+      "retrievedAt": "2026-11-11T01:20:08.431031+00:00"
+    },
+    {
+      "routeId": "194000075",
+      "sha256": "fb1937cc5695ce47b62760d1bc05f15ba032efbd0410d45d8f7e167883f961ac",
+      "retrievedAt": "2026-11-11T01:20:08.433041+00:00"
+    },
+    {
+      "routeId": "196000749",
+      "sha256": "aa02957cbc4120fc30a76e4db788860cb9619120d96b8d854fa47d135ee8be65",
+      "retrievedAt": "2026-11-11T01:20:08.437058+00:00"
+    },
+    {
+      "routeId": "195000112",
+      "sha256": "0884d4fba91628deb0fdeda45453111c69ecc06beab713209cc9498a5932d9be",
+      "retrievedAt": "2026-11-11T01:20:10.688529+00:00"
+    },
+    {
+      "routeId": "195000113",
+      "sha256": "d507f8d13688669f3e837f0a8d8ac3a2acf2ca85786fb80263cd284596f1dab1",
+      "retrievedAt": "2026-11-11T01:20:10.696620+00:00"
+    },
+    {
+      "routeId": "195000114",
+      "sha256": "33e17993e102cb036007946ec95dd4a9a186d1186a664454f0e689e2fca8b7e3",
+      "retrievedAt": "2026-11-11T01:20:10.696620+00:00"
+    },
+    {
+      "routeId": "195000115",
+      "sha256": "5c9a568288d26c64e3624dce50031b85d829575ef39f07f0abef519afb93b5cf",
+      "retrievedAt": "2026-11-11T01:20:10.704631+00:00"
+    },
+    {
+      "routeId": "195000116",
+      "sha256": "92888ac278a435f0997f023379fd03ca5d720d676a66111d4af1b679f86f8eb3",
+      "retrievedAt": "2026-11-11T01:20:10.704631+00:00"
+    },
+    {
+      "routeId": "195000117",
+      "sha256": "afb5335ef4d66579d7a69a99d8426eacf4f6eca50772233824f507e4d8e5baa3",
+      "retrievedAt": "2026-11-11T01:20:10.704631+00:00"
+    },
+    {
+      "routeId": "195000118",
+      "sha256": "bf02c53a59d452f70f832b69835f7377d8966a4c97f4acbfd5457243a22cc1db",
+      "retrievedAt": "2026-11-11T01:20:13.875348+00:00"
+    },
+    {
+      "routeId": "195000119",
+      "sha256": "ebd894908aff65df95c0775aafad1c5024f24b3c5b628ccdcde487b17f69c848",
+      "retrievedAt": "2026-11-11T01:20:13.879351+00:00"
+    },
+    {
+      "routeId": "195000120",
+      "sha256": "1f937c097b5d68014fe00370993ae7212c6a0f52a97b70281fc842a3876e3067",
+      "retrievedAt": "2026-11-11T01:20:13.884352+00:00"
+    },
+    {
+      "routeId": "195000121",
+      "sha256": "89d565158a58d4e4fd42c44f5bb7c71f536822d036541463f27eeee2d895f0da",
+      "retrievedAt": "2026-11-11T01:20:13.888354+00:00"
+    },
+    {
+      "routeId": "195000122",
+      "sha256": "07010346bb2c419d16e8aa61248476e8dc4f3e5c9ee8d9cee338809bd1cccb2a",
+      "retrievedAt": "2026-11-11T01:20:13.892353+00:00"
+    },
+    {
+      "routeId": "195000123",
+      "sha256": "36202239eac69aad49f98224801a980998a92d2df611f8ef07ad092a459c99a5",
+      "retrievedAt": "2026-11-11T01:20:13.896349+00:00"
+    },
+    {
+      "routeId": "195000124",
+      "sha256": "8cbc8b0346a79b433e33a648decb536e4b905eb56938613870094ccaca1e8655",
+      "retrievedAt": "2026-11-11T01:20:16.238492+00:00"
+    },
+    {
+      "routeId": "195000125",
+      "sha256": "26cef047e4a65dd468e333267c2cebdccb03d665892d454b39a002c38559649d",
+      "retrievedAt": "2026-11-11T01:20:16.246084+00:00"
+    },
+    {
+      "routeId": "195000126",
+      "sha256": "212291a4cf5a1c1b4d75ac8f27785fb931cc0f9991cf08f6ff8f086363f70184",
+      "retrievedAt": "2026-11-11T01:20:16.246084+00:00"
+    },
+    {
+      "routeId": "195000127",
+      "sha256": "8670cb809a351274b718449a3c6abaeb0be9cd398ad63c816c5e75c82062e896",
+      "retrievedAt": "2026-11-11T01:20:16.254567+00:00"
+    },
+    {
+      "routeId": "195000128",
+      "sha256": "643f58d49173f14ae584a32de39d68895f06ce7785ebcef4af4f98b3deefe2b7",
+      "retrievedAt": "2026-11-11T01:20:16.258632+00:00"
+    },
+    {
+      "routeId": "195000129",
+      "sha256": "5094fa5a6eac1dd483ebdde1152620dbe2617dba77ab55e89512deec3cfaedf7",
+      "retrievedAt": "2026-11-11T01:20:16.258632+00:00"
+    },
+    {
+      "routeId": "195000130",
+      "sha256": "6fa91af73714fa0323f0c744158889e00f899e232782e40b0d044dc67c10e9f2",
+      "retrievedAt": "2026-11-11T01:20:18.574152+00:00"
+    },
+    {
+      "routeId": "195000131",
+      "sha256": "b40ac468377ced3ed73c6cfbf5d9b89fe7046cb1297f0afbd68da99060073e2d",
+      "retrievedAt": "2026-11-11T01:20:18.577164+00:00"
+    },
+    {
+      "routeId": "195000132",
+      "sha256": "4c04063c778d17c6f5b8b1b7f422e3abfb249ba073ead8e9d5b569d658556c59",
+      "retrievedAt": "2026-11-11T01:20:18.581156+00:00"
+    },
+    {
+      "routeId": "195000133",
+      "sha256": "1b0b423aee6c1662406988c2b5bcfc0354b66e621f91731a26e2d3a025f04588",
+      "retrievedAt": "2026-11-11T01:20:18.584684+00:00"
+    },
+    {
+      "routeId": "195000134",
+      "sha256": "cd9ee370bc9594cc52ef939cd638451f738a47ccb62323a94fe5c90ff8633f81",
+      "retrievedAt": "2026-11-11T01:20:18.588914+00:00"
+    },
+    {
+      "routeId": "195000135",
+      "sha256": "7ad7499e592d67b3dc8f79db88aee9937cb8b4d724c745ca8615741e5581b760",
+      "retrievedAt": "2026-11-11T01:20:18.592325+00:00"
+    },
+    {
+      "routeId": "195000136",
+      "sha256": "a9d827c3c90d75ca367ae01e765c4572d07db97678ef7a37037289bb26e69eec",
+      "retrievedAt": "2026-11-11T01:20:20.983013+00:00"
+    },
+    {
+      "routeId": "195000137",
+      "sha256": "979d359af669ab518ebfbdb00f3db554919ee6f91496bbefc3c98b21db1c4160",
+      "retrievedAt": "2026-11-11T01:20:20.985000+00:00"
+    },
+    {
+      "routeId": "195000138",
+      "sha256": "2018ea0edca46f2b900f57b02ef18728fdfabcbbf9ec1a94f084f3acadb976cd",
+      "retrievedAt": "2026-11-11T01:20:20.987520+00:00"
+    },
+    {
+      "routeId": "195000139",
+      "sha256": "7f82e51bb7320e49041e8dfbd5d54c73925f0650e41d524c70a8672b63f46856",
+      "retrievedAt": "2026-11-11T01:20:20.990534+00:00"
+    },
+    {
+      "routeId": "195000140",
+      "sha256": "2c2caf169b95edc5b90a69ae40f3297ba00a02df5ddce204216327b4bad4a5ec",
+      "retrievedAt": "2026-11-11T01:20:20.993543+00:00"
+    },
+    {
+      "routeId": "195000141",
+      "sha256": "d9a9ffbe693778c28d26874a36e50304ecef809ef1ccbf22a096c673a1461a92",
+      "retrievedAt": "2026-11-11T01:20:20.996840+00:00"
+    },
+    {
+      "routeId": "195000142",
+      "sha256": "7909e9c55b87f1fad281de0f7d4ff5e59b9ca9c076518d4e238d774f2d10b4fb",
+      "retrievedAt": "2026-11-11T01:20:26.230513+00:00"
+    },
+    {
+      "routeId": "195000143",
+      "sha256": "7483f65c19d40346cfdeaf8da5dd48b6b79f05f1800f95fed6d4ed44217144d0",
+      "retrievedAt": "2026-11-11T01:20:26.230513+00:00"
+    },
+    {
+      "routeId": "195000474",
+      "sha256": "ff2c8d5ae439cb4bc6ed5f19f87f4c2020a3643c23975f8a4f67d66a8ac20c99",
+      "retrievedAt": "2026-11-11T01:20:26.238869+00:00"
+    },
+    {
+      "routeId": "195000144",
+      "sha256": "a6fbf34138dd9b2a177f0af2f6ef2c6f8da1f39729dba95a1cc8300230d6f558",
+      "retrievedAt": "2026-11-11T01:20:26.241323+00:00"
+    },
+    {
+      "routeId": "195000145",
+      "sha256": "d1ef9004f69835e1f5d0d52a30020e42bf16477edd45a9d832d65dc57e8e3881",
+      "retrievedAt": "2026-11-11T01:20:26.242596+00:00"
+    },
+    {
+      "routeId": "195000492",
+      "sha256": "189750819a3c8eb8ae38720378634306b5a892efc20dc7c5fecaf8c4ea6e35b7",
+      "retrievedAt": "2026-11-11T01:20:26.247277+00:00"
+    },
+    {
+      "routeId": "195000493",
+      "sha256": "efccb1aa8775888a7622cb2ca1ee3dd3547097e6d2631001ce634ec28c5dae2a",
+      "retrievedAt": "2026-11-11T01:20:31.502043+00:00"
+    },
+    {
+      "routeId": "195000494",
+      "sha256": "5493da92a868e1f9ee3a1d3ad24dc3f03a3f8cf6b9ec2f630eae4942eed2613a",
+      "retrievedAt": "2026-11-11T01:20:31.509446+00:00"
+    },
+    {
+      "routeId": "195000495",
+      "sha256": "0f18e0e4750e26404155b90fc1918308ab263271cff8c7e9fb7fde9133d439fb",
+      "retrievedAt": "2026-11-11T01:20:31.513482+00:00"
+    },
+    {
+      "routeId": "195000496",
+      "sha256": "5d86933ba7bdb6f8b41b2a658e6eaf677b7388bd15b98b9ec867a83eef6303d1",
+      "retrievedAt": "2026-11-11T01:20:31.517320+00:00"
+    },
+    {
+      "routeId": "195000497",
+      "sha256": "b53428dea83a0406abcd2a06a601747d06b457cdffea2165430f7f7e4f102b5c",
+      "retrievedAt": "2026-11-11T01:20:31.522865+00:00"
+    },
+    {
+      "routeId": "195000498",
+      "sha256": "f3abbdcd81a1fc2a259025d9fbd11e367746f0b65a1e4ad9565ea03072ff9739",
+      "retrievedAt": "2026-11-11T01:20:31.527261+00:00"
+    },
+    {
+      "routeId": "195000499",
+      "sha256": "10ec403ed6a20ddaa90e5f06f221d0c7430bd4d260eca36e3efb5e055c261e98",
+      "retrievedAt": "2026-11-11T01:20:35.739925+00:00"
+    },
+    {
+      "routeId": "195000500",
+      "sha256": "b467960eaea5cd4742bfd4608811c798dc97c40b32e2c4739672ea0f5af1fc8b",
+      "retrievedAt": "2026-11-11T01:20:35.742931+00:00"
+    },
+    {
+      "routeId": "195900252",
+      "sha256": "c3298e6873417ba64a7e14051e9e53481cec039838cd4386a182dcb2dedf45af",
+      "retrievedAt": "2026-11-11T01:20:35.745930+00:00"
+    },
+    {
+      "routeId": "195900253",
+      "sha256": "53181bfdfc30897e9a7bdd880643331fcfa77ca2efd70e2dec05bd83b6e10b9f",
+      "retrievedAt": "2026-11-11T01:20:35.748934+00:00"
+    },
+    {
+      "routeId": "195900254",
+      "sha256": "dbfdc612f30f662f1492249e66e06d0895b850bda4ab725660440cd1a06272de",
+      "retrievedAt": "2026-11-11T01:20:35.751934+00:00"
+    },
+    {
+      "routeId": "195900255",
+      "sha256": "a8a2ffb1a6b51a77e7332124bb0e0cb283c22f5e746199fc7a0d05111c309ce8",
+      "retrievedAt": "2026-11-11T01:20:35.754933+00:00"
+    },
+    {
+      "routeId": "196900465",
+      "sha256": "337e4e331a85659aa07ddd486f8503ec898c9ee5e911d6e3353a008e0fac5095",
+      "retrievedAt": "2026-11-11T01:20:39.155275+00:00"
+    },
+    {
+      "routeId": "196900466",
+      "sha256": "b8c0c82823d6fe272d7f949fb32ab5b4fa612d9f40cd0550a4d1d77095717e25",
+      "retrievedAt": "2026-11-11T01:20:39.158276+00:00"
+    },
+    {
+      "routeId": "196000256",
+      "sha256": "783a01b6707339d52f693b334c11d6ba22e173524f836bd43608d66f86adf73f",
+      "retrievedAt": "2026-11-11T01:20:39.162552+00:00"
+    },
+    {
+      "routeId": "196000257",
+      "sha256": "c978f8e8ccf2b223b6721dc80f392b0cc1778ae0111f9f116694f21325abdeb0",
+      "retrievedAt": "2026-11-11T01:20:39.166053+00:00"
+    },
+    {
+      "routeId": "196000259",
+      "sha256": "953a35c1a6935c51cc826beffb295bce49168176208df4f2e9f01b970b99f57a",
+      "retrievedAt": "2026-11-11T01:20:39.168267+00:00"
+    },
+    {
+      "routeId": "196000258",
+      "sha256": "66d6b23ba6280eb947d93b087d02ec1a0233a6cc5a6ce84e20cb11920d5bc627",
+      "retrievedAt": "2026-11-11T01:20:39.171787+00:00"
+    },
+    {
+      "routeId": "196000260",
+      "sha256": "11aec56676a901509e588a4d2f85fa5e578bf1a193a8fffa07dd714fe7d12520",
+      "retrievedAt": "2026-11-11T01:20:42.550905+00:00"
+    },
+    {
+      "routeId": "196000261",
+      "sha256": "9bdf0ec0b287b7a0819d269be7405c4d919104c2888ad9d0b2cf487fb4378750",
+      "retrievedAt": "2026-11-11T01:20:42.550905+00:00"
+    },
+    {
+      "routeId": "196000262",
+      "sha256": "a8335314960696301a7c792003ee16f5bdf27c913747a0532b06d5f51299fe60",
+      "retrievedAt": "2026-11-11T01:20:42.559311+00:00"
+    },
+    {
+      "routeId": "196000266",
+      "sha256": "14d91e222c3f8b14cc0d62f952f9dc136874b6d1aeb284ff7a086ce73b7f7435",
+      "retrievedAt": "2026-11-11T01:20:42.559311+00:00"
+    },
+    {
+      "routeId": "196000267",
+      "sha256": "21b6607b5d4668e3d30d457bbc6647d268647bdc3e8e2e86da7de0e31ca33224",
+      "retrievedAt": "2026-11-11T01:20:42.567593+00:00"
+    },
+    {
+      "routeId": "196000268",
+      "sha256": "5fd55ebfdb6918f9caebfdf91313e9420d13b14d6590dff5281a81762ceb3e1d",
+      "retrievedAt": "2026-11-11T01:20:42.567593+00:00"
+    },
+    {
+      "routeId": "196000269",
+      "sha256": "583f1dc7f64427f856e570e242f28e6f8559efd95c7af421f83c637672b69841",
+      "retrievedAt": "2026-11-11T01:20:45.768485+00:00"
+    },
+    {
+      "routeId": "196000540",
+      "sha256": "2463e63927fb7d9e0dfaf4c78d5ed6e7853376615d863c6688029b7df67f767f",
+      "retrievedAt": "2026-11-11T01:20:45.771492+00:00"
+    },
+    {
+      "routeId": "196000270",
+      "sha256": "9ef272ec0b33e8229b4a4eac4c8fb6e28c480a05674283b9053f290701d1a8fd",
+      "retrievedAt": "2026-11-11T01:20:45.774490+00:00"
+    },
+    {
+      "routeId": "196000271",
+      "sha256": "a96785328d19e612862e6fb341f7aa3f6b8fc00f3a6ca21815a941e54b45fc2d",
+      "retrievedAt": "2026-11-11T01:20:45.777492+00:00"
+    },
+    {
+      "routeId": "196000272",
+      "sha256": "d11d0445db1801ab10d8573ad1d6338ebba80cc2af59c878179d9b3c155da890",
+      "retrievedAt": "2026-11-11T01:20:45.780489+00:00"
+    },
+    {
+      "routeId": "196000273",
+      "sha256": "07b5ab0c6425ba51b1bdaa96d7224d457c1aab523d15526e991b111e59aedff7",
+      "retrievedAt": "2026-11-11T01:20:45.783488+00:00"
+    },
+    {
+      "routeId": "196000274",
+      "sha256": "29a00845b778f645c99b5c93b7db1c032732a94b33891520b590a5fab76ad541",
+      "retrievedAt": "2026-11-11T01:20:48.863319+00:00"
+    },
+    {
+      "routeId": "196000275",
+      "sha256": "543bc7c2699ef76fcc44f357fb3bafdaf6e049be88eee1c85d4bd40176b6b327",
+      "retrievedAt": "2026-11-11T01:20:48.866481+00:00"
+    },
+    {
+      "routeId": "196000712",
+      "sha256": "591e798b1788fd4365cd22ed6deaa9027795248a646999d8ba83035f9609bcb2",
+      "retrievedAt": "2026-11-11T01:20:48.869486+00:00"
+    },
+    {
+      "routeId": "196000276",
+      "sha256": "7da128c0b19f363f83252b828d85ab7b04b439b29a01acd0b90c632d27db652d",
+      "retrievedAt": "2026-11-11T01:20:48.872484+00:00"
+    },
+    {
+      "routeId": "196000277",
+      "sha256": "463a02fcbbfd99d5744c1eb6995b76a36a2729081ea3bf8bbb46128549198609",
+      "retrievedAt": "2026-11-11T01:20:48.875489+00:00"
+    },
+    {
+      "routeId": "196000279",
+      "sha256": "c7ca75315f00901892fb1499a46f1775c4c42d655f3a1092e754ce4f9be42bbf",
+      "retrievedAt": "2026-11-11T01:20:48.877489+00:00"
+    },
+    {
+      "routeId": "196000280",
+      "sha256": "20f4a9988cc1fe5a678357ecbd6e87e5ca9b77a8594fae5eb4f35a548eb979b1",
+      "retrievedAt": "2026-11-11T01:20:54.819138+00:00"
+    },
+    {
+      "routeId": "196000281",
+      "sha256": "42ffced9341f167ff48f0a6885e2b9fb6a32113387d6555d6e27a1b340dbbc09",
+      "retrievedAt": "2026-11-11T01:20:54.821151+00:00"
+    },
+    {
+      "routeId": "196000282",
+      "sha256": "46c9b8e58fda97676f384a00f732defe06cb5e16506f950c1c921f1f1a241085",
+      "retrievedAt": "2026-11-11T01:20:54.823147+00:00"
+    },
+    {
+      "routeId": "196000283",
+      "sha256": "e6c7d3bc47164ed94c8ae53a5284413a7cef645d069d2a869e2b0d1d9d7a1ffc",
+      "retrievedAt": "2026-11-11T01:20:54.826146+00:00"
+    },
+    {
+      "routeId": "196000284",
+      "sha256": "d25d44239e9b15f4074a2d390221109228ee2a945cc30cfbdb643ee292ee2fb7",
+      "retrievedAt": "2026-11-11T01:20:54.828149+00:00"
+    },
+    {
+      "routeId": "196000285",
+      "sha256": "7a7fe3d7c71f42746c366799651e24fdbacabc21bacdfbfc30f5e19718e41e10",
+      "retrievedAt": "2026-11-11T01:20:54.831148+00:00"
+    },
+    {
+      "routeId": "196000286",
+      "sha256": "ca1bfa03e1aa3871342ef8a418c88c0c5b36398dbde8060e6f37ff1e11a2961d",
+      "retrievedAt": "2026-11-11T01:20:58.994512+00:00"
+    },
+    {
+      "routeId": "196000287",
+      "sha256": "13c03e502f0f3bbdfc3e85d1920cd771c665365608f5d30606c47a41cdfb7edd",
+      "retrievedAt": "2026-11-11T01:20:58.994512+00:00"
+    },
+    {
+      "routeId": "196000289",
+      "sha256": "0b069f405c9b942340362c8a1fd6f9117a2527d0fd0dac68fc9d900374a44cce",
+      "retrievedAt": "2026-11-11T01:20:59.000056+00:00"
+    },
+    {
+      "routeId": "196000288",
+      "sha256": "c12bcfcd05668c0bf5c8e6dd0a5af9c7c082a64ca13af6c8bc754747a6d76751",
+      "retrievedAt": "2026-11-11T01:20:59.000056+00:00"
+    },
+    {
+      "routeId": "196000290",
+      "sha256": "03c0519c64f1cfea0bad8e1b67b8147d63ed9050cb804ddeade693b646d537fe",
+      "retrievedAt": "2026-11-11T01:20:59.008113+00:00"
+    },
+    {
+      "routeId": "196000291",
+      "sha256": "f20aaa905f1a75cf4fd0f5d7f921a56f8eacb017f895ae85338e4db2b507d65b",
+      "retrievedAt": "2026-11-11T01:20:59.008113+00:00"
+    },
+    {
+      "routeId": "196000292",
+      "sha256": "ac72ef84710302e90d5585d24214c63ffd60fd5534b350dbcbe8c0f28696ebb2",
+      "retrievedAt": "2026-11-11T01:21:02.136323+00:00"
+    },
+    {
+      "routeId": "196000555",
+      "sha256": "c416c3709730a879edb3f6fd34c7b7b60522f525b3f76226248e971141deb92b",
+      "retrievedAt": "2026-11-11T01:21:02.139374+00:00"
+    },
+    {
+      "routeId": "196000556",
+      "sha256": "4533ec13a3eb9f2cf689ae91017cad8feec76d76beb9de5f18d6b4c22582f527",
+      "retrievedAt": "2026-11-11T01:21:02.142513+00:00"
+    },
+    {
+      "routeId": "196000293",
+      "sha256": "957582a1ddfa84b49352bc7340da3a75bf54dcda8f3fb3b015ec7fe70b2fc39a",
+      "retrievedAt": "2026-11-11T01:21:02.147211+00:00"
+    },
+    {
+      "routeId": "196000295",
+      "sha256": "ee03668bd142ea6b9d12fd651fd091a2ac6773121c5510b5352e19fb3ce2c523",
+      "retrievedAt": "2026-11-11T01:21:02.149766+00:00"
+    },
+    {
+      "routeId": "196000297",
+      "sha256": "1020822c62c43adcd7dcb30ca4f0716ebf625b3bc6a9787d20c59385531c6c09",
+      "retrievedAt": "2026-11-11T01:21:02.152246+00:00"
+    },
+    {
+      "routeId": "196000299",
+      "sha256": "9e060c35a4390c537522c379a0f6ccba7250847853af034f81e10835f5acbf10",
+      "retrievedAt": "2026-11-11T01:21:04.135338+00:00"
+    },
+    {
+      "routeId": "196000294",
+      "sha256": "df527412a617ce425bc2f01b6f3e3efdc42e54acd20281867fcfb72a8c4ca27e",
+      "retrievedAt": "2026-11-11T01:21:04.137347+00:00"
+    },
+    {
+      "routeId": "196000296",
+      "sha256": "6baa4fb2f4fe152091d86b5e1c11c4ab3920e31e4529ee1cac13d708d67cb531",
+      "retrievedAt": "2026-11-11T01:21:04.139354+00:00"
+    },
+    {
+      "routeId": "196000298",
+      "sha256": "ba87aaeb467472c0cf114c90141ee13a51c5ec101f89f9ecbbeff2ca660696ca",
+      "retrievedAt": "2026-11-11T01:21:04.143378+00:00"
+    },
+    {
+      "routeId": "196000300",
+      "sha256": "98e8546cc634d6e83940ee543f20d85cedfa31c59c7ca2de17c3e8e2fffce10a",
+      "retrievedAt": "2026-11-11T01:21:04.145386+00:00"
+    },
+    {
+      "routeId": "196000301",
+      "sha256": "4186546cefbb94f3eba4069f2af9064f62c52b1859b8d88ebdf020f793b801fc",
+      "retrievedAt": "2026-11-11T01:21:04.147398+00:00"
+    },
+    {
+      "routeId": "196000302",
+      "sha256": "f62a37c993b3a4da64c4854f3d8a5a4b44bfbc7c08473119b6cfbd31b16410c3",
+      "retrievedAt": "2026-11-11T01:21:07.299761+00:00"
+    },
+    {
+      "routeId": "196000303",
+      "sha256": "7eb44e6193061ccff66cdab7cccab4536da51d427d1f87843652812c925752b5",
+      "retrievedAt": "2026-11-11T01:21:07.303062+00:00"
+    },
+    {
+      "routeId": "196000304",
+      "sha256": "80ca2b9721e73862efc6dafab85778925e04bface9bcffa3b5d50acc9b1f8729",
+      "retrievedAt": "2026-11-11T01:21:07.306507+00:00"
+    },
+    {
+      "routeId": "196000305",
+      "sha256": "4e0bf9c76b621e6301d5eade9b414191ab4ce09034695de2557387f134c602e5",
+      "retrievedAt": "2026-11-11T01:21:07.310533+00:00"
+    },
+    {
+      "routeId": "196000306",
+      "sha256": "b2910c9a10ff915d2073a2ed0f7faa4358aa9a0789d2a0b09c7b684db93e08e6",
+      "retrievedAt": "2026-11-11T01:21:07.314536+00:00"
+    },
+    {
+      "routeId": "196000307",
+      "sha256": "b1f58f57a3936fb56752ed69d514bfe67d0bc432280e0507e18769ad7669f6f0",
+      "retrievedAt": "2026-11-11T01:21:07.317543+00:00"
+    },
+    {
+      "routeId": "196000308",
+      "sha256": "e83ee1da40c8b99a066950e84c415f9109ddce6acdb147ab0e5f23800ec87b1b",
+      "retrievedAt": "2026-11-11T01:21:09.703025+00:00"
+    },
+    {
+      "routeId": "196000309",
+      "sha256": "fe4eb55ffd234fd5ba0e2751d5b07fc3bc49f7251c23a5e08dd8acbe6ed5a65d",
+      "retrievedAt": "2026-11-11T01:21:09.708573+00:00"
+    },
+    {
+      "routeId": "196000310",
+      "sha256": "cb3b1146fdf9006771d6a28e4e5bd221948701d659868e1c653f65a967dbc7e1",
+      "retrievedAt": "2026-11-11T01:21:09.708573+00:00"
+    },
+    {
+      "routeId": "196000311",
+      "sha256": "40e0637283f7da27d1c1110b383220bf9128b62ce5d1de5957e8757d6c4346e5",
+      "retrievedAt": "2026-11-11T01:21:09.721558+00:00"
+    },
+    {
+      "routeId": "196000312",
+      "sha256": "cce24f198fce1a6b8a9ee7b76df5023f2910fe1ac788104c0369c3eb8620220a",
+      "retrievedAt": "2026-11-11T01:21:09.721558+00:00"
+    },
+    {
+      "routeId": "196000313",
+      "sha256": "5576d1f522959e18e68cc0dd4838519c6f290fba91efcbb799dd8eb27680771d",
+      "retrievedAt": "2026-11-11T01:21:09.724697+00:00"
+    },
+    {
+      "routeId": "196000314",
+      "sha256": "3c1b5cac25c7bff4eee7e7f34bd71cca66dea676d67fa232877833a00e90c4d4",
+      "retrievedAt": "2026-11-11T01:21:14.798441+00:00"
+    },
+    {
+      "routeId": "196000315",
+      "sha256": "9e1769c09a919ce821a59ff15c657167cb088d6b755da07e1badd363b388a003",
+      "retrievedAt": "2026-11-11T01:21:14.801802+00:00"
+    },
+    {
+      "routeId": "196000316",
+      "sha256": "456c7e24d4751ff70a65dcc01e72265d51bac0b258e1fec9590644405999c2e6",
+      "retrievedAt": "2026-11-11T01:21:14.805045+00:00"
+    },
+    {
+      "routeId": "196000317",
+      "sha256": "d53b0def58a655281af3c779f0b6dd50be260f3a502d932e55e581d7b9bbba51",
+      "retrievedAt": "2026-11-11T01:21:14.808681+00:00"
+    },
+    {
+      "routeId": "196000318",
+      "sha256": "14bfc895792f9f7c5f8de9177fa029f7b711c2c6d01c705367e19657f4492cdd",
+      "retrievedAt": "2026-11-11T01:21:14.812449+00:00"
+    },
+    {
+      "routeId": "196000319",
+      "sha256": "42fe7148741be0b2fc5a6d2f21439c3371feffd0094ec42a2e510ee2dbcc0efe",
+      "retrievedAt": "2026-11-11T01:21:14.817431+00:00"
+    },
+    {
+      "routeId": "196000320",
+      "sha256": "6e50736720759aed1f6175683e45d7bcc9c260ae3c0ffdb257a65681d0bce4db",
+      "retrievedAt": "2026-11-11T01:21:18.948181+00:00"
+    },
+    {
+      "routeId": "196000692",
+      "sha256": "54261f7e69ee54c61e7f5ff2bb462dfa94a55d9b7c079b7040d10df5ff70c192",
+      "retrievedAt": "2026-11-11T01:21:18.954236+00:00"
+    },
+    {
+      "routeId": "196000321",
+      "sha256": "9e986c6fa05f8d11aa62038aa9c61b06e2399b0f679110047a856ddd80718cce",
+      "retrievedAt": "2026-11-11T01:21:18.958265+00:00"
+    },
+    {
+      "routeId": "196000322",
+      "sha256": "01304e0ba91c2a195b50eb923c9db086fe3040e888e8bfb6954453024b5e5022",
+      "retrievedAt": "2026-11-11T01:21:18.962296+00:00"
+    },
+    {
+      "routeId": "196000323",
+      "sha256": "736b82a29a825cd35b05acfe48cfcbfc2a04a4f34fc1f4e449cb21b09ff272b3",
+      "retrievedAt": "2026-11-11T01:21:18.966328+00:00"
+    },
+    {
+      "routeId": "196000324",
+      "sha256": "1a5dbba219cea52bdc6f530e2bbb98aa601f857964c9bc9fc5114edffe77d099",
+      "retrievedAt": "2026-11-11T01:21:18.968344+00:00"
+    },
+    {
+      "routeId": "196000325",
+      "sha256": "4f406da440b7b1d8d787279b896f43320df73b4714c1a7b345ff1c0dca678a53",
+      "retrievedAt": "2026-11-11T01:21:22.533053+00:00"
+    },
+    {
+      "routeId": "196000760",
+      "sha256": "8712fa56c802d15c51a817b1dc845fe835849a75af79981180c5cc9a204743bc",
+      "retrievedAt": "2026-11-11T01:21:22.536022+00:00"
+    },
+    {
+      "routeId": "196000761",
+      "sha256": "e5402df2a925daa96f1b4141a4a1695736a3ef2ec38a2ff7c5c9226365583e2b",
+      "retrievedAt": "2026-11-11T01:21:22.539030+00:00"
+    },
+    {
+      "routeId": "196000326",
+      "sha256": "bbb9aba2e1b5d70668f425413d6fd955333cc0b2ac4d93b1a82706b03402822f",
+      "retrievedAt": "2026-11-11T01:21:22.543038+00:00"
+    },
+    {
+      "routeId": "196000327",
+      "sha256": "68059eb6fcf089e150d87c50b77102447b10d8a5307232763a2766d068c2ffe7",
+      "retrievedAt": "2026-11-11T01:21:22.546043+00:00"
+    },
+    {
+      "routeId": "196000328",
+      "sha256": "32484040581a2efec390dea2ed2b1671ca909d2bcb3680b6489955f6c27b687a",
+      "retrievedAt": "2026-11-11T01:21:22.550046+00:00"
+    },
+    {
+      "routeId": "196000331",
+      "sha256": "956aace038be3eb1a1ab5451e9e9a3fa4c583518e9628a109ed2a95335e0734b",
+      "retrievedAt": "2026-11-11T01:21:25.649225+00:00"
+    },
+    {
+      "routeId": "196000329",
+      "sha256": "f3e9659e39d8eec8e60583769def112bd8b14b348e3798940e29382e834954cd",
+      "retrievedAt": "2026-11-11T01:21:25.653222+00:00"
+    },
+    {
+      "routeId": "196000332",
+      "sha256": "691eba8945c026fc1b7eac97cc8b7bda7e8f8d066b1e0bc8902e34778b4ee1a1",
+      "retrievedAt": "2026-11-11T01:21:25.657224+00:00"
+    },
+    {
+      "routeId": "196000330",
+      "sha256": "3280e053e92e4f8dec88b1051cb033d8c3fe07b7b7a6f056454429bd0c784868",
+      "retrievedAt": "2026-11-11T01:21:25.662221+00:00"
+    },
+    {
+      "routeId": "196000333",
+      "sha256": "c0e13ed2da254db17ee5697771233df4ac00ac26c1452a1a177cb2b979f4b308",
+      "retrievedAt": "2026-11-11T01:21:25.666235+00:00"
+    },
+    {
+      "routeId": "196000334",
+      "sha256": "a181aff3173d0bafeb75a144835697ced103f0d782240ac305527195a6470465",
+      "retrievedAt": "2026-11-11T01:21:25.669240+00:00"
+    },
+    {
+      "routeId": "196000557",
+      "sha256": "d6813de87bef34586df89032a6437416319033b2975b49c6be1ef886f080c448",
+      "retrievedAt": "2026-11-11T01:21:27.528119+00:00"
+    },
+    {
+      "routeId": "196000558",
+      "sha256": "e330f805ac348c6324d15b2a1b250553c352b7c100720a0eb5ba323c972075ec",
+      "retrievedAt": "2026-11-11T01:21:27.531831+00:00"
+    },
+    {
+      "routeId": "196000559",
+      "sha256": "c16bc6ea5cea2b34a8406ec234843cc11ef9e13b31392888ad5d46028ff8d35f",
+      "retrievedAt": "2026-11-11T01:21:27.533987+00:00"
+    },
+    {
+      "routeId": "196000762",
+      "sha256": "b7890999503b8377e7ea30f931e6269802c7ebd3140404590676261cf9876281",
+      "retrievedAt": "2026-11-11T01:21:27.538600+00:00"
+    },
+    {
+      "routeId": "196000764",
+      "sha256": "d656c2d79b958363530d40a8164669575ca943cd533212f3136307e157a540e5",
+      "retrievedAt": "2026-11-11T01:21:27.542717+00:00"
+    },
+    {
+      "routeId": "196000763",
+      "sha256": "96c9d89295fa862ab4ff0c208900f3db5d700e8a7cd162070a16cd6e4050bdf8",
+      "retrievedAt": "2026-11-11T01:21:27.545147+00:00"
+    },
+    {
+      "routeId": "196000765",
+      "sha256": "44b5cc7df5b9022856ea77fb62dfb30766255c9b0f70a2ade04670024cb511bf",
+      "retrievedAt": "2026-11-11T01:21:30.326053+00:00"
+    },
+    {
+      "routeId": "196000335",
+      "sha256": "5d26f896fbe8127a1e86b65836e0bb8677542d6d7b3ae1335e4aba8aaba2a306",
+      "retrievedAt": "2026-11-11T01:21:30.331574+00:00"
+    },
+    {
+      "routeId": "196000336",
+      "sha256": "c0157671feb354639d2fb4e5b1c3f7c26b42e0d363a8a0faef5ef9a432eb6393",
+      "retrievedAt": "2026-11-11T01:21:30.337072+00:00"
+    },
+    {
+      "routeId": "196000337",
+      "sha256": "33cb6af988c342ffc5296c20dc10bb9fae251d102c89b04f8b4b3ed3ee8dcf9d",
+      "retrievedAt": "2026-11-11T01:21:30.340419+00:00"
+    },
+    {
+      "routeId": "196000766",
+      "sha256": "0e78f9611887b9a44961f31264231f9e8e5e3d5c29d6a702d44fcd7d7f90f9d5",
+      "retrievedAt": "2026-11-11T01:21:30.344691+00:00"
+    },
+    {
+      "routeId": "196000768",
+      "sha256": "91dd32292343243873326fb1846c85fbde2bfbf357810e22865eaeec3490ac58",
+      "retrievedAt": "2026-11-11T01:21:30.348229+00:00"
+    },
+    {
+      "routeId": "196000767",
+      "sha256": "3196ff8017f0365dfd9a0ae1e97befaeedff865a51ec6c9261d9450ad3b1e226",
+      "retrievedAt": "2026-11-11T01:21:33.985107+00:00"
+    },
+    {
+      "routeId": "196000769",
+      "sha256": "880c96349f17ba5198c161e34db2b89d442d6a9ba810aa386729852b3ed26cf6",
+      "retrievedAt": "2026-11-11T01:21:33.989105+00:00"
+    },
+    {
+      "routeId": "196000770",
+      "sha256": "2d48058afcb46ee6a72f7e8a673b24bb9f1ef59370087dbae5ffc923cd03465c",
+      "retrievedAt": "2026-11-11T01:21:33.993863+00:00"
+    },
+    {
+      "routeId": "196000771",
+      "sha256": "97f267266294be2c5a76f90bc8274b0c3b3e90f82ad4ee867c858c9ab6799a3e",
+      "retrievedAt": "2026-11-11T01:21:33.997368+00:00"
+    },
+    {
+      "routeId": "195900695",
+      "sha256": "2a734765ada3a394d51003e7630467b11583a1a96ede0189e9fa35403b436f29",
+      "retrievedAt": "2026-11-11T01:21:34.000147+00:00"
+    },
+    {
+      "routeId": "195900696",
+      "sha256": "0fb584d988c77a087f40da371f5fd6532fc9a0b3c86e2051536b9be35c8f3a3e",
+      "retrievedAt": "2026-11-11T01:21:34.003785+00:00"
+    },
+    {
+      "routeId": "192900693",
+      "sha256": "5643045cedef72652cfbbe0d16ce2a99700ff454767c4e950287a6eb1aa0e1d2",
+      "retrievedAt": "2026-11-11T01:21:36.120283+00:00"
+    },
+    {
+      "routeId": "192900694",
+      "sha256": "cea79080820dda45ae35e708019f4ace7d1ea4bad1e58c7af510658eb55f15b2",
+      "retrievedAt": "2026-11-11T01:21:36.122283+00:00"
+    },
+    {
+      "routeId": "192000001",
+      "sha256": "7e6fca66ded57c6cf7fd9b273f87109687787a21a1e6644d0398f249b75ec832",
+      "retrievedAt": "2026-11-11T01:21:36.125276+00:00"
+    },
+    {
+      "routeId": "192000002",
+      "sha256": "7d9639d2a3980ae672b057305dc49dda191a8164c084e9b2e5cda50d3a8f5698",
+      "retrievedAt": "2026-11-11T01:21:36.128262+00:00"
+    },
+    {
+      "routeId": "192000003",
+      "sha256": "50c2632abcc071c3298ef73885ae3f03ce19c587736701d358a669ad6cb68edb",
+      "retrievedAt": "2026-11-11T01:21:36.130420+00:00"
+    },
+    {
+      "routeId": "192000004",
+      "sha256": "08cea937cbd93ff43a9a9ba41059eeab621ebc53559c1618c2fd89ae76975723",
+      "retrievedAt": "2026-11-11T01:21:36.133067+00:00"
+    },
+    {
+      "routeId": "192000006",
+      "sha256": "272a234e89026842085faae9f91ad6cc93ffab6e2aae4edd364978f9d4e12e37",
+      "retrievedAt": "2026-11-11T01:21:38.250410+00:00"
+    },
+    {
+      "routeId": "192000005",
+      "sha256": "58fd150d3e30032f93c2887b04122557f5344ab43c218402beb26223b4fc5e60",
+      "retrievedAt": "2026-11-11T01:21:38.253880+00:00"
+    },
+    {
+      "routeId": "192000007",
+      "sha256": "2bcbd2b67e8e5ee3a459badf4f06d7949bf1b36541204ac29b37048d3a1dfb44",
+      "retrievedAt": "2026-11-11T01:21:38.253880+00:00"
+    },
+    {
+      "routeId": "192000008",
+      "sha256": "28236f5298f2372a47a0d49434af1db951921328babbd76a552f318eee54d9f9",
+      "retrievedAt": "2026-11-11T01:21:38.258153+00:00"
+    },
+    {
+      "routeId": "192000009",
+      "sha256": "404e34e21a4e616d8711f30f21c41748947b55bbabf24432e87c4543c26cbecf",
+      "retrievedAt": "2026-11-11T01:21:38.262539+00:00"
+    },
+    {
+      "routeId": "192000010",
+      "sha256": "bd554218ee37b9f1b41e1b48bffacb84266247aaf8bf14c9a20a10cea1569adb",
+      "retrievedAt": "2026-11-11T01:21:38.265545+00:00"
+    },
+    {
+      "routeId": "192000011",
+      "sha256": "a95bbfc99606fbe182ada2ba054ab0c7538a196ddb68304830e0c07315192352",
+      "retrievedAt": "2026-11-11T01:21:40.666088+00:00"
+    },
+    {
+      "routeId": "192000012",
+      "sha256": "933dc3a02e8dfd4f761bde9cc1748a99e8315a9aac3c69eeb1208d4d91bfbb40",
+      "retrievedAt": "2026-11-11T01:21:40.668777+00:00"
+    },
+    {
+      "routeId": "192000013",
+      "sha256": "9ad39a3a8f5d6cf8170d55bc48461080a6b546bfff4b87c1ec585d4fdd22a8b2",
+      "retrievedAt": "2026-11-11T01:21:40.673707+00:00"
+    },
+    {
+      "routeId": "192000014",
+      "sha256": "1c81e666a793e76ae87e465436c0f1a9de4db5906fd42c223406d0888f2209fb",
+      "retrievedAt": "2026-11-11T01:21:40.677214+00:00"
+    },
+    {
+      "routeId": "192000015",
+      "sha256": "f316acfa4ad4acd7cf613d5bf08825e64e0488d72eae5f26e71fb3679b857815",
+      "retrievedAt": "2026-11-11T01:21:40.680417+00:00"
+    },
+    {
+      "routeId": "192000018",
+      "sha256": "5fc7b8c4fabc981520a8a52b39c6f2891bba71448e60c0e0133ab151fedac1ea",
+      "retrievedAt": "2026-11-11T01:21:40.683046+00:00"
+    },
+    {
+      "routeId": "192000599",
+      "sha256": "26836850d9b9f235fe5e73284ddd6b200961fe62d89911b03d67c3067263a74e",
+      "retrievedAt": "2026-11-11T01:21:42.570681+00:00"
+    },
+    {
+      "routeId": "192000639",
+      "sha256": "fcd1d973dac0468ce21ff192c66e3be60b5109934c754750b79ecf437f67bebc",
+      "retrievedAt": "2026-11-11T01:21:42.572685+00:00"
+    },
+    {
+      "routeId": "192000640",
+      "sha256": "48b2d9857822bfc69ea3d75d43d7911eab455e88f2ee5e27f0f4ed5997270143",
+      "retrievedAt": "2026-11-11T01:21:42.575683+00:00"
+    },
+    {
+      "routeId": "192000697",
+      "sha256": "869cd15ee18afe23bfb1f99636b06e3c6158c1f3930f622a03ccac9a0970877d",
+      "retrievedAt": "2026-11-11T01:21:42.577685+00:00"
+    },
+    {
+      "routeId": "192000698",
+      "sha256": "01c3f4ad99ddf2ab030482a4e50e42982324dd81f05840fb737112d67a25b676",
+      "retrievedAt": "2026-11-11T01:21:42.581684+00:00"
+    },
+    {
+      "routeId": "192000699",
+      "sha256": "50f1c30024ebd5228fee813e49f119831a11abb1d03706d2666088ed1277af2a",
+      "retrievedAt": "2026-11-11T01:21:42.584685+00:00"
+    },
+    {
+      "routeId": "192000700",
+      "sha256": "2716b0607b5a66531f4f16e48f466d40837353d146ef474d2f7fccd38a960290",
+      "retrievedAt": "2026-11-11T01:21:44.494242+00:00"
+    },
+    {
+      "routeId": "192000701",
+      "sha256": "72573942a2c7b5d4f46d289d7620881e5888541b116a6820187b49c9b4de1f32",
+      "retrievedAt": "2026-11-11T01:21:44.494242+00:00"
+    },
+    {
+      "routeId": "192000702",
+      "sha256": "7d3ab4965a0ff731a61cf49822024c8005e9e2c1a25c15b93c4579e60b05bad2",
+      "retrievedAt": "2026-11-11T01:21:44.502419+00:00"
+    },
+    {
+      "routeId": "192000023",
+      "sha256": "3aa758657e2d8b27453999403a1c0aea7c78be03043a9e8d8b85401504ed8662",
+      "retrievedAt": "2026-11-11T01:21:44.502419+00:00"
+    },
+    {
+      "routeId": "192000024",
+      "sha256": "e81a55ea3bc1826747755cd5ebd8dba92f6e06da266cd118975680f63f9aeafb",
+      "retrievedAt": "2026-11-11T01:21:44.502419+00:00"
+    },
+    {
+      "routeId": "192000025",
+      "sha256": "2f1b083e9a0fe6d4ada4a603c4d01eb7db99596584bb31e508c66b1f7fd035e7",
+      "retrievedAt": "2026-11-11T01:21:44.510586+00:00"
+    },
+    {
+      "routeId": "192000026",
+      "sha256": "8d4b9985c90eb66a5b06b45f710079573b95a8bae3adacb26e116f3e076d40b1",
+      "retrievedAt": "2026-11-11T01:21:46.614568+00:00"
+    },
+    {
+      "routeId": "192000027",
+      "sha256": "d21b156f0d61c8b5d167ed66c731d0760abfbff96c7377d7e61bed9cfd608db7",
+      "retrievedAt": "2026-11-11T01:21:46.616560+00:00"
+    },
+    {
+      "routeId": "192000028",
+      "sha256": "06f0af4fd4e976e82afb407feaff454706703f6663d99c254101ff841faff4f5",
+      "retrievedAt": "2026-11-11T01:21:46.620129+00:00"
+    },
+    {
+      "routeId": "192000030",
+      "sha256": "ccd7dba9e7e0c50680fa21fd6c50d34714d217c99112fe154de2ef2a9e9640d2",
+      "retrievedAt": "2026-11-11T01:21:46.623135+00:00"
+    },
+    {
+      "routeId": "192000029",
+      "sha256": "403dc491b6368b34efa37df7c7ed8f8878732e2c48de86f3712ef12090ace07a",
+      "retrievedAt": "2026-11-11T01:21:46.626138+00:00"
+    },
+    {
+      "routeId": "192000031",
+      "sha256": "681f6bc75020bd4d60b782e40632d0dc6f37bcef680e095a7c2b9dde5a194287",
+      "retrievedAt": "2026-11-11T01:21:46.629132+00:00"
+    },
+    {
+      "routeId": "192000703",
+      "sha256": "863ccaf3b15dd7e77e77ee4981d0c6ac6900b24a2a0b09f59831f1e9affbbfa4",
+      "retrievedAt": "2026-11-11T01:21:48.608385+00:00"
+    },
+    {
+      "routeId": "192000704",
+      "sha256": "2bb36eccfe6198c62e6656608c0be795bd724807f3733767715ab77985c476a4",
+      "retrievedAt": "2026-11-11T01:21:48.608385+00:00"
+    },
+    {
+      "routeId": "192000705",
+      "sha256": "91736f33fbae0dd93711b9378398193d8a8aedc3f30fb6f4cff4e97a570758ca",
+      "retrievedAt": "2026-11-11T01:21:48.618354+00:00"
+    }
+  ]
+}

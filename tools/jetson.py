@@ -14,10 +14,12 @@ args=parser.parse_args()
 client=paramiko.SSHClient()
 client.load_system_host_keys()
 client.connect('100.119.23.4',username='hajin',password=sys.stdin.readline().strip(),look_for_keys=False,allow_agent=False,timeout=10,auth_timeout=10)
+client.get_transport().set_keepalive(15)
 try:
     if args.action in ('deploy-backend','deploy-web','deploy-apk','status'):
         base='/home/hajin/anypercent'
         sftp=client.open_sftp()
+        sftp.get_channel().settimeout(60)
         if args.action!='status':
             marker=base+'/.anypercent-managed'
             try:
@@ -42,7 +44,7 @@ try:
                     try:sftp.mkdir(base+'/'+folder)
                     except OSError:pass
                 upload(ROOT/'backend/app',base+'/backend/app')
-                for name in ('network.json','observed_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
+                for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
                     upload(ROOT/'shared'/name,base+'/shared/'+name)
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             elif args.action=='deploy-web':

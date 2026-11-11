@@ -15,6 +15,8 @@ String clockSeconds(num minutes) {
 class Network {
   final Json data;
   bool get observed => data['source'] == 'replay_observed';
+  bool get official => data['source'] == 'official_timetable';
+  bool get realRoutes => observed || official;
   String get dataset => data['dataset'] as String? ?? 'demo';
   String get defaultOrigin => data['defaultOrigin'] as String? ?? 'uc';
   String get defaultDestination =>
@@ -55,7 +57,7 @@ class Network {
   }
 
   List<Json> get catalogRoutes => routes.values
-      .where((r) => r['scheduleSource'] == 'catalog_topology')
+      .where((r) => official || r['scheduleSource'] == 'catalog_topology')
       .toList();
   List<String> get routeNumbers =>
       routes.values.map((r) => '${r['number']}').toSet().toList()..sort(
@@ -63,7 +65,7 @@ class Network {
       );
   String routeLabel(String id) => routes[id]!['numberKnown'] == false
       ? '노선 ID ${routes[id]!['familyId']}'
-      : observed
+      : realRoutes
       ? '${routes[id]!['number']}번${routes[id]!['routeSource'] == 'gps_proximity_inferred' ? ' · GPS추정' : ''}'
       : '${routes[id]!['number']} · ${routes[id]!['name']}';
   bool hasInferredRoute(List<dynamic> legs) => legs.any(
@@ -82,6 +84,41 @@ class Network {
             )
             .toList();
   Network(this.data);
+  final Map<String, Network> _days = {};
+  Network forServiceDay(String day) {
+    if (!official || day == (data['serviceDay'] ?? 'weekday')) return this;
+    return _days.putIfAbsent(
+      day,
+      () => Network({
+        ...data,
+        'serviceDay': day,
+        'routes': [
+          for (final r in data['routes'])
+            {
+              ...Json.from(r),
+              'departures': r['departuresByDay'][day] ?? <num>[],
+            },
+        ],
+      }),
+    );
+  }
+
+  late final Json routingData = {
+    for (final entry in data.entries)
+      if (entry.key != 'shapes') entry.key: entry.value,
+    'routes': [
+      for (final r in data['routes'])
+        {
+          for (final entry in Json.from(r).entries)
+            if (!const {
+              'shapeSegments',
+              'traceChunks',
+              'pathPoints',
+            }.contains(entry.key))
+              entry.key: entry.value,
+        },
+    ],
+  };
   Network withPlaces(List<dynamic> places) => Network({
     ...data,
     'stops': [
@@ -94,6 +131,7 @@ class Network {
 }
 
 class SearchQuery {
+  final String serviceDay;
   final String dataset;
   final String origin, destination;
   final double departure, walkingSpeed, maxWalk, delay;
@@ -112,6 +150,7 @@ class SearchQuery {
     this.seed = 42,
     this.originPoint,
     this.destinationPoint,
+    this.serviceDay = 'weekday',
   });
   SearchQuery withDelay(double value) => SearchQuery(
     origin: origin,
@@ -126,6 +165,7 @@ class SearchQuery {
     seed: seed,
     originPoint: originPoint,
     destinationPoint: destinationPoint,
+    serviceDay: serviceDay,
   );
   Json toJson() => {
     'dataset': dataset,
@@ -138,6 +178,7 @@ class SearchQuery {
     'max_transfers': maxTransfers,
     'samples': samples,
     'seed': seed,
+    'service_day': serviceDay,
     if (originPoint != null) 'origin_point': originPoint,
     if (destinationPoint != null) 'destination_point': destinationPoint,
   };

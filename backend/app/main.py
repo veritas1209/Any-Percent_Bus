@@ -23,8 +23,10 @@ NETWORK = json.loads((ROOT/'shared/network.json').read_text(encoding='utf-8'))
 engine = Engine(NETWORK)
 OBSERVED = json.loads((ROOT/'shared/observed_network.json').read_text(encoding='utf-8'))
 NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
+SERVICE = json.loads((ROOT / 'shared/service_network.json').read_text(encoding='utf-8'))
+NETWORKS['service'] = SERVICE
 NETWORK_JSON={name:json.dumps(data,ensure_ascii=False,separators=(',',':')).encode('utf-8') for name,data in NETWORKS.items()}
-ENGINES = {'demo': engine, 'observed': Engine(OBSERVED)}
+ENGINES = {name: Engine(data) for name, data in NETWORKS.items()}
 HISTORY=generate_history(NETWORK)
 app = FastAPI(title='Any% journey planner', version='0.3.0')
 app.add_middleware(GZipMiddleware,minimum_size=1024,compresslevel=5)
@@ -43,7 +45,7 @@ class Location(BaseModel):
 
 
 class Search(BaseModel):
-    dataset: Literal['demo','observed'] = 'observed'
+    dataset: Literal['demo','observed','service'] = 'observed'
     origin: str
     destination: str
     departure: float = Field(default=430,ge=0,lt=1440)
@@ -55,6 +57,7 @@ class Search(BaseModel):
     seed: int = 42
     origin_point: Location | None = None
     destination_point: Location | None = None
+    service_day: Literal['weekday','saturday','holiday'] = 'weekday'
 
 
 @app.get('/v1/places/search')
@@ -82,12 +85,12 @@ def health():
 
 
 @app.get('/v1/network')
-def network(dataset: Literal['demo','observed']='observed'):
+def network(dataset: Literal['demo','observed','service']='observed'):
     return Response(content=NETWORK_JSON[dataset],media_type='application/json')
 
 
 @app.get('/v1/stops/search')
-def search_stops(q: str='',dataset: Literal['demo','observed']='observed'):
+def search_stops(q: str='',dataset: Literal['demo','observed','service']='observed'):
     selected=NETWORKS[dataset];needle=q.casefold().replace(' ','')
     route_stops={sid for r in selected['routes'] if needle in (str(r['number'])+'번').casefold() or needle in r['id'] for sid in r['stops']}
     return {'stops':[s for s in selected['stops'] if needle in (s['name']+s['direction']+s['id']).casefold().replace(' ','') or s['id'] in route_stops]}
@@ -114,13 +117,23 @@ def coverage():
 def journeys(body: Search):
     started=time.perf_counter()
     try:
-        rows=ENGINES[body.dataset].search(Query(**body.model_dump(exclude={'dataset'})))
+        payload = body.model_dump(exclude={'dataset'})
+        if body.dataset == 'service':
+            key = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(',', ':'))
+            rows = _service_search(key)
+        else:
+            rows = ENGINES[body.dataset].search(Query(**payload))
     except ValueError as e:
         raise HTTPException(400,str(e)) from e
     selected=NETWORKS[body.dataset]
     topology_only=bool(rows) and all(j.get('scheduleAvailable') is False for j in rows)
     return {'journeys':rows,'source':'catalog_topology' if topology_only else selected['source'],'delaySource':'unavailable' if topology_only else 'simulated','networkVersion':selected['version'],'elapsedMs':round((time.perf_counter()-started)*1000,2),
             'warning':('시각 자료가 없는 노선 연결 후보입니다. 도착시각·환승 성공률을 제공하지 않습니다.' if topology_only else selected['description']+' 지연 확률은 가상 표본의 추정치입니다.')}
+
+
+@lru_cache(maxsize=32)
+def _service_search(payload):
+    return ENGINES['service'].search(Query(**json.loads(payload)))
 
 
 @app.get('/v1/vehicles')

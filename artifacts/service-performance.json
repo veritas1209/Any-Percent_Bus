@@ -1,0 +1,44 @@
+{
+  "cases": [
+    {
+      "case": "east_upsquare",
+      "cold": {
+        "clientMs": 1196.9,
+        "serverMs": 1024.26,
+        "journeys": 20
+      },
+      "repeat": {
+        "clientMs": 86.4,
+        "serverMs": 0.63,
+        "journeys": 20
+      }
+    },
+    {
+      "case": "west_upsquare",
+      "cold": {
+        "clientMs": 661.4,
+        "serverMs": 591.73,
+        "journeys": 20
+      },
+      "repeat": {
+        "clientMs": 94.9,
+        "serverMs": 0.64,
+        "journeys": 20
+      }
+    },
+    {
+      "case": "samsan_seongnam",
+      "cold": {
+        "clientMs": 1794.4,
+        "serverMs": 1558.48,
+        "journeys": 20
+      },
+      "repeat": {
+        "clientMs": 449.1,
+        "serverMs": 0.63,
+        "journeys": 20
+      }
+    }
+  ],
+  "method": "One cold request and one identical repeat per case on Jetson; no actual user GPS used."
+}

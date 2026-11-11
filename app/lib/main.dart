@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'models/transit.dart';
 import 'repositories/transit_repository.dart';
@@ -28,17 +29,25 @@ class AppSession {
   DeviceLocation locationService = GeolocatorLocation();
   Json? devicePosition;
   MapTileProviderFactory? mapTileProviderFactory;
-  TransitRepository repository = AssetTransitRepository();
+  TransitRepository repository = kIsWeb && Uri.base.scheme == 'https'
+      ? ApiTransitRepository(defaultApiUrl)
+      : AssetTransitRepository();
   Network? network;
   Network? journeyNetwork;
   Network get displayNetwork => journeyNetwork ?? network!;
   Future<void> initialize() async {
-    network = await repository.loadNetwork();
+    try {
+      network = await repository.loadNetwork();
+    } catch (_) {
+      if (repository is! ApiTransitRepository) rethrow;
+      repository = AssetTransitRepository();
+      network = await repository.loadNetwork();
+    }
   }
 
   Future<void> connect(
     String url, {
-    String dataset = 'observed',
+    String dataset = 'service',
     bool Function()? accept,
   }) async {
     final candidate = ApiTransitRepository(url, dataset: dataset);
@@ -50,7 +59,7 @@ class AppSession {
   }
 
   Future<void> useOffline({
-    String dataset = 'observed',
+    String dataset = 'service',
     bool Function()? accept,
   }) async {
     final candidate = AssetTransitRepository(dataset: dataset);
