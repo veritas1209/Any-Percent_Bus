@@ -1,44 +1,485 @@
 {
-  "cases": [
+  "platform": "Same Jetson backend, public HTTPS requests; identical source dataset",
+  "queryCaching": "Each measured query was uncached; process and shared walking-graph caches may be warm",
+  "networkSha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
+  "sampleCount": 300,
+  "cases": 50,
+  "allPassed": true,
+  "before": {
+    "minMs": 214.3,
+    "maxMs": 11952.17,
+    "meanMs": 3028.65,
+    "medianMs": 1397.35
+  },
+  "after": {
+    "minMs": 186.33,
+    "maxMs": 5056.24,
+    "meanMs": 1783.38,
+    "medianMs": 1238.89
+  },
+  "transferBefore": {
+    "minMs": 1732.67,
+    "maxMs": 11952.17,
+    "meanMs": 6286.01,
+    "medianMs": 5489.31
+  },
+  "transferAfter": {
+    "minMs": 1484.82,
+    "maxMs": 5056.24,
+    "meanMs": 3297.53,
+    "medianMs": 3327.03
+  },
+  "statisticalScope": "Nominal arrival and score checked on 50 geographic/day/time conditions; not a guarantee of globally optimal reliability",
+  "rows": [
     {
-      "case": "east_upsquare",
-      "cold": {
-        "clientMs": 1196.9,
-        "serverMs": 1024.26,
-        "journeys": 20
-      },
-      "repeat": {
-        "clientMs": 86.4,
-        "serverMs": 0.63,
-        "journeys": 20
-      }
+      "case": "taehwa-university",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 879.23,
+      "afterServerMs": 843.51,
+      "errors": [],
+      "fastestPreserved": true
     },
     {
-      "case": "west_upsquare",
-      "cold": {
-        "clientMs": 661.4,
-        "serverMs": 591.73,
-        "journeys": 20
-      },
-      "repeat": {
-        "clientMs": 94.9,
-        "serverMs": 0.64,
-        "journeys": 20
-      }
+      "case": "ktx-university",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 845.59,
+      "afterServerMs": 771.65,
+      "errors": [],
+      "fastestPreserved": true
     },
     {
-      "case": "samsan_seongnam",
-      "cold": {
-        "clientMs": 1794.4,
-        "serverMs": 1558.48,
-        "journeys": 20
-      },
-      "repeat": {
-        "clientMs": 449.1,
-        "serverMs": 0.63,
-        "journeys": 20
-      }
+      "case": "airport-taehwa",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 1253.24,
+      "afterServerMs": 1166.39,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 215.34,
+      "afterServerMs": 186.33,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 901.08,
+      "afterServerMs": 813.38,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "cityhall-airport",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 794.7,
+      "afterServerMs": 718.85,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-airport",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 2991.39,
+      "afterServerMs": 2700.05,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "namchang-unist",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 5471.31,
+      "afterServerMs": 4764.81,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 11827.55,
+      "afterServerMs": 4610.9,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-namchang",
+      "day": "weekday",
+      "departure": 480,
+      "beforeServerMs": 10557.3,
+      "afterServerMs": 2743.9,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "taehwa-university",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 620.71,
+      "afterServerMs": 593.64,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ktx-university",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 1623.55,
+      "afterServerMs": 1552.45,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "airport-taehwa",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 531.46,
+      "afterServerMs": 456.37,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 220.3,
+      "afterServerMs": 220.35,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 894.3,
+      "afterServerMs": 1476.8,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "cityhall-airport",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 1384.76,
+      "afterServerMs": 677.3,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-airport",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 1732.67,
+      "afterServerMs": 1484.82,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "namchang-unist",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 5032.95,
+      "afterServerMs": 4103.03,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 8584.75,
+      "afterServerMs": 3959.91,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-namchang",
+      "day": "weekday",
+      "departure": 840,
+      "beforeServerMs": 9190.51,
+      "afterServerMs": 2899.18,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "taehwa-university",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 632.52,
+      "afterServerMs": 572.64,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ktx-university",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 1603.77,
+      "afterServerMs": 863.98,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "airport-taehwa",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 620.48,
+      "afterServerMs": 1189.3,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 214.3,
+      "afterServerMs": 201.77,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 815.08,
+      "afterServerMs": 726.89,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "cityhall-airport",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 1409.93,
+      "afterServerMs": 685.53,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-airport",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 2145.51,
+      "afterServerMs": 2247.23,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "namchang-unist",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 5045.33,
+      "afterServerMs": 3437.45,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 11952.17,
+      "afterServerMs": 5056.24,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-namchang",
+      "day": "weekday",
+      "departure": 1080,
+      "beforeServerMs": 5507.3,
+      "afterServerMs": 1692.13,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "taehwa-university",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 711.09,
+      "afterServerMs": 1288.48,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ktx-university",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 1655.65,
+      "afterServerMs": 908.79,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "airport-taehwa",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 568.14,
+      "afterServerMs": 508.3,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 215.65,
+      "afterServerMs": 213.88,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 1602.96,
+      "afterServerMs": 760.1,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "cityhall-airport",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 742.97,
+      "afterServerMs": 673.0,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-airport",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 1969.38,
+      "afterServerMs": 2364.14,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "namchang-unist",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 4783.08,
+      "afterServerMs": 3382.31,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 8551.83,
+      "afterServerMs": 4096.59,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-namchang",
+      "day": "saturday",
+      "departure": 840,
+      "beforeServerMs": 7692.06,
+      "afterServerMs": 3259.21,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "taehwa-university",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 687.13,
+      "afterServerMs": 1356.5,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ktx-university",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 991.29,
+      "afterServerMs": 912.37,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "airport-taehwa",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 562.23,
+      "afterServerMs": 487.73,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 913.07,
+      "afterServerMs": 205.59,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 857.51,
+      "afterServerMs": 1522.43,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "cityhall-airport",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 744.16,
+      "afterServerMs": 664.26,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-airport",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 2670.29,
+      "afterServerMs": 1630.42,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "namchang-unist",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 3991.62,
+      "afterServerMs": 3328.89,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 8662.23,
+      "afterServerMs": 4864.22,
+      "errors": [],
+      "fastestPreserved": true
+    },
+    {
+      "case": "hospital-namchang",
+      "day": "holiday",
+      "departure": 840,
+      "beforeServerMs": 7360.88,
+      "afterServerMs": 3325.18,
+      "errors": [],
+      "fastestPreserved": true
     }
-  ],
-  "method": "One cold request and one identical repeat per case on Jetson; no actual user GPS used."
+  ]
 }

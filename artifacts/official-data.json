@@ -1,24 +1,20 @@
 {
   "sourceUrl": "https://its.ulsan.kr/route/timetable.do",
   "retrievedDate": "2026-11-11",
-  "routes": 534,
+  "routes": 536,
   "busNumbers": 203,
   "stops": 3670,
-  "footpaths": 7818,
+  "footpaths": 7832,
   "departuresByDay": {
-    "weekday": 8122,
-    "saturday": 6689,
-    "holiday": 6401
+    "weekday": 8316,
+    "saturday": 6848,
+    "holiday": 6560
   },
   "routesMissingAllTimetables": [
     "196000776",
     "195000233",
     "388023001",
-    "388023002",
-    "193000059",
-    "196000761",
-    "196000764",
-    "196000765"
+    "388023002"
   ],
   "omittedRoutesWithoutTwoStops": [],
   "excludedSpecialCalendarRoutes": [
@@ -39,7 +35,7 @@
     }
   ],
   "skippedTimeValues": [],
-  "sha256": "8c0b3045da5de76d74326bf6595ebd2c9f627cee4309e50af025973460f8100d",
+  "sha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
   "estimatedStopTimes": {
     "movingKmh": 22,
     "dwellSecondsPerStop": 20
@@ -2730,5 +2726,634 @@
       "sha256": "91736f33fbae0dd93711b9378398193d8a8aedc3f30fb6f4cff4e97a570758ca",
       "retrievedAt": "2026-11-11T01:21:48.618354+00:00"
     }
-  ]
+  ],
+  "derivedNetworkVersion": "ulsan-its-2026-11-11+sources3",
+  "officialRouteCount": 534,
+  "supplementalServiceGroups": 2,
+  "supplementalSources": {
+    "naver:20025004": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025004",
+      "retrievedAt": "2026-11-11T07:45:43.184197+00:00",
+      "sha256": "9e1980e76bc0772e7153b436b64fa4762ddf2a4cbb9ba0f2adcf1ed7d2fa29fd",
+      "name": "518(청량교 출발(덕하방면 온산공단 경유))(지원1)"
+    },
+    "naver:20025001": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025001",
+      "retrievedAt": "2026-11-11T07:45:42.548214+00:00",
+      "sha256": "15c812d0c7f16ea8ffdfe25d03d4575a7ead2d894c2af1ccfdb251741900f67a",
+      "name": "518"
+    },
+    "naver:20024988": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20024988",
+      "retrievedAt": "2026-11-11T07:04:50.841108+00:00",
+      "sha256": "ca23ae2e0107210303d0a5fd8b3778df7d70f8999951f30cf98efeee6eb7e624",
+      "name": "716"
+    },
+    "naver:20025348": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025348",
+      "retrievedAt": "2026-11-11T07:45:51.645801+00:00",
+      "sha256": "3b77b005d5d9c0e41f5dc220f03902ec6ddac94b18048482376532640a809ea2",
+      "name": "752"
+    },
+    "naver:20025383": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025383",
+      "retrievedAt": "2026-11-11T07:45:38.359224+00:00",
+      "sha256": "03a2973b2e5016518c3b3a57eb8a74fe23551cea73deeddf6c6c483a74a5ff59",
+      "name": "323"
+    },
+    "naver:20025068": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025068",
+      "retrievedAt": "2026-11-11T07:05:08.080425+00:00",
+      "sha256": "5805e1a3a53d09ec3a0153d3d7b889f4a4833cbdb0de0e7df7a30e6113dcbe32",
+      "name": "울주05(무거한라 출발)(지원3)"
+    },
+    "naver:20025392": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025392",
+      "retrievedAt": "2026-11-11T07:05:19.457492+00:00",
+      "sha256": "06f8a68f9daea646abed0caf61ea2ac1025386d5e21e9186ec97e12f96310920",
+      "name": "울주88(구량 출발)(지원2)"
+    },
+    "naver:20025296": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025296",
+      "retrievedAt": "2026-11-11T07:45:56.249861+00:00",
+      "sha256": "d095f0eb32048b1af808e91fed6e4c4a82284c5f2b38cdcb40dd918e31cdfc11",
+      "name": "남구04"
+    },
+    "naver:20029553": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20029553",
+      "retrievedAt": "2026-11-11T07:05:00.998913+00:00",
+      "sha256": "4cd9b6769d7519c81296ee94be0bdb5864664f91947bac392b6ff0fdb4cc1d1d",
+      "name": "북구13"
+    },
+    "naver:20025106": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025106",
+      "retrievedAt": "2026-11-11T07:04:56.719057+00:00",
+      "sha256": "f17c5de855b758d4c9c1488a95a6bb1d2b29f63da3a6f1e6405250c8979f23ea",
+      "name": "북구05"
+    },
+    "naver:20025391": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025391",
+      "retrievedAt": "2026-11-11T07:45:53.386533+00:00",
+      "sha256": "6b0ea7e7f171b3eda4ec034093524a66e82a3cb9496b22fd271c6e7b6efbdbf3",
+      "name": "763(봉계 출발)(지원2)"
+    },
+    "naver:20025418": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025418",
+      "retrievedAt": "2026-11-11T07:05:06.043723+00:00",
+      "sha256": "28b1ed5cd54c7ec85198e216ff5478d88a9dea5888d25001b5f3daf615aa9b3d",
+      "name": "울주04(후평마을 출발)(지원3)"
+    },
+    "naver:20039148": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20039148",
+      "retrievedAt": "2026-11-11T07:04:37.741310+00:00",
+      "sha256": "1bef252b359c0e97d8ac5eb4b516ce3548d4b8894e52bfa1ff9ff8ec960690d3",
+      "name": "울주83"
+    },
+    "naver:20025114": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025114",
+      "retrievedAt": "2026-11-11T07:04:58.284884+00:00",
+      "sha256": "82ccdbf6acf498cb5f03c971723d6b42f0d94c8774014b9f4dfc9359030190b9",
+      "name": "북구08(오토밸리줌파크 출발)(지원4)"
+    },
+    "naver:20025096": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025096",
+      "retrievedAt": "2026-11-11T07:05:09.837389+00:00",
+      "sha256": "d6e022a5fa112007f46cc81b017d89c0c8ceebb62a2b3364e9293d59e1f46d04",
+      "name": "울주08"
+    },
+    "naver:20025129": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025129",
+      "retrievedAt": "2026-11-11T07:04:57.858594+00:00",
+      "sha256": "5beaad4f4f0becf3bca3d903faf587630013cc9d207c967a35ebb16bf1efc8dd",
+      "name": "북구08"
+    },
+    "naver:20025213": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025213",
+      "retrievedAt": "2026-11-11T07:45:39.452445+00:00",
+      "sha256": "1de0686b2f3d013117a44e7fbba017cdf34a83fe24880ac4ab57e5bec34b04e2",
+      "name": "422"
+    },
+    "naver:20025429": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025429",
+      "retrievedAt": "2026-11-11T07:05:04.283716+00:00",
+      "sha256": "d266f6d9f54e14c6edb3132b7b037c8a3d529e8cff19fbd1e577e8dd638eae04",
+      "name": "울주01"
+    },
+    "naver:20025371": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025371",
+      "retrievedAt": "2026-11-11T07:04:43.508522+00:00",
+      "sha256": "05d0ab77a1f183125725cb7bab32253cd1c306dbd7df8502decbe6823cea66d5",
+      "name": "343(복합웰컴센터 출발)(지원2)"
+    },
+    "naver:20025323": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025323",
+      "retrievedAt": "2026-11-11T07:04:55.654184+00:00",
+      "sha256": "9e42f0daf948ebc7e4a4b9fae4273f60cfc187d58b8cb880387d89c8fc69f997",
+      "name": "동구02"
+    },
+    "naver:20035092": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20035092",
+      "retrievedAt": "2026-11-11T07:05:16.749811+00:00",
+      "sha256": "2b9447ead34e829c5eaf891ac1587b1b52645bb10c10a9ba1608774c77c4207b",
+      "name": "울주64"
+    },
+    "naver:20037289": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20037289",
+      "retrievedAt": "2026-11-11T07:05:08.311305+00:00",
+      "sha256": "863ac2f9765192e22be1e0995b43b2c77f12c8cb8178eb80bdcc0c18619c901a",
+      "name": "울주05(구치소>율리>구치소)(지원6)"
+    },
+    "naver:20025311": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025311",
+      "retrievedAt": "2026-11-11T07:04:54.377352+00:00",
+      "sha256": "79875d6eaac2d70a3f25c135b0583293e937d53e5fed465b8747113052da2bac",
+      "name": "남구13"
+    },
+    "naver:20025059": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025059",
+      "retrievedAt": "2026-11-11T07:05:07.419945+00:00",
+      "sha256": "aa2f77679659bd83ffe8ffc39b91708f33d9fc1296409ab8c7891cd6c043262a",
+      "name": "울주05"
+    },
+    "naver:20025271": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025271",
+      "retrievedAt": "2026-11-11T07:45:40.615397+00:00",
+      "sha256": "0c82851c98356defaa4ed8c32df0d03c2c58a76e0d2586375323a3eb96e1a03f",
+      "name": "482"
+    },
+    "naver:20025109": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025109",
+      "retrievedAt": "2026-11-11T07:05:11.714326+00:00",
+      "sha256": "a9fa4ff40450dfeeb6e74f44171625599fbb0f47d377cc7f8cdf14c6167bbe14",
+      "name": "울주09"
+    },
+    "naver:20025324": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025324",
+      "retrievedAt": "2026-11-11T07:04:33.178831+00:00",
+      "sha256": "5ee5bd62c06918fe9cffe8cd4cfb80d074ded54d52a4c3574d5901c626d18f63",
+      "name": "772"
+    },
+    "naver:20025378": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025378",
+      "retrievedAt": "2026-11-11T07:04:42.184382+00:00",
+      "sha256": "7da6287629b6c8c3b9c93d621a4d830ccf244a24c6773f494e474263747809b9",
+      "name": "333"
+    },
+    "naver:20025373": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025373",
+      "retrievedAt": "2026-11-11T07:04:43.739808+00:00",
+      "sha256": "a32dffc703d7ed95b61c4e10dd55309e928f089cb0117588c6c04f0426cf0bc9",
+      "name": "343(삼남 출발)(지원1)"
+    },
+    "naver:20025020": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025020",
+      "retrievedAt": "2026-11-11T07:04:49.264843+00:00",
+      "sha256": "6598e9cd92cb6d825d53aa35b90d07a0e90ce55a5688e25b20134fb825dc9f26",
+      "name": "543"
+    },
+    "naver:20025417": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025417",
+      "retrievedAt": "2026-11-11T07:05:05.714988+00:00",
+      "sha256": "7d62dadce80d0404dd7d455a14882aeb20020877e17c09912ffc27b65f93a889",
+      "name": "울주04(중남초 출발)(지원2)"
+    },
+    "naver:20025146": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025146",
+      "retrievedAt": "2026-11-11T07:04:46.454151+00:00",
+      "sha256": "d0a4be651acdcdeea64ea924a009e763b2c6a42851f1a3068f301732803574cd",
+      "name": "383(축산회관 경유(삼남 방면))(지원3)"
+    },
+    "naver:20039155": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20039155",
+      "retrievedAt": "2026-11-11T07:04:39.123612+00:00",
+      "sha256": "6d07431f61c454bf14bc399847cbdaa9298ccc2e5a483a9dffc9cb4e3e4ac8a4",
+      "name": "울주87"
+    },
+    "naver:20025065": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025065",
+      "retrievedAt": "2026-11-11T07:05:07.864390+00:00",
+      "sha256": "dd9181ec8d973c0f544bd646f4152649d41740713677640ba34a1bf8278e3ee7",
+      "name": "울주05(무거중 출발)(지원2)"
+    },
+    "naver:20025427": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025427",
+      "retrievedAt": "2026-11-11T07:05:13.354826+00:00",
+      "sha256": "bd67ba580d94228a1f0507b0c36fd8920747c2140c9492d2f9ce15e0d6ad2edb",
+      "name": "울주53"
+    },
+    "naver:20025436": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025436",
+      "retrievedAt": "2026-11-11T07:05:14.669766+00:00",
+      "sha256": "24354e639e0cb2fa44f2ab8c99875154538f438acb4cc9c73b3e0b67f4d58085",
+      "name": "울주61"
+    },
+    "naver:20025215": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025215",
+      "retrievedAt": "2026-11-11T07:45:44.724605+00:00",
+      "sha256": "5831c8c16261d4545c26167a0004d7231d15c1c6f977f504d30df9c98ed4d305",
+      "name": "723"
+    },
+    "naver:20025218": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025218",
+      "retrievedAt": "2026-11-11T07:45:44.925093+00:00",
+      "sha256": "142ac93a47cf6177dfc319b1a1f7167a0faef4cded14696efbba8845a8ed3c34",
+      "name": "723"
+    },
+    "naver:20025393": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025393",
+      "retrievedAt": "2026-11-11T07:45:53.182540+00:00",
+      "sha256": "ac00603d26e0204a83f7f16697d8986b9549ca0100bc113d049a589596fb18dd",
+      "name": "763(명촌 출발)(지원1)"
+    },
+    "naver:20025332": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025332",
+      "retrievedAt": "2026-11-11T07:45:54.547220+00:00",
+      "sha256": "22ebc4a170702515353b981220951e8c8228065c260e0d57fcb0c005c7f34869",
+      "name": "773"
+    },
+    "naver:20025005": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025005",
+      "retrievedAt": "2026-11-11T07:45:42.773564+00:00",
+      "sha256": "a81c60060b7fca7d228b999433d226057e0864513143b19a3084f8faf9855a2b",
+      "name": "518(옥교동(온산공단 경유))(지원2)"
+    },
+    "naver:20025297": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025297",
+      "retrievedAt": "2026-11-11T07:45:56.551756+00:00",
+      "sha256": "ff55eb0245c14c2b00b373e429bdb15a61c4558fde7135d12d0d3067cbc77858",
+      "name": "남구04(강변그린빌(문수초등학교 경유))(지원1)"
+    },
+    "naver:20043725": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20043725",
+      "retrievedAt": "2026-11-11T07:57:04.996105+00:00",
+      "sha256": "3b4d03fdaf3f75ce4f3f389d4048ee51c0b394309b830078fcf50833c27f4b0c",
+      "name": "123"
+    },
+    "naver:20043726": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20043726",
+      "retrievedAt": "2026-11-11T07:57:05.435772+00:00",
+      "sha256": "f0b56ada66e28a1b044a431cfe5c15c251bbc894fe9231fde4a55d464a21842b",
+      "name": "123(꽃바위출발)(지원1)"
+    },
+    "naver:20025030": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025030",
+      "retrievedAt": "2026-11-11T07:45:36.668008+00:00",
+      "sha256": "abcd665e542bf62400d2a4e0127e5cf2815759e587692c4eab6e8f5a0194e2b9",
+      "name": "124"
+    },
+    "naver:20025390": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025390",
+      "retrievedAt": "2026-11-11T07:04:41.091217+00:00",
+      "sha256": "5b4095f81861faa303347e7b024ff1303faa4841a8220e7022f3b22d48aff038",
+      "name": "313"
+    },
+    "naver:20037498": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20037498",
+      "retrievedAt": "2026-11-11T07:57:08.161348+00:00",
+      "sha256": "680c8a0145e9395b43415b1cd66b9df8d868dea4b07c319b795f69b66c061f99",
+      "name": "314"
+    },
+    "naver:20025374": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025374",
+      "retrievedAt": "2026-11-11T07:04:43.288340+00:00",
+      "sha256": "a882c8dbc834a625cb7933951f423b94283ff4be5e85163b239823ccce9b4267",
+      "name": "343"
+    },
+    "naver:20025347": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025347",
+      "retrievedAt": "2026-11-11T07:04:44.835839+00:00",
+      "sha256": "08b1a7fbb1b874ba233ea4347f8aa28f9cbfba13964ac73be84389fe68c5f902",
+      "name": "373"
+    },
+    "naver:20033781": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20033781",
+      "retrievedAt": "2026-11-11T07:04:45.075643+00:00",
+      "sha256": "64b56cdb5d678e6ec7f10d0b856af5b90ef4c5600a270e4d113becf49d543dc5",
+      "name": "373(길천공단 경유)(지원1)"
+    },
+    "naver:20025345": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025345",
+      "retrievedAt": "2026-11-11T07:04:46.207430+00:00",
+      "sha256": "6a5df17176c2d4d6c6bb7a7e14df0bee2f5eb83f02dbaf6687f81dc847d01d70",
+      "name": "383"
+    },
+    "naver:20025150": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025150",
+      "retrievedAt": "2026-11-11T07:04:46.663200+00:00",
+      "sha256": "747d62463b2b01ca75e661b19760934732bb795ef0770a15506fe454518e86ac",
+      "name": "383(축산회관 경유(양우내안에 방면))(지원4)"
+    },
+    "naver:20025176": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025176",
+      "retrievedAt": "2026-11-11T07:04:48.116822+00:00",
+      "sha256": "ce9ce91b9d3fa2588ffe018dde8dacade17d5e98529f3df9356be9617426bcee",
+      "name": "413"
+    },
+    "naver:20025186": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025186",
+      "retrievedAt": "2026-11-11T07:57:09.560448+00:00",
+      "sha256": "6fc1d6020b6f8235983108d38eb19a9e9278805b54c3050e42aef1f03a8bde07",
+      "name": "415"
+    },
+    "naver:20025187": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025187",
+      "retrievedAt": "2026-11-11T07:57:09.345454+00:00",
+      "sha256": "bb08c5927e3cb39fc818a2bfbcb1c24a0798b9bc77da6274386a298a8956aa56",
+      "name": "415"
+    },
+    "naver:20025275": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025275",
+      "retrievedAt": "2026-11-11T07:45:41.060185+00:00",
+      "sha256": "04a734ab0562fa55f1ab03a08fc362c8ec53865c71b51a886007b700cd87989e",
+      "name": "482(율리 출발)(지원2)"
+    },
+    "naver:20025276": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025276",
+      "retrievedAt": "2026-11-11T07:57:10.641350+00:00",
+      "sha256": "d4a7fc5cfeae9fcb6c509de1940c3ad0ece05b7517582e2a407aa9ca7a828651",
+      "name": "513"
+    },
+    "naver:20025007": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025007",
+      "retrievedAt": "2026-11-11T07:45:43.413156+00:00",
+      "sha256": "fad9fa57076e95bd1fe8582c926af47601d028008d5d4e30301aca37ac0e2a12",
+      "name": "518(옥교동(성남동 방면 온산공단 경유))(지원3)"
+    },
+    "naver:20025012": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025012",
+      "retrievedAt": "2026-11-11T07:57:12.442231+00:00",
+      "sha256": "5b24de6c3f53286faf4d848cafc8575a9e169ac091a015910748e5f22c1264c7",
+      "name": "523"
+    },
+    "naver:20025024": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025024",
+      "retrievedAt": "2026-11-11T07:04:49.487817+00:00",
+      "sha256": "f7453d20f393f17b2025bb2cb0f9a0806f3bc0ee4440a0e1fc423e78f74f53da",
+      "name": "543(덕하 출발)(지원1)"
+    },
+    "naver:20025179": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025179",
+      "retrievedAt": "2026-11-11T07:57:13.506406+00:00",
+      "sha256": "fdbbc33a5b8b7929434d62b180a7644e48dd212189a2d04fa5887a63974fae2d",
+      "name": "713"
+    },
+    "naver:20024990": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20024990",
+      "retrievedAt": "2026-11-11T07:04:51.065922+00:00",
+      "sha256": "67027b2259028ba0dffd891a65de95c051561361fb1c29c7b41e00c2ca2d545d",
+      "name": "716(덕하 출발)(지원1)"
+    },
+    "naver:20029941": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20029941",
+      "retrievedAt": "2026-11-11T07:04:51.316298+00:00",
+      "sha256": "0d218b4cac33447f0668220f9d4f022dd4286b5bb85d3de733c19cab7c71f50d",
+      "name": "716(태화강역 출발)(지원2)"
+    },
+    "naver:20025219": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025219",
+      "retrievedAt": "2026-11-11T07:45:45.157719+00:00",
+      "sha256": "ce6269845b8beef87fc9bf9371e37d37af6b9390b2f52e2be0a23bffd3be9503",
+      "name": "723(내사 경유)(지원1)"
+    },
+    "naver:20025221": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025221",
+      "retrievedAt": "2026-11-11T07:45:45.369208+00:00",
+      "sha256": "ae276ecc789b5452ad24be664b6edbc8dbc50b43e136d29855c52c8310184928",
+      "name": "723(내사 경유)(지원1)"
+    },
+    "naver:20025227": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025227",
+      "retrievedAt": "2026-11-11T07:45:46.476709+00:00",
+      "sha256": "af37c6b89d9ea9af269449af8cdc21a77801c3723996cfced2b88dc558d3cd3c",
+      "name": "725"
+    },
+    "naver:20025230": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025230",
+      "retrievedAt": "2026-11-11T07:45:46.913882+00:00",
+      "sha256": "237505c3f503ebc10a2153c53b7ff4f0fd13710578ff1b001042a0e44b505b9e",
+      "name": "725(온산공단 경유)(지원1)"
+    },
+    "naver:20025236": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025236",
+      "retrievedAt": "2026-11-11T07:45:48.521958+00:00",
+      "sha256": "13a9b438a59dcba7e9ec4bb3fa8d71ff153e1a31678968da8f51596423a06840",
+      "name": "728"
+    },
+    "naver:20029733": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20029733",
+      "retrievedAt": "2026-11-11T07:45:50.048911+00:00",
+      "sha256": "1d4021e4fc4d7a468614fbaa02e09da2aa77557b1a3788991643b5452ff80631",
+      "name": "731"
+    },
+    "naver:20025339": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025339",
+      "retrievedAt": "2026-11-11T07:57:15.150259+00:00",
+      "sha256": "55faf70a413ec7a01347212508bc1fd8db183b8cccb5609a20e0b2f8ad603f64",
+      "name": "743"
+    },
+    "naver:20025351": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025351",
+      "retrievedAt": "2026-11-11T07:45:51.827943+00:00",
+      "sha256": "91b384a35fffae8c1d143f4dc4796b752adc372d4aa108564c56473de7e0a629",
+      "name": "752(매곡산업단지 경유)(지원1)"
+    },
+    "naver:20025353": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025353",
+      "retrievedAt": "2026-11-11T07:57:16.404438+00:00",
+      "sha256": "9c58e581b707fc5d63713cd0a95b5d3ea05823d076ca8f34513891c023ccc400",
+      "name": "753"
+    },
+    "naver:20025404": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025404",
+      "retrievedAt": "2026-11-11T07:45:52.964274+00:00",
+      "sha256": "3fd5afaf2470879de5ef192075f984c38d8b8395eea50d08392f2406eb73a58d",
+      "name": "763"
+    },
+    "naver:20024992": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20024992",
+      "retrievedAt": "2026-11-11T07:04:52.399986+00:00",
+      "sha256": "6019bc531d94262e31385c7eddb053675a803a0eee478296409d6a71dd76a595",
+      "name": "918"
+    },
+    "naver:20025320": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025320",
+      "retrievedAt": "2026-11-11T07:04:53.082928+00:00",
+      "sha256": "9cdb0949e09043969f8f2dbbdb79a5e850cbaf2f62eed8b7230237f75d2e3c50",
+      "name": "918(태화강공원 미경유)(지원2)"
+    },
+    "naver:20043728": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20043728",
+      "retrievedAt": "2026-11-11T07:57:06.646746+00:00",
+      "sha256": "2f241f6889212c8ece17c0366774a7173154ec1b162533d14e70e0620863ef8b",
+      "name": "1413"
+    },
+    "naver:20043729": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20043729",
+      "retrievedAt": "2026-11-11T07:57:06.868452+00:00",
+      "sha256": "b7bf5638901d189b86b76a266c81f43e23a92b115d83eb75b20b29c44ce6c46d",
+      "name": "1413"
+    },
+    "naver:20025298": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025298",
+      "retrievedAt": "2026-11-11T07:45:56.992874+00:00",
+      "sha256": "38d62e8ed24d7a5b6182208e20eeb845cc7a86e87dcbe9a8fe921c027a6ad8bd",
+      "name": "남구04(문수초등학교 경유)(지원2)"
+    },
+    "naver:20025315": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025315",
+      "retrievedAt": "2026-11-11T07:45:58.361365+00:00",
+      "sha256": "f3a9887b2bdad88b2bc57645c50a5ba886830f88518bb896359975a3b60d5b30",
+      "name": "남구51"
+    },
+    "naver:20025130": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025130",
+      "retrievedAt": "2026-11-11T07:04:58.486393+00:00",
+      "sha256": "eb945242a14b10d285fc259434ececb72191f40f64880b8cc1d7023bba51c0f0",
+      "name": "북구08(중산산단 경유(오토밸리줌파크 방면))(지원1)"
+    },
+    "naver:20025133": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025133",
+      "retrievedAt": "2026-11-11T07:04:58.077303+00:00",
+      "sha256": "8cd7b655967d2bbd6976d4487a5482810602a9d54a4f5fa4163734bd389774c7",
+      "name": "북구08(중산산단 경유(북울산역 방면))(지원2)"
+    },
+    "naver:20025122": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025122",
+      "retrievedAt": "2026-11-11T07:04:59.920273+00:00",
+      "sha256": "86a7669498fe8f42a3b2afd21c0fdf63f007cefc7cfad60e54a8d6ee4290ba78",
+      "name": "북구10"
+    },
+    "naver:20025442": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025442",
+      "retrievedAt": "2026-11-11T07:05:05.493839+00:00",
+      "sha256": "5df1745692675cb0befb432f9e32aa374710ed839fb65ee206e0590bdf318a8b",
+      "name": "울주04"
+    },
+    "naver:20025064": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025064",
+      "retrievedAt": "2026-11-11T07:05:07.635569+00:00",
+      "sha256": "d9e289f00a20e5bd22290eea48e584bc34caefaf12b187d2a70e2f265ba18c73",
+      "name": "울주05(덕하공영차고지(수문마을 경유))(지원1)"
+    },
+    "naver:20037292": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20037292",
+      "retrievedAt": "2026-11-11T07:05:08.760193+00:00",
+      "sha256": "05ee3a30af5450cc6e9857a1e92f2c66e8a323da045cc28cad2a28eb12f892ef",
+      "name": "울주05(율리 출발)(지원4)"
+    },
+    "naver:20037294": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20037294",
+      "retrievedAt": "2026-11-11T07:05:08.543659+00:00",
+      "sha256": "e68bbef1322e45727cc1d30516f5b2fc97a393f4feb37089d0a4cb4dc15f07fe",
+      "name": "울주05(덕하 출발)(지원5)"
+    },
+    "naver:20025099": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025099",
+      "retrievedAt": "2026-11-11T07:05:10.056649+00:00",
+      "sha256": "47569c13d3aabeb01cf4a7dbb367a5c648fb5ab70268971f18ac72146192b59f",
+      "name": "울주08(덕하 출발)(지원1)"
+    },
+    "naver:20025100": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025100",
+      "retrievedAt": "2026-11-11T07:05:10.286844+00:00",
+      "sha256": "66924b54e38d1194b1701f78956d61c8eada0b5de3af8c3061df2a5012e74496",
+      "name": "울주08(무궁화아파트 출발)(지원2)"
+    },
+    "naver:20031564": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20031564",
+      "retrievedAt": "2026-11-11T07:05:11.934381+00:00",
+      "sha256": "b85a4957cc30f5f4866c475faba599018103d65c41da5f73b7e2324ca56be38a",
+      "name": "울주09(천상중학교(울주경찰서 방면))(지원1)"
+    },
+    "naver:20025428": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025428",
+      "retrievedAt": "2026-11-11T07:05:13.560591+00:00",
+      "sha256": "03f3a8d8722bea9a0c1d6fd940c13e2a3c79163db0d283cec66c9e121e07979c",
+      "name": "울주53(온산중, 온남초 경유)(지원1)"
+    },
+    "naver:20025451": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025451",
+      "retrievedAt": "2026-11-11T07:45:59.974399+00:00",
+      "sha256": "806819c11598dbe92806682f9e74cb2636c682fa9fb1febd2ae356b42df00f13",
+      "name": "울주63"
+    },
+    "naver:20025413": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025413",
+      "retrievedAt": "2026-11-11T07:46:00.162221+00:00",
+      "sha256": "13e16fa3bec213a656e64f08947e66302b1d8b1cd1490716b3ddcc212e6a6957",
+      "name": "울주63(은하,덕산 경유)(지원1)"
+    },
+    "naver:20025409": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025409",
+      "retrievedAt": "2026-11-11T07:46:01.728404+00:00",
+      "sha256": "606798b5639611c28191cc97ee6c1734b24a6cf5338df11308cbde827745ac50",
+      "name": "울주81(남부노인복지관 출발)(지원2)"
+    },
+    "naver:20039151": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20039151",
+      "retrievedAt": "2026-11-11T07:04:38.007406+00:00",
+      "sha256": "3abade08a17e15578782753699360f88a20ce3b773987ef1d36bc739c802b6c6",
+      "name": "울주83(언양장 경유)(지원1)"
+    },
+    "naver:20025406": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025406",
+      "retrievedAt": "2026-11-11T07:05:17.897363+00:00",
+      "sha256": "66cfb46bf283e64ec5eda3a46e84a8ca65c7bfd12f40a256bb381e3592450913",
+      "name": "울주84"
+    },
+    "naver:20025396": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025396",
+      "retrievedAt": "2026-11-11T07:05:19.228602+00:00",
+      "sha256": "9fdec968d50cff268b53332019709cc6998629d0efb2e3c14bd668c5ca8d2e3f",
+      "name": "울주88"
+    },
+    "naver:20025395": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20025395",
+      "retrievedAt": "2026-11-11T07:05:19.679819+00:00",
+      "sha256": "cec1ea40c57aec180d4e0fedd7b700a548242862e56f036d6463d305677c1af7",
+      "name": "울주88(다개)(지원1)"
+    },
+    "naver:20031768": {
+      "url": "https://map.naver.com/p/api/pubtrans/bus/routes/20031768",
+      "retrievedAt": "2026-11-11T07:46:02.936415+00:00",
+      "sha256": "206214b02694342140924c9841cdeeeb0f494e91029eb2a59c9d0168f91adfbf",
+      "name": "중구52"
+    },
+    "osm:reviewed-tail": {
+      "url": "https://www.openstreetmap.org/copyright",
+      "localRoadGraphSha256": "d2fab1ef07236af8859fb0f9aeadfed9b25f8807062720a298ae887027c83749"
+    },
+    "operator:weekday": {
+      "url": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=18",
+      "sha256": "0606d0463413e8f522ec9d307818c3372542935d47d5dd344e74512ffdd96847",
+      "retrievedDate": "2026-11-11"
+    },
+    "operator:saturday": {
+      "url": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=17",
+      "sha256": "b69431b3580a3372e2ff28a3cb0740c553fb78216a98eb10672a8857e8430aa6",
+      "retrievedDate": "2026-11-11"
+    },
+    "operator:holiday": {
+      "url": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=16",
+      "sha256": "60fc10a70533696d204b6b71fdac6d0f2b71f50d74a9a9c7498556a589dff659",
+      "retrievedDate": "2026-11-11"
+    },
+    "namchang-market": {
+      "url": "https://access.visitkorea.or.kr/ms/detail.do?cotId=a07ae8af-fc6e-4146-9af2-28ab0d05dfe3"
+    },
+    "seochang-market": {
+      "url": "https://yangsan.go.kr/ungsang/contents.do?mid=0206140100"
+    },
+    "eonyang-market": {
+      "url": "https://assembly.ulju.ulsan.kr/kr/qna/contents?uid=67DA0D88892FD9BD3CD18D9BC4E248BC&reform=view"
+    },
+    "yangsan:joint": {
+      "url": "https://bus.yangsan.go.kr/yangsan_2016/board/notice_view.php?num=943",
+      "attachmentUrl": "https://bus.yangsan.go.kr/yangsan_2016/board/download.php?num=943",
+      "sha256": "99a9e128183f1701a86bfeabc57137774b17b49f6636f5c6ae382cd291537f92",
+      "effectiveFrom": "2026-10-06",
+      "effectiveThrough": "2026-11-22",
+      "scope": "2100/2300 shared departures; only their verified common Ulsan stops may be used"
+    }
+  }
 }

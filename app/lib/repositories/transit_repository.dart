@@ -29,12 +29,19 @@ List<Json> runLocal(Json payload) {
         ? null
         : Json.from(payload['destination_point']),
     serviceDay: payload['service_day'] ?? 'weekday',
+    serviceDate: payload['service_date'],
   );
-  network = network.forServiceDay(q.serviceDay);
+  network = network.forServiceDay(q.serviceDay, date: q.serviceDate);
   final graph = payload['walkGraph'] == null
       ? null
       : WalkingGraph(payload['walkGraph'] as Uint8List);
-  List<Json> search(SearchQuery query, {Json? stats}) {
+  JourneyEngine? finalEngine;
+  SearchQuery? finalQuery;
+  List<Json> search(
+    SearchQuery query, {
+    Json? stats,
+    bool evaluateCandidates = true,
+  }) {
     var prepared = network;
     var places = <Json>[];
     if (query.originPoint != null || query.destinationPoint != null) {
@@ -47,23 +54,27 @@ List<Json> runLocal(Json payload) {
     } else if (stats != null) {
       stats['exhausted'] = true;
     }
-    final rows = JourneyEngine(prepared).search(
-      SearchQuery(
-        origin: query.originPoint == null ? query.origin : '@origin',
-        destination: query.destinationPoint == null
-            ? query.destination
-            : '@destination',
-        dataset: q.dataset,
-        departure: q.departure,
-        walkingSpeed: q.walkingSpeed,
-        maxWalk: query.maxWalk,
-        walkingPenalty: query.walkingPenalty,
-        maxTransfers: q.maxTransfers,
-        delay: q.delay,
-        samples: q.samples,
-        seed: q.seed,
-        serviceDay: q.serviceDay,
-      ),
+    finalEngine = JourneyEngine(prepared);
+    finalQuery = SearchQuery(
+      origin: query.originPoint == null ? query.origin : '@origin',
+      destination: query.destinationPoint == null
+          ? query.destination
+          : '@destination',
+      dataset: q.dataset,
+      departure: q.departure,
+      walkingSpeed: q.walkingSpeed,
+      maxWalk: query.maxWalk,
+      walkingPenalty: query.walkingPenalty,
+      maxTransfers: q.maxTransfers,
+      delay: q.delay,
+      samples: q.samples,
+      seed: q.seed,
+      serviceDay: q.serviceDay,
+      serviceDate: q.serviceDate,
+    );
+    final rows = finalEngine!.search(
+      finalQuery!,
+      evaluateCandidates: evaluateCandidates,
     );
     for (final j in rows) {
       if (places.isNotEmpty) j['places'] = places;
@@ -100,10 +111,11 @@ List<Json> runLocal(Json payload) {
       samples: q.samples,
       seed: q.seed,
       serviceDay: q.serviceDay,
+      serviceDate: q.serviceDate,
       originPoint: origin,
       destinationPoint: destination,
     );
-    final rows = search(limited, stats: stats),
+    final rows = search(limited, stats: stats, evaluateCandidates: false),
         timed = rows.where((row) => row['arrival'] != null).toList();
     double nextRadius;
     if (timed.isNotEmpty) {
@@ -121,13 +133,19 @@ List<Json> runLocal(Json payload) {
               : recommended / (1 + penalty)) *
           q.walkingSpeed *
           60;
-      if (radius + .01 >= sufficient) return timed;
+      if (radius + .01 >= sufficient) {
+        return finalEngine!.finishCandidates(timed, finalQuery!);
+      }
       nextRadius = sufficient + .1;
     } else {
       if (rows.isNotEmpty) fallback = rows;
       nextRadius = radius * 2;
     }
-    if (stats['exhausted'] == true) return timed.isNotEmpty ? timed : fallback;
+    if (stats['exhausted'] == true) {
+      return timed.isNotEmpty
+          ? finalEngine!.finishCandidates(timed, finalQuery!)
+          : fallback;
+    }
     radius = nextRadius;
   }
 }

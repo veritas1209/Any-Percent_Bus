@@ -1,0 +1,21 @@
+{
+  "platform": "local Windows, same sourced network and query",
+  "cases": [
+    {
+      "origin": "194060201",
+      "destination": "196031532",
+      "beforeMs": 7817.4190999998245,
+      "afterMs": 3850.475400002324,
+      "bestArrivalAndWalkingScorePreserved": true
+    },
+    {
+      "origin": "194019014",
+      "destination": "196030401",
+      "beforeMs": 7895.7670999989205,
+      "afterMs": 3362.7371000002313,
+      "bestArrivalAndWalkingScorePreserved": true
+    }
+  ],
+  "networkSha256": "a30eaa7cfa68e1a1568ad6426a4c370d3fad4d65a77e8ed8df0dab5185af9cab",
+  "note": "One local comparison before the final geometry refinement; minimum nominal arrival and walking score preserved. Not a production percentile benchmark."
+}

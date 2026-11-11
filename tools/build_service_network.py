@@ -219,10 +219,20 @@ def main():
                'timetableDays': list(DAY_TYPES), 'retrievedDate': stamp,
                'estimation': {'movingKmh': MOVING_KMH, 'dwellSecondsPerStop': STOP_SECONDS},
                'sourceUrl': 'https://its.ulsan.kr/route/timetable.do'}
+    supplements = ROOT/'shared/service_supplements.json'
+    (ROOT/'tmp/service-network-original.json').write_text(json.dumps(network,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+    if supplements.exists():
+        from service_supplements import apply_supplements
+        apply_supplements(network,json.loads(supplements.read_text(encoding='utf-8')))
+        routes = network['routes']
     encoded = json.dumps(network, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
     for destination in (ROOT / 'shared/service_network.json', ROOT / 'app/assets/data/service_network.json'):
         destination.write_bytes(encoded)
     report = {'sourceUrl': network['sourceUrl'], 'retrievedDate': stamp, 'routes': len(routes),
+              'officialRouteCount': len(routes)-len([r for r in routes if r.get('serviceGrouping')]),
+              'supplementalServiceGroups': len([r for r in routes if r.get('serviceGrouping')]),
+              'derivedNetworkVersion': network['version'],
+              'supplementalSources': network.get('supplementalSources',{}),
               'busNumbers': network['routeNumbers'], 'stops': len(stops), 'footpaths': len(paths),
               'departuresByDay': {day: sum(len(r['departuresByDay'][day]) for r in routes) for day in DAY_TYPES},
               'routesMissingAllTimetables': [r['familyId'] for r in routes if r['scheduleSource'] == 'catalog_topology'],

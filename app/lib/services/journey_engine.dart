@@ -18,6 +18,8 @@ int firstDeparture(List<num> departures, double minimum) {
 class JourneyEngine {
   final Network network;
   JourneyEngine(this.network);
+  final _routingCache =
+      <(String, int, double), (List<Set<String>>, List<Map<String, double>>)>{};
   late final timedRoutes = network.routes.values
       .where((r) => (r['departures'] as List).isNotEmpty)
       .toList();
@@ -27,6 +29,10 @@ class JourneyEngine {
     final index = <String, List<(Json, int)>>{};
     for (final r in timedRoutes) {
       for (var i = 0; i < (r['stops'] as List).length - 1; i++) {
+        if (r['passengerStops'] != null &&
+            !(r['passengerStops'] as List).contains(r['stops'][i])) {
+          continue;
+        }
         index.putIfAbsent(r['stops'][i], () => []).add((r, i));
       }
     }
@@ -43,26 +49,52 @@ class JourneyEngine {
     return index.entries;
   }
 
-  List<Json> search(SearchQuery q) {
-    final selected = network.forServiceDay(q.serviceDay);
-    if (!identical(selected, network)) return JourneyEngine(selected).search(q);
+  static int rank(Json a, Json b) {
+    final arrival = numValue(a['arrival']).compareTo(numValue(b['arrival']));
+    if (arrival != 0) return arrival;
+    final walk = numValue(
+      a['walkingMeters'],
+    ).compareTo(numValue(b['walkingMeters']));
+    if (walk != 0) return walk;
+    return (a['legs'] as List)
+        .where((leg) => leg['kind'] == 'ride')
+        .length
+        .compareTo(
+          (b['legs'] as List).where((leg) => leg['kind'] == 'ride').length,
+        );
+  }
+
+  List<Json> search(SearchQuery q, {bool evaluateCandidates = true}) {
+    final selected = network.forServiceDay(q.serviceDay, date: q.serviceDate);
+    if (!identical(selected, network)) {
+      return JourneyEngine(
+        selected,
+      ).search(q, evaluateCandidates: evaluateCandidates);
+    }
     if (q.origin == q.destination) return [];
     final walkLimit = q.maxWalk ?? double.infinity,
         scored = q.walkingPenalty != null || q.maxWalk == null,
         penalty = q.walkingPenalty ?? 1.0;
-    final layers = reachableStops(
-      timedRoutes,
-      network.data['footpaths'],
-      q.destination,
-      q.maxTransfers + 1,
-      walkLimit,
-    );
-    final bounds = walkingBounds(
-      timedRoutes,
-      network.data['footpaths'],
-      q.destination,
-      q.maxTransfers + 1,
-    );
+    final cacheKey = (q.destination, q.maxTransfers, walkLimit);
+    if (!_routingCache.containsKey(cacheKey)) {
+      if (_routingCache.length >= 8) _routingCache.clear();
+      _routingCache[cacheKey] = (
+        reachableStops(
+          timedRoutes,
+          network.data['footpaths'],
+          q.destination,
+          q.maxTransfers + 1,
+          walkLimit,
+        ),
+        walkingBounds(
+          timedRoutes,
+          network.data['footpaths'],
+          q.destination,
+          q.maxTransfers + 1,
+        ),
+      );
+    }
+    final (layers, bounds) = _routingCache[cacheKey]!;
     List<Json> frontier = [
       {
         'stop': q.origin,
@@ -76,20 +108,6 @@ class JourneyEngine {
     var cutoff = double.infinity;
     var arrivalCutoff = double.infinity, scoreCutoff = double.infinity;
     List<Map<String, double>>? latest;
-    int rank(Json a, Json b) {
-      final arrival = numValue(a['arrival']).compareTo(numValue(b['arrival']));
-      if (arrival != 0) return arrival;
-      final walk = numValue(
-        a['walkingMeters'],
-      ).compareTo(numValue(b['walkingMeters']));
-      if (walk != 0) return walk;
-      return (a['legs'] as List)
-          .where((leg) => leg['kind'] == 'ride')
-          .length
-          .compareTo(
-            (b['legs'] as List).where((leg) => leg['kind'] == 'ride').length,
-          );
-    }
 
     bool competitive(
       double now,
@@ -98,6 +116,7 @@ class JourneyEngine {
       int remaining,
       String stop,
     ) {
+      if (now <= arrivalCutoff + 1e-6) return true;
       final leastWalk = walked + (bounds[remaining][stop] ?? double.infinity);
       final optimistic =
           now -
@@ -176,13 +195,14 @@ class JourneyEngine {
     }
     for (var round = 0; round <= q.maxTransfers; round++) {
       final next = <Json>[];
+      final tripBoardings = <(String, num), List<(int, double)>>{};
       for (final state in frontier) {
         if (numValue(state['now']) > cutoff) continue;
         if (scored &&
             !competitive(
               numValue(state['now']),
               numValue(state['walked']),
-              (state['used'] as Set).length,
+              round,
               q.maxTransfers - round + 1,
               state['stop'],
             )) {
@@ -237,7 +257,7 @@ class JourneyEngine {
               !competitive(
                 numValue(access['now']),
                 numValue(access['walked']),
-                (state['used'] as Set).length,
+                round,
                 q.maxTransfers - round + 1,
                 access['stop'],
               )) {
@@ -253,25 +273,51 @@ class JourneyEngine {
           for (final (route, bi) in boards[access['stop']] ?? <(Json, int)>[]) {
             final used = state['used'] as Set<String>;
             final stops = (route['stops'] as List).cast<String>();
-            if (used.contains(route['id']) || !stops.contains(access['stop'])) {
+            if ((!scored && used.contains(route['id'])) ||
+                !stops.contains(access['stop'])) {
               continue;
             }
             final departures = (route['departures'] as List).cast<num>();
             final offsets = (route['offsets'] as List).cast<num>();
-            final buffer = used.isEmpty ? 0.0 : 0.5;
+            final buffer = round == 0 ? 0.0 : 0.5 + q.transferMargin;
             final index = firstDeparture(
               departures,
               numValue(access['now']) + buffer - offsets[bi],
             );
             if (index == departures.length) continue;
             final trip = departures[index];
+            if (scored) {
+              final priorLegs = (state['legs'] as List).cast<Json>();
+              if (priorLegs.isNotEmpty &&
+                  priorLegs.last['kind'] == 'ride' &&
+                  priorLegs.last['routeId'] == route['id'] &&
+                  priorLegs.last['trip'] == trip) {
+                continue;
+              }
+              final key = (route['id'] as String, trip);
+              final boarded = tripBoardings.putIfAbsent(key, () => []);
+              final walked = numValue(access['walked']);
+              if (boarded.any(
+                (old) => old.$1 <= bi && old.$2 <= walked + .001,
+              )) {
+                continue;
+              }
+              boarded.removeWhere(
+                (old) => bi <= old.$1 && walked <= old.$2 + .001,
+              );
+              boarded.add((bi, walked));
+            }
             for (var ai = bi + 1; ai < stops.length; ai++) {
-              if (trip + offsets[ai] > cutoff) continue;
+              if (route['passengerStops'] != null &&
+                  !(route['passengerStops'] as List).contains(stops[ai])) {
+                continue;
+              }
+              if (trip + offsets[ai] > cutoff) break;
               if (scored &&
                   !competitive(
                     (trip + offsets[ai]).toDouble(),
                     numValue(access['walked']),
-                    used.length + 1,
+                    round + 1,
                     q.maxTransfers - round,
                     stops[ai],
                   )) {
@@ -370,19 +416,53 @@ class JourneyEngine {
                                 1e-6),
               )
               .toList(),
+          respectUsed: !scored,
         );
       }
     }
     final candidates = found.values.toList()..sort(rank);
-    var evaluated = candidates.map((j) => evaluate(j, q)).toList();
-    if (evaluated.isEmpty) {
+    if (candidates.isEmpty) {
       return network.data['catalogFallback'] == true
           ? topologyConnections(network, q)
           : [];
     }
+    return evaluateCandidates ? finishCandidates(candidates, q) : candidates;
+  }
+
+  List<Json> finishCandidates(List<Json> rows, SearchQuery q) {
+    if (rows.isEmpty) return [];
+    var candidates = List<Json>.from(rows);
+    final scored = q.walkingPenalty != null || q.maxWalk == null;
+    if (scored && q.maxTransfers > 0 && q.transferMargin == 0) {
+      final protected =
+          search(
+            q.copyWith(transferMargin: 5),
+            evaluateCandidates: false,
+          ).where((j) => j['arrival'] != null).toList()..sort((a, b) {
+            final score = numValue(
+              a['recommendationScore'],
+            ).compareTo(numValue(b['recommendationScore']));
+            return score != 0 ? score : rank(a, b);
+          });
+      final known = candidates.map((j) => j['id']).toSet(),
+          strategies = <String>{};
+      final places = candidates.first['places'];
+      for (final j in protected) {
+        final strategy = (j['legs'] as List)
+            .where((l) => l['kind'] == 'ride')
+            .map((l) => l['routeId'])
+            .join('|');
+        if (known.contains(j['id']) || strategies.contains(strategy)) continue;
+        if (places != null) j['places'] = places;
+        candidates.add(j);
+        known.add(j['id']);
+        strategies.add(strategy);
+        if (strategies.length >= 5) break;
+      }
+    }
     if (scored) {
       final singleRides = <String, Json>{}, alternatives = <Json>[];
-      for (final journey in evaluated) {
+      for (final journey in candidates) {
         final rides = (journey['legs'] as List)
             .where((leg) => leg['kind'] == 'ride')
             .toList();
@@ -397,8 +477,9 @@ class JourneyEngine {
           singleRides[key] = journey;
         }
       }
-      evaluated = [...alternatives, ...singleRides.values];
+      candidates = [...alternatives, ...singleRides.values];
     }
+    final evaluated = candidates.map((j) => evaluate(j, q)).toList();
     final earliest = evaluated.reduce((a, b) => rank(a, b) <= 0 ? a : b);
     final safest = evaluated.reduce(
       (a, b) =>
@@ -447,7 +528,7 @@ class JourneyEngine {
     Map<String, double>? draws,
     double Function(Json, num)? sampleDelay,
   ]) {
-    final selected = network.forServiceDay(q.serviceDay);
+    final selected = network.forServiceDay(q.serviceDay, date: q.serviceDate);
     if (!identical(selected, network)) {
       return JourneyEngine(selected).replay(journey, q, draws, sampleDelay);
     }

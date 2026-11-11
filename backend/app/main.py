@@ -11,7 +11,8 @@ import httpx
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+from datetime import date
 
 from .engine import Engine, Query
 from . import bustracker
@@ -64,6 +65,14 @@ class Search(BaseModel):
     destination_point: Location | None = None
     service_day: Literal['weekday','saturday','holiday'] = 'weekday'
     include_geometry: bool = False
+    service_date: str | None = None
+
+    @field_validator('service_date')
+    @classmethod
+    def valid_service_date(cls, value):
+        if value is not None:
+            return date.fromisoformat(value).isoformat()
+        return value
 
 
 @app.get('/v1/places/search')

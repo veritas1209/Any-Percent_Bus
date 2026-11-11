@@ -1,0 +1,41 @@
+{
+  "passed": [
+    "official timetable is the default",
+    "GPS origin and place destination",
+    "14:00 departure, unlimited walking and at most 0 transfers",
+    "timed journeys to \uc6b8\uc0b0\ub300\ud559\uad50\uc55e",
+    "concise result copy",
+    "route detail and location control",
+    "Saturday selection uses the matching service day",
+    "web search avoids walking-graph and full place-index downloads",
+    "compact network with continuous road shapes",
+    "walking preference changes the request weight"
+  ],
+  "errors": [],
+  "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
+  "queryToVisibleResultsMs": 1861.5,
+  "placeSearchToVisibleResultsMs": 1457.9,
+  "simulatedOrigin": {
+    "lat": 35.55161809,
+    "lon": 129.1389054
+  },
+  "networkVersion": "ulsan-its-2026-11-11+sources3",
+  "geolocation": "Simulated public Ulsan coordinate; no actual user GPS read",
+  "clock": "Fixed departure clock",
+  "tiles": "Live OpenStreetMap tiles",
+  "successfulMapTileResponses": 6,
+  "fastestJourney": {
+    "arrival": 914.5434666666666,
+    "walkingMeters": 1916.5,
+    "rides": [
+      {
+        "routeId": "its:196000480",
+        "boardingStop": "196030407",
+        "alightingStop": "193022401",
+        "segmentCount": 2,
+        "segmentsWithPoints": 2
+      }
+    ]
+  },
+  "timingScope": "Browser flow latency; request caches may be warm. Uncached server measurements are recorded separately."
+}

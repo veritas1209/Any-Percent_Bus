@@ -24,6 +24,24 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
   double departure = 540, speed = 1.2, walkingPenalty = 1;
   int transfers = 2;
   String serviceDay = 'weekday';
+  DateTime serviceDate = DateTime.now();
+  String get dateLabel =>
+      '${serviceDate.month}월 ${serviceDate.day}일 (${['월', '화', '수', '목', '금', '토', '일'][serviceDate.weekday - 1]})';
+  void selectDay(String value) {
+    setState(() {
+      serviceDay = value;
+      for (var i = 0; i < 7; i++) {
+        final date = serviceDate.add(Duration(days: i));
+        if ((value == 'weekday' && date.weekday <= 5) ||
+            (value == 'saturday' && date.weekday == 6) ||
+            value == 'holiday') {
+          serviceDate = date;
+          break;
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +78,9 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               walkingPenalty: walkingPenalty,
               maxTransfers: transfers,
               serviceDay: serviceDay,
+              serviceDate: widget.session.network!.official
+                  ? serviceDate.toIso8601String().substring(0, 10)
+                  : null,
             ),
           ),
         ),
@@ -69,6 +90,31 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
       padding: const EdgeInsets.all(24),
       children: [
         if (widget.session.network!.official) ...[
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('출발 날짜'),
+            trailing: Text(dateLabel),
+            onTap: () async {
+              final now = DateTime.now();
+              final selected = await showDatePicker(
+                context: context,
+                initialDate: serviceDate,
+                firstDate: DateTime(now.year - 1),
+                lastDate: DateTime(now.year + 2),
+              );
+              if (selected != null) {
+                setState(() {
+                  serviceDate = selected;
+                  serviceDay = selected.weekday == 6
+                      ? 'saturday'
+                      : selected.weekday == 7
+                      ? 'holiday'
+                      : 'weekday';
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 12),
           SegmentedButton<String>(
             segments: const [
               ButtonSegment(value: 'weekday', label: Text('평일')),
@@ -76,7 +122,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               ButtonSegment(value: 'holiday', label: Text('일·공휴일')),
             ],
             selected: {serviceDay},
-            onSelectionChanged: (v) => setState(() => serviceDay = v.first),
+            onSelectionChanged: (v) => selectDay(v.first),
           ),
           const SizedBox(height: 24),
         ],

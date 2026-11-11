@@ -42,7 +42,8 @@ def test_1415_campus_route_uses_the_near_stop_and_has_a_continuous_bridge_shape(
     route = next(route for route in network['routes'] if route['id']=='its:194000091')
     assert all(network['shapes'][key]['points'] for key in route['shapeSegments'])
     bridge = network['shapes'][route['shapeSegments'][61]]
-    assert bridge['source'] == 'ulsan_its_osm_connected' and len(bridge['points']) > 90
+    assert bridge['source'] in ('ulsan_its_osm_connected','naver_bus_route')
+    assert len(bridge['points'])>20 and bridge['meters']>5000
 
 
 def test_deadline_pruning_preserves_wide_walk_two_transfer_results(monkeypatch):
@@ -86,7 +87,7 @@ def test_official_data_connects_the_1007_upsquare_case_and_retains_public_bus_na
     assert any('ANY%' in row['tags'] for row in rows)
     assert {'북구08', '울주87', '남구52'} <= {route['number'] for route in network['routes']}
     assert '6408' not in {route['number'] for route in network['routes']}
-    assert all(route['id'].startswith('its:') for route in network['routes'])
+    assert all(route['id'].startswith(('its:','shared:yangsan:')) for route in network['routes'])
 
 
 def test_compact_network_and_selected_geometry_preserve_the_1245_campus_routes():

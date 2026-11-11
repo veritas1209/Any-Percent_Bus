@@ -31,7 +31,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
       final r = await widget.session.repository.search(widget.query);
       if (!mounted) return;
       final base = (await widget.session.repository.loadNetwork())
-          .forServiceDay(widget.query.serviceDay);
+          .forServiceDay(
+            widget.query.serviceDay,
+            date: widget.query.serviceDate,
+          );
       if (!mounted) return;
       if (r.isNotEmpty && r.first['places'] != null) {
         widget.session.journeyNetwork = base.withPlaces(r.first['places']);

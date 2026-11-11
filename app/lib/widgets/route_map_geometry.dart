@@ -73,7 +73,7 @@ class RouteMapGeometry {
     for (final segment in segments) ...segment.points,
   ];
   String get description => network.official
-      ? '울산교통관리센터'
+      ? (network.data['geometryAttribution'] as String? ?? '울산교통관리센터')
       : legs.any((l) => l['kind'] == 'ride') &&
             legs
                 .where((l) => l['kind'] == 'ride')

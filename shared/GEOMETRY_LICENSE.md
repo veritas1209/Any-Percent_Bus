@@ -14,6 +14,14 @@ Sparse official road links are connected through the local directed OpenStreetMa
 road graph when the endpoints match within 40 metres and the road length remains
 consistent with the supplied link. These shapes use `ulsan_its_osm_connected`.
 Source response hashes and retrieval times are recorded in `artifacts/official-data.json`.
+The service dataset also contains reviewed public NAVER Map bus-route geometry
+and stop coordinates. These portions are attributed to NAVER Map and are not
+labelled as OpenStreetMap/ODbL data. Public-stop sequence matching, source URLs,
+response hashes and reviewed position corrections are retained in
+`service_supplements.json` and `service_stop_supplements.json`.
+Operator timetable cell references and the dated Yangsan 2100/2300 joint-service
+table are recorded in `service_schedule_supplements.json`. Joint departures are
+restricted to verified common Ulsan stops and their stated effective dates.
 The input bus GPS recording was supplied by the project owner; its rights remain
 with its owner. The raw recording is not included in release archives.
 

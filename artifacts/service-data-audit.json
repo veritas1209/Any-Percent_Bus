@@ -1,0 +1,96 @@
+{
+  "recordedAt": "2026-11-11T08:09:29.482314+00:00",
+  "networkVersion": "ulsan-its-2026-11-11+sources3",
+  "sha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
+  "officialRouteDirections": 534,
+  "jointServiceGroups": [
+    {
+      "id": "shared:yangsan:0",
+      "number": "2100·2300",
+      "passengerStops": 19,
+      "calendar": {
+        "startDate": "2026-10-06",
+        "endDate": "2026-11-22"
+      }
+    },
+    {
+      "id": "shared:yangsan:1",
+      "number": "2100·2300",
+      "passengerStops": 19,
+      "calendar": {
+        "startDate": "2026-10-06",
+        "endDate": "2026-11-22"
+      }
+    }
+  ],
+  "stops": 3670,
+  "footpaths": 7832,
+  "geometry": {
+    "missingSegments": [],
+    "endpointsOver120Meters": [],
+    "naverRepairedRoutes": 103,
+    "correctedStopPositions": 78,
+    "reviewedDirectedRoadTailConnections": 1
+  },
+  "directionsWithoutIndependentTimetable": [
+    {
+      "id": "its:196000776",
+      "number": "533",
+      "reason": "No separate return departures in the current operator table"
+    },
+    {
+      "id": "its:195000233",
+      "number": "772",
+      "reason": "No separate return departures in the current operator table"
+    },
+    {
+      "id": "its:388023001",
+      "number": "2300",
+      "reason": "Covered only by a verified joint timetable; individual 2300 departures are not separately assigned"
+    },
+    {
+      "id": "its:388023002",
+      "number": "2300",
+      "reason": "Covered only by a verified joint timetable; individual 2300 departures are not separately assigned"
+    }
+  ],
+  "remaining": {
+    "stopsOutsidePedestrianSnapCoverage": [
+      {
+        "id": "196021330",
+        "name": "들꽃학습원",
+        "publicId": "21330"
+      },
+      {
+        "id": "199000044",
+        "name": "서사시티프라디움",
+        "publicId": "21332"
+      },
+      {
+        "id": "999000094",
+        "name": "상출강",
+        "publicId": "24455"
+      },
+      {
+        "id": "199000096",
+        "name": "내기마을",
+        "publicId": "65710"
+      },
+      {
+        "id": "999000117",
+        "name": "강당경로당",
+        "publicId": "31626"
+      },
+      {
+        "id": "999000123",
+        "name": "강당경로당",
+        "publicId": "31627"
+      }
+    ],
+    "maximumStoredTransferWalkMeters": 250.0,
+    "transferWalkingCoverage": "Stored nearby-stop walking links; longer transfers across an absent link are not yet exhaustive",
+    "intermediateStopTimes": "Distance and speed model; not recorded passage times",
+    "delayAndTransferProbability": "Synthetic delay samples; not calibrated to contemporary observations",
+    "timetableRefresh": "Reviewed snapshot; automatic change collection is not configured"
+  }
+}

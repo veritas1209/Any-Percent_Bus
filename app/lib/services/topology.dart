@@ -148,7 +148,7 @@ List<Set<String>> reachableStops(
   return layers;
 }
 
-List<Json> paretoLabels(List<Json> states) {
+List<Json> paretoLabels(List<Json> states, {bool respectUsed = true}) {
   states.sort((a, b) {
     final time = (a['now'] as num).compareTo(b['now']);
     return time != 0 ? time : (a['walked'] as num).compareTo(b['walked']);
@@ -161,9 +161,10 @@ List<Json> paretoLabels(List<Json> states) {
       (prior) =>
           prior['now'] <= state['now'] &&
           prior['walked'] <= state['walked'] &&
-          (state['used'] as Set<String>).containsAll(
-            prior['used'] as Set<String>,
-          ),
+          (!respectUsed ||
+              (state['used'] as Set<String>).containsAll(
+                prior['used'] as Set<String>,
+              )),
     )) {
       continue;
     }

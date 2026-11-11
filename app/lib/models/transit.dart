@@ -1,6 +1,37 @@
 import 'dart:convert';
 
 typedef Json = Map<String, dynamic>;
+List<dynamic> departuresFor(Json route, String day, String? serviceDate) {
+  final normal = route['departuresByDay'][day] as List? ?? [];
+  final calendar = route['serviceCalendar'] as Map?;
+  if (calendar == null) return normal;
+  if (serviceDate == null) {
+    return calendar['onlyMonthDays'] != null || calendar['startDate'] != null
+        ? []
+        : normal;
+  }
+  final selected = DateTime.parse(serviceDate);
+  if (calendar['startDate'] != null &&
+      serviceDate.compareTo(calendar['startDate']) < 0) {
+    return [];
+  }
+  if (calendar['endDate'] != null &&
+      serviceDate.compareTo(calendar['endDate']) > 0) {
+    return [];
+  }
+  if (calendar['onlyMonthDays'] != null &&
+      !(calendar['onlyMonthDays'] as List).contains(selected.day)) {
+    return [];
+  }
+  if ((calendar['exceptMonthDays'] as List? ?? []).contains(selected.day)) {
+    return [];
+  }
+  for (final row in calendar['monthDayOverrides'] as List? ?? []) {
+    if ((row['days'] as List).contains(selected.day)) return row['departures'];
+  }
+  return normal;
+}
+
 double numValue(dynamic x) => (x as num).toDouble();
 String clock(num minutes) {
   final n = minutes.round();
@@ -93,19 +124,30 @@ class Network {
     ],
   });
   final Map<String, Network> _days = {};
-  Network forServiceDay(String day) {
-    if (!official || day == (data['serviceDay'] ?? 'weekday')) return this;
+  Network forServiceDay(String day, {String? date}) {
+    if (!official ||
+        (day == (data['serviceDay'] ?? 'weekday') &&
+            date == data['serviceDate'] &&
+            (data['hasServiceCalendars'] != true ||
+                data['calendarApplied'] == true))) {
+      return this;
+    }
+    if (_days.length >= 16) _days.clear();
     return _days.putIfAbsent(
-      day,
+      '$day:$date',
       () => Network({
         ...data,
         'serviceDay': day,
+        'serviceDate': date,
+        'calendarApplied': true,
         'routes': [
           for (final r in data['routes'])
-            {
-              ...Json.from(r),
-              'departures': r['departuresByDay'][day] ?? <num>[],
-            },
+            if (r['serviceCalendar'] == null ||
+                departuresFor(Json.from(r), day, date).isNotEmpty)
+              {
+                ...Json.from(r),
+                'departures': departuresFor(Json.from(r), day, date),
+              },
         ],
       }),
     );
@@ -140,9 +182,10 @@ class Network {
 
 class SearchQuery {
   final String serviceDay;
+  final String? serviceDate;
   final String dataset;
   final String origin, destination;
-  final double departure, walkingSpeed, delay;
+  final double departure, walkingSpeed, delay, transferMargin;
   final double? maxWalk, walkingPenalty;
   final int maxTransfers, samples, seed;
   final Json? originPoint, destinationPoint;
@@ -155,18 +198,21 @@ class SearchQuery {
     this.maxWalk = 500,
     this.walkingPenalty,
     this.delay = 0,
+    this.transferMargin = 0,
     this.maxTransfers = 2,
     this.samples = 300,
     this.seed = 42,
     this.originPoint,
     this.destinationPoint,
     this.serviceDay = 'weekday',
+    this.serviceDate,
   });
   SearchQuery withDelay(double value) => copyWith(delay: value);
   SearchQuery copyWith({
     double? delay,
     double? maxWalk,
     double? walkingPenalty,
+    double? transferMargin,
   }) => SearchQuery(
     origin: origin,
     destination: destination,
@@ -176,12 +222,14 @@ class SearchQuery {
     maxWalk: maxWalk ?? this.maxWalk,
     walkingPenalty: walkingPenalty ?? this.walkingPenalty,
     delay: delay ?? this.delay,
+    transferMargin: transferMargin ?? this.transferMargin,
     maxTransfers: maxTransfers,
     samples: samples,
     seed: seed,
     originPoint: originPoint,
     destinationPoint: destinationPoint,
     serviceDay: serviceDay,
+    serviceDate: serviceDate,
   );
   Json toJson() => {
     'dataset': dataset,
@@ -196,6 +244,7 @@ class SearchQuery {
     'samples': samples,
     'seed': seed,
     'service_day': serviceDay,
+    if (serviceDate != null) 'service_date': serviceDate,
     if (originPoint != null) 'origin_point': originPoint,
     if (destinationPoint != null) 'destination_point': destinationPoint,
   };

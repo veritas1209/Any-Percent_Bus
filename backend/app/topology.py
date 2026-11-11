@@ -88,12 +88,12 @@ def reachable(routes,footpaths,destination,rides,max_walk):
     return layers
 
 
-def labels(states):
+def labels(states, respect_used=True):
     kept=defaultdict(list)
-    # A prior label dominates only when it also forbids no additional routes.
+    # Route history matters only when a search forbids boarding a route again.
     for state in sorted(states,key=lambda x:(x[1],x[4])):
         stop,now,legs,used,walked=state
-        if any(t<=now and w<=walked and u<=used for t,w,u in kept[stop]):continue
+        if any(t<=now and w<=walked and (not respect_used or u<=used) for t,w,u in kept[stop]):continue
         kept[stop].append((now,walked,used))
         yield state
 
