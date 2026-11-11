@@ -18,6 +18,8 @@ parser.add_argument('--report', default='browser-acceptance.json')
 parser.add_argument('--latitude', type=float, default=35.499699)
 parser.add_argument('--longitude', type=float, default=129.417175)
 parser.add_argument('--departure', default='10:07')
+parser.add_argument('--live-tiles', action='store_true', help='Verify the displayed map using real OSM tiles')
+parser.add_argument('--real-clock', action='store_true', help='Use the browser clock; --departure must match the current local minute')
 args = parser.parse_args()
 URL = args.url.rstrip('/')
 HOUR, MINUTE = map(int, args.departure.split(':'))
@@ -39,14 +41,18 @@ async def run():
         context = await browser.new_context(viewport={'width': 390, 'height': 844}, timezone_id='Asia/Seoul',
             permissions=['geolocation'], geolocation={'latitude': args.latitude, 'longitude': args.longitude, 'accuracy': 15})
         page = await context.new_page()
-        await page.clock.set_fixed_time(datetime(2026, 11, 11, HOUR, MINUTE, tzinfo=timezone(timedelta(hours=9))))
-        errors, requests, resource_urls = [], [], []
+        if not args.real_clock:
+            await page.clock.set_fixed_time(datetime(2026, 11, 11, HOUR, MINUTE, tzinfo=timezone(timedelta(hours=9))))
+        errors, requests, resource_urls, tile_responses = [], [], [], []
         page.on('pageerror', lambda error: errors.append(str(error)))
+        page.on('response', lambda response: tile_responses.append(response.status)
+                if response.url.startswith('https://tile.openstreetmap.org/') else None)
         page.on('request', lambda request: resource_urls.append(request.url))
         page.on('request', lambda request: requests.append(request.post_data_json)
                 if request.method == 'POST' and request.url.endswith('/v1/journeys/search') else None)
-        await page.route('https://tile.openstreetmap.org/**', lambda route: route.fulfill(
-            status=200, content_type='image/png', body=TILE))
+        if not args.live_tiles:
+            await page.route('https://tile.openstreetmap.org/**', lambda route: route.fulfill(
+                status=200, content_type='image/png', body=TILE))
         try:
             await page.goto(URL, wait_until='domcontentloaded', timeout=60000)
             await page.locator('flt-semantics-placeholder').wait_for(timeout=60000)
@@ -72,27 +78,46 @@ async def run():
             response = await pending.value
             result = await response.json()
             assert response.status == 200 and result['journeys']
-            await page.get_by_role('button', name=re.compile('^ANY%.*경로 상세 보기')).first.wait_for()
+            await page.get_by_role('button', name=re.compile('ANY%.*경로 상세 보기')).first.wait_for()
             elapsed = round((time.perf_counter() - started) * 1000, 1)
             query = requests[-1]
             assert query['dataset'] == 'service' and query['departure'] == DEPARTURE and query['max_transfers'] == 1, query
-            assert query['max_walk'] == 2000 and query['include_geometry'] and result['geometry']['shapes'], query
+            assert query['max_walk'] is None and query['walking_penalty'] == 1 and query['include_geometry'] and result['geometry']['shapes'], query
+            assert '추천' in result['journeys'][0]['tags']
+            fastest = next(row for row in result['journeys'] if 'ANY%' in row['tags'])
+            if args.latitude == 35.4972505 and DEPARTURE == 855:
+                ride = next(leg for leg in fastest['legs'] if leg['kind']=='ride')
+                assert ride['from'] == '194027121' and fastest['walkingMeters'] < 700
+                assert all(result['geometry']['shapes'][key]['points'] for key in result['geometry']['routes'][ride['routeId']]['shapeSegments'][ride['boardIndex']:ride['alightIndex']])
             assert query['destination_point']['name'] == '업스퀘어', query
             snapshot = await page.locator('body').aria_snapshot()
             assert '추정' not in snapshot and 'A BETTER WAY' not in snapshot
             await page.screenshot(path=str(ROOT / 'artifacts/screenshots/25-official-upsquare-mobile.png'))
-            await page.get_by_role('button', name=re.compile('^ANY%.*경로 상세 보기')).first.dispatch_event('click')
+            await page.get_by_role('button', name=re.compile('ANY%.*경로 상세 보기')).first.dispatch_event('click')
             await page.get_by_role('button', name='현재 위치로 이동', exact=True).wait_for()
+            if args.live_tiles:
+                await page.wait_for_load_state('networkidle', timeout=30000)
+                assert tile_responses and all(status == 200 for status in tile_responses), tile_responses
+                # Flutter decodes and paints the images after the HTTP requests finish.
+                await page.wait_for_timeout(5000)
             await page.screenshot(path=str(ROOT / 'artifacts/screenshots/26-official-route-mobile.png'))
+            if args.latitude == 35.4972505:
+                await page.set_viewport_size({'width': 1440, 'height': 1100})
+                await page.wait_for_load_state('networkidle', timeout=30000)
+                if args.live_tiles:
+                    await page.wait_for_timeout(5000)
+                await page.screenshot(path=str(ROOT / 'artifacts/screenshots/28-east-campus-route-desktop.png'))
+                await page.set_viewport_size({'width': 390, 'height': 844})
             await page.get_by_role('button', name='뒤로', exact=True).click()
             await page.get_by_role('button', name='뒤로', exact=True).click()
+            await page.get_by_role('checkbox', name='적게 걷기', exact=True).dispatch_event('click')
             await page.get_by_role('button', name='토요일', exact=True).dispatch_event('click')
             await expect(page.get_by_role('button', name='토요일', exact=True)).to_have_attribute('aria-current', 'true')
             async with page.expect_response('**/v1/journeys/search') as pending:
                 await page.get_by_role('button', name='경로 비교하기', exact=True).click(force=True)
             saturday = await (await pending.value).json()
-            assert requests[-1]['service_day'] == 'saturday' and saturday['journeys']
-            assert all(row['arrival'] >= DEPARTURE and row['walkingMeters'] <= 2000 and row['transfers'] <= 1
+            assert requests[-1]['service_day'] == 'saturday' and requests[-1]['walking_penalty'] == 2 and saturday['journeys']
+            assert all(row['arrival'] >= DEPARTURE and row['transfers'] <= 1
                        for row in saturday['journeys'])
             assert not any('walk_graph.bin' in url for url in resource_urls)
             assert not any('places.json' in url for url in resource_urls)
@@ -101,12 +126,21 @@ async def run():
             await page.screenshot(path=str(ROOT / 'artifacts/screenshots/27-official-results-desktop.png'))
             assert not errors, errors
             report = {'passed': ['official timetable is the default', 'GPS origin and place destination',
-                f'{args.departure} departure, 2km walking and one-transfer condition', 'timed journeys to Upsquare',
+                f'{args.departure} departure, unlimited walking and one-transfer condition', 'timed journeys to Upsquare',
                 'concise result copy', 'route detail and location control', 'Saturday selection uses the matching service day',
-                'web search avoids walking-graph and full place-index downloads', 'compact network with selected road shapes'], 'errors': errors,
+                'web search avoids walking-graph and full place-index downloads', 'compact network with continuous road shapes', 'walking preference changes the request weight'], 'errors': errors,
                 'url': URL, 'queryToVisibleResultsMs': elapsed, 'placeSearchToVisibleResultsMs': place_elapsed,
                 'simulatedOrigin': {'lat': args.latitude, 'lon': args.longitude}, 'networkVersion': result['networkVersion'],
-                'geolocation': 'Simulated Ulsan campus coordinate; no actual user GPS read', 'tiles': 'Memory PNG fixtures only'}
+                'geolocation': 'Simulated Ulsan campus coordinate; no actual user GPS read',
+                'clock': 'Real browser clock' if args.real_clock else 'Fixed departure clock',
+                'tiles': 'Live OpenStreetMap tiles' if args.live_tiles else 'Memory PNG fixtures only',
+                'successfulMapTileResponses': len([status for status in tile_responses if status == 200]),
+                'fastestJourney': {'arrival': fastest['arrival'], 'walkingMeters': fastest['walkingMeters'],
+                    'rides': [{'routeId': leg['routeId'], 'boardingStop': leg['from'],
+                        'alightingStop': leg['to'], 'segmentCount': leg['alightIndex'] - leg['boardIndex'],
+                        'segmentsWithPoints': sum(bool(result['geometry']['shapes'][key]['points'])
+                            for key in result['geometry']['routes'][leg['routeId']]['shapeSegments'][leg['boardIndex']:leg['alightIndex']])}
+                        for leg in fastest['legs'] if leg['kind'] == 'ride']}}
             (ROOT / 'artifacts' / args.report).write_text(json.dumps(report, indent=2), encoding='utf-8')
             print(json.dumps(report), flush=True)
         except Exception:

@@ -1,10 +1,12 @@
 {
-  "version": "0.4.1",
+  "version": "0.4.2",
+  "verifiedAt": "2026-11-11T05:58:10.495388+00:00",
   "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
-  "javaScriptBytes": 3497390,
-  "compressedJavaScriptBytes": 1024697,
-  "compressedContentMatchesBuild": true,
-  "apkRangeStatus": 206,
-  "apkRangeBytesMatchBuild": true,
-  "network": "Public Funnel IPv4 gateway forced with curl --resolve"
+  "javaScriptBytes": 3502473,
+  "javaScriptSha256": "93443646b8b56dd8e051f0e3531ed235ebf823e238bda078b31997293d28cdb0",
+  "gzipContentMatchesBuild": true,
+  "network": "Public Funnel IPv4 gateway forced with curl --resolve",
+  "apkVersion": "0.4.1",
+  "apkReleaseDeferred": true,
+  "existingApkBytes": 79045432
 }

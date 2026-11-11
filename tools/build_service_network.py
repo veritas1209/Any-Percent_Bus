@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'backend'))
 from app.walking import default_graph, distance
+from local_roads import RoadGraph, compact, length
 
 DAY_TYPES = ('weekday', 'saturday', 'holiday')
 MOVING_KMH = 22
@@ -92,6 +93,29 @@ def main():
     sources = []
     stops, routes, shapes = {}, [], {}
     omitted, excluded, skipped_times = [], [], []
+    roads = RoadGraph(json.loads((ROOT / 'tmp/ulsan-all-roads.json').read_text(encoding='utf-8')))
+    road_connections = {}
+
+    def connect_sparse_line(line):
+        connected = []
+        repaired = False
+        for a, b in zip(line, line[1:]):
+            if not connected:
+                connected.append(a)
+            if point_distance(a, b) > 300:
+                key = tuple(a), tuple(b)
+                if key not in road_connections:
+                    try:
+                        road, error = roads.route(a, b, limit=max(2000, point_distance(a, b) * 3))
+                        road_connections[key] = road if error <= 40 and length(road) <= point_distance(a, b) * 1.5 + 100 else None
+                    except ValueError:
+                        road_connections[key] = None
+                road = road_connections[key]
+                if road:
+                    connected.extend(road)
+                    repaired = True
+            connected.append(b)
+        return compact(connected) if connected else [], repaired
     for meta in metadata:
         identity = str(meta['brtid'])
         path = folder / f'{identity}.json'
@@ -142,10 +166,14 @@ def main():
             key = f'its:{identity}:{index}'
             meters = progress[index + 1] - progress[index] if valid_shape else 0
             line = clip(points, lengths, progress[index], progress[index + 1]) if valid_shape and meters > 1 else []
-            if not line or any(point_distance(x, y) > 300 for x, y in zip(line, line[1:])):
+            repaired = False
+            if line:
+                line, repaired = connect_sparse_line(line)
+                meters = length(line)
+            if not line:
                 line = []
                 meters = point_distance((stops[a]['lat'], stops[a]['lon']), (stops[b]['lat'], stops[b]['lon'])) * 1.3
-            shapes[key] = {'points': line, 'meters': round(meters, 1), 'source': 'ulsan_its' if line else 'unavailable'}
+            shapes[key] = {'points': line, 'meters': round(meters, 1), 'source': 'ulsan_its_osm_connected' if repaired else 'ulsan_its' if line else 'unavailable'}
             segments.append(key)
             distances.append(round(distances[-1] + meters, 1))
             offsets.append(round(offsets[-1] + meters / (MOVING_KMH * 1000 / 60) + STOP_SECONDS / 60, 4))
@@ -181,13 +209,13 @@ def main():
         matches = [s for s in stops.values() if name in s['name'] and point_distance(point, (s['lat'], s['lon'])) < 500]
         return min(matches or stops.values(), key=lambda s: point_distance(point, (s['lat'], s['lon'])))['id']
     stamp = datetime.now(timezone.utc).date().isoformat()
-    network = {'version': 'ulsan-its-' + stamp, 'dataset': 'service', 'source': 'official_timetable',
+    network = {'version': 'ulsan-its-' + stamp + '+shape2', 'dataset': 'service', 'source': 'official_timetable',
                'description': '울산교통관리센터 공식 노선·기점 시간표입니다. 중간 정류장 시각은 도로 거리와 속도로 추정하며 지연은 가상 표본입니다.',
                'defaultOrigin': default_stop('울산과학', (35.499699, 129.417175)),
                'defaultDestination': default_stop('성남동', (35.55302, 129.31955)), 'defaultDeparture': 540,
                'routeFamilies': len(routes), 'routeNumbers': len({r['number'] for r in routes}),
                'catalogFallback': True, 'stops': list(stops.values()), 'routes': routes, 'footpaths': paths, 'shapes': shapes,
-               'geometryVersion': 'ulsan-its-1', 'geometryAttribution': '울산교통관리센터 / © OpenStreetMap contributors',
+               'geometryVersion': 'ulsan-its-2', 'geometryAttribution': '울산교통관리센터 / © OpenStreetMap contributors',
                'timetableDays': list(DAY_TYPES), 'retrievedDate': stamp,
                'estimation': {'movingKmh': MOVING_KMH, 'dwellSecondsPerStop': STOP_SECONDS},
                'sourceUrl': 'https://its.ulsan.kr/route/timetable.do'}

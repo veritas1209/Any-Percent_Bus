@@ -2,23 +2,38 @@
   "passed": [
     "official timetable is the default",
     "GPS origin and place destination",
-    "12:45 departure, 2km walking and one-transfer condition",
+    "14:15 departure, unlimited walking and one-transfer condition",
     "timed journeys to Upsquare",
     "concise result copy",
     "route detail and location control",
-    "Saturday selection changes schedule",
+    "Saturday selection uses the matching service day",
     "web search avoids walking-graph and full place-index downloads",
-    "compact network with selected road shapes"
+    "compact network with continuous road shapes",
+    "walking preference changes the request weight"
   ],
   "errors": [],
   "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
-  "queryToVisibleResultsMs": 901.7,
-  "placeSearchToVisibleResultsMs": 1425.9,
+  "queryToVisibleResultsMs": 622.5,
+  "placeSearchToVisibleResultsMs": 987.5,
   "simulatedOrigin": {
     "lat": 35.4972505,
     "lon": 129.4158209
   },
-  "networkVersion": "ulsan-its-2026-11-11",
+  "networkVersion": "ulsan-its-2026-11-11+shape2",
   "geolocation": "Simulated Ulsan campus coordinate; no actual user GPS read",
-  "tiles": "Memory PNG fixtures only"
+  "tiles": "Live OpenStreetMap tiles",
+  "successfulMapTileResponses": 11,
+  "fastestJourney": {
+    "arrival": 912.8045444444444,
+    "walkingMeters": 666.5,
+    "rides": [
+      {
+        "routeId": "its:194000091",
+        "boardingStop": "194027121",
+        "alightingStop": "193040420",
+        "segmentCount": 10,
+        "segmentsWithPoints": 10
+      }
+    ]
+  }
 }

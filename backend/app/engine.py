@@ -16,7 +16,7 @@ class Query:
     destination: str
     departure: float = 540
     walking_speed: float = 1.2
-    max_walk: float = 500
+    max_walk: float | None = 500
     max_transfers: int = 2
     delay: float = 0
     samples: int = 300
@@ -24,6 +24,7 @@ class Query:
     origin_point: dict | None = None
     destination_point: dict | None = None
     service_day: str = 'weekday'
+    walking_penalty: float | None = None
 
 
 def quantile(values, q):
@@ -57,12 +58,50 @@ class Engine:
             for bi,sid in enumerate(r['stops'][:-1]):self.boardings[sid].append((r,bi))
         for f in network.get('footpaths',[]):self.walks[f['from']].append(f)
 
+    def _search_unlimited(self, q):
+        from .walking import default_graph, prepare_locations
+        penalty = 1.0 if q.walking_penalty is None else q.walking_penalty
+        origin = q.origin_point or self.stops.get(q.origin)
+        destination = q.destination_point or self.stops.get(q.destination)
+        if not origin or not destination:
+            raise ValueError('존재하지 않는 정류장입니다.')
+        if 'lat' not in origin or 'lat' not in destination:
+            return self.search(replace(q, max_walk=float('inf'), walking_penalty=penalty))
+        q = replace(q, origin_point=origin, destination_point=destination, walking_penalty=penalty)
+        graph = self.walking_graph or default_graph()
+        radius = 2000.0
+        fallback = []
+        while True:
+            stats = {}
+            limited = replace(q, max_walk=radius)
+            network, places = prepare_locations(self.network, limited, graph, stats)
+            prepared = replace(limited, origin='@origin', destination='@destination', origin_point=None, destination_point=None)
+            rows = Engine(network).search(prepared)
+            for row in rows:
+                row['places'] = places
+            timed = [row for row in rows if row['arrival'] is not None]
+            if timed:
+                fastest = min(row['arrival'] for row in timed) - q.departure
+                recommended = min(row['recommendationScore'] for row in timed)
+                sufficient = max(fastest, recommended / (1 + penalty)) * q.walking_speed * 60
+                if radius + .01 >= sufficient:
+                    return timed
+                next_radius = sufficient + .1
+            else:
+                fallback = rows or fallback
+                next_radius = radius * 2
+            if stats['exhausted']:
+                return timed or fallback
+            radius = next_radius
+
     def search(self, q: Query):
         if self.network.get('timetableDays') and q.service_day != self.network.get('serviceDay', 'weekday'):
             if q.service_day not in self.day_engines:
                 routes = [dict(r, departures=r['departuresByDay'].get(q.service_day, [])) for r in self.network['routes']]
                 self.day_engines[q.service_day] = Engine(dict(self.network, routes=routes, serviceDay=q.service_day), self.walking_graph)
             return self.day_engines[q.service_day].search(q)
+        if q.max_walk is None:
+            return self._search_unlimited(q)
         if q.origin_point is not None or q.destination_point is not None:
             from .walking import default_graph,prepare_locations
             augmented,places=prepare_locations(self.network,q,self.walking_graph or default_graph())
@@ -79,16 +118,36 @@ class Engine:
         bounds=walking_bounds(self.timed_routes,self.network.get('footpaths',[]),q.destination,q.max_transfers+1)
         found = {}
         cutoff=float('inf')
+        arrival_cutoff = score_cutoff = float('inf')
+        scored = q.walking_penalty is not None
         latest = None
+        def rank(j):
+            return j['arrival'], j['walkingMeters'], sum(leg['kind'] == 'ride' for leg in j['legs'])
+
+        def competitive(now, walked, rides, remaining, stop):
+            least_walk = walked + bounds[remaining].get(stop, float('inf'))
+            optimistic = now - q.departure + least_walk / q.walking_speed / 60 * q.walking_penalty + max(0, rides - 1) * 3
+            return now <= arrival_cutoff + 1e-6 or optimistic <= score_cutoff + 1e-6
+
         def add(legs,walked):
-            nonlocal cutoff
+            nonlocal cutoff, arrival_cutoff, score_cutoff
             key='|'.join(f"{l.get('routeId','walk')}:{l['from']}:{l['to']}" for l in legs)
-            found.setdefault(key,{'id':key,'legs':legs,'arrival':legs[-1]['arrive'],'walkingMeters':walked})
+            candidate = {'id':key,'legs':legs,'arrival':legs[-1]['arrive'],'walkingMeters':walked}
+            if scored:
+                candidate['recommendationScore'] = candidate['arrival'] - q.departure + walked / q.walking_speed / 60 * q.walking_penalty + max(0, sum(leg['kind'] == 'ride' for leg in legs) - 1) * 3
+            if key in found and rank(found[key]) <= rank(candidate):
+                return
+            found[key] = candidate
             if len(found)>20:
-                keep=sorted(found,key=lambda k:found[k]['arrival'])[:20]
+                keep = set(sorted(found, key=lambda key: rank(found[key]))[:20])
+                if scored:
+                    keep.add(min(found, key=lambda key: (found[key]['recommendationScore'], rank(found[key]))))
                 for k in list(found):
                     if k not in keep:del found[k]
-            if len(found)==20:cutoff=max(j['arrival'] for j in found.values())
+            if len(found) >= 20:
+                arrival_cutoff = sorted(found.values(), key=rank)[19]['arrival']
+                score_cutoff = min(row['recommendationScore'] for row in found.values()) if scored else float('inf')
+                cutoff = max(arrival_cutoff, q.departure + score_cutoff) if scored else arrival_cutoff
         for f in self.walks[q.origin]:
             if f['from']==q.origin and f['to']==q.destination and f['meters']<=q.max_walk:
                 add([{'kind':'walk','from':q.origin,'to':q.destination,'depart':q.departure,'arrive':q.departure+f['meters']/q.walking_speed/60,'meters':f['meters'],'shape':f.get('shape')}],f['meters'])
@@ -96,6 +155,7 @@ class Engine:
             next_frontier = []
             for stop, now, legs, used, walked in frontier:
                 if now>cutoff:continue
+                if scored and not competitive(now, walked, len(used), q.max_transfers-round+1, stop):continue
                 if latest is not None and now > latest[q.max_transfers-round+1].get(stop, -float('inf')) + 1e-6:
                     continue
                 if walked+bounds[q.max_transfers-round+1].get(stop,float('inf'))>q.max_walk+.001:continue
@@ -105,6 +165,7 @@ class Engine:
                         end = now+f['meters']/q.walking_speed/60
                         accesses.append((f['to'], end, [{'kind':'walk','from':stop,'to':f['to'],'depart':now,'arrive':end,'meters':f['meters'],'shape':f.get('shape')}],walked+f['meters']))
                 for board, ready, walk_legs, total_walk in accesses:
+                    if scored and not competitive(ready, total_walk, len(used), q.max_transfers-round+1, board):continue
                     if latest is not None and ready > latest[q.max_transfers-round+1].get(board, -float('inf')) + 1e-6:
                         continue
                     for r,bi in self.boardings[board]:
@@ -118,6 +179,7 @@ class Engine:
                         for ai in range(bi+1,len(r['stops'])):
                             if trip+r['offsets'][ai]>cutoff:continue
                             endstop = r['stops'][ai]
+                            if scored and not competitive(trip+r['offsets'][ai], total_walk, len(used)+1, q.max_transfers-round, endstop):continue
                             if latest is not None and trip+r['offsets'][ai] > latest[q.max_transfers-round].get(endstop, -float('inf')) + 1e-6:
                                 continue
                             if endstop not in layers[q.max_transfers-round]:continue
@@ -144,15 +206,29 @@ class Engine:
                     state for state in next_frontier if state[1] <= cutoff and
                     (latest is None or state[1] <= latest[remaining].get(state[0], -float('inf')) + 1e-6)
                 ))
-        candidates = sorted(found.values(), key=lambda j:j['arrival'])[:20]
+        candidates = sorted(found.values(), key=rank)
         evaluated = [self.evaluate(j,q) for j in candidates]
         if not evaluated:
             return connections(self.network,q) if self.network.get('catalogFallback') else []
-        any_id = min(evaluated,key=lambda j:j['arrival'])['id']
-        safe_id = min(evaluated,key=lambda j:(j['p90Arrival'],j['expectedArrival']))['id']
+        if scored:
+            single_rides = {}
+            alternatives = []
+            for journey in evaluated:
+                rides = [leg for leg in journey['legs'] if leg['kind'] == 'ride']
+                if len(rides) != 1:
+                    alternatives.append(journey)
+                    continue
+                ride = rides[0]
+                key = ride['routeId'], ride['trip'], ride['alightIndex']
+                if key not in single_rides or rank(journey) < rank(single_rides[key]):
+                    single_rides[key] = journey
+            evaluated = alternatives + list(single_rides.values())
+        any_id = min(evaluated,key=rank)['id']
+        safe_id = min(evaluated,key=lambda j:(j.get('safeScore',j['p90Arrival']),j['expectedArrival'],j['walkingMeters']))['id']
+        recommended_id = min(evaluated,key=lambda j:(j['recommendationScore'],rank(j)))['id'] if scored else None
         for j in evaluated:
-            j['tags'] = (['ANY%'] if j['id']==any_id else [])+(['SAFE'] if j['id']==safe_id else [])
-        return sorted(evaluated,key=lambda j:(not j['tags'],j['arrival']))
+            j['tags'] = (['추천'] if j['id']==recommended_id else [])+(['ANY%'] if j['id']==any_id else [])+(['SAFE'] if j['id']==safe_id else [])
+        return sorted(evaluated, key=lambda j: (j['recommendationScore'],rank(j))) if scored else sorted(evaluated,key=lambda j:(not j['tags'],rank(j)))
 
     def replay(self, journey, q, draws=None):
         now = q.departure
@@ -222,4 +298,7 @@ class Engine:
                  statisticsIncludeFailurePenalty=no_service>0,failurePenaltyArrival=max(q.departure+240,1440) if no_service else None,
                  scheduleAvailable=True,transfers=max(0,sum(l['kind']=='ride' for l in j['legs'])-1),
                  missPenalty=None if baseline['arrival'] is None else max(0,baseline['arrival']-j['arrival']))
+        if q.walking_penalty is not None:
+            j['recommendationScore'] = j['arrival'] - q.departure + j['walkingMeters'] / q.walking_speed / 60 * q.walking_penalty + j['transfers'] * 3
+            j['safeScore'] = j['p90Arrival'] - q.departure + j['walkingMeters'] / q.walking_speed / 60 * q.walking_penalty + j['transfers'] * 3
         return j

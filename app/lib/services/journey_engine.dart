@@ -47,12 +47,15 @@ class JourneyEngine {
     final selected = network.forServiceDay(q.serviceDay);
     if (!identical(selected, network)) return JourneyEngine(selected).search(q);
     if (q.origin == q.destination) return [];
+    final walkLimit = q.maxWalk ?? double.infinity,
+        scored = q.walkingPenalty != null || q.maxWalk == null,
+        penalty = q.walkingPenalty ?? 1.0;
     final layers = reachableStops(
       timedRoutes,
       network.data['footpaths'],
       q.destination,
       q.maxTransfers + 1,
-      q.maxWalk,
+      walkLimit,
     );
     final bounds = walkingBounds(
       timedRoutes,
@@ -71,40 +74,93 @@ class JourneyEngine {
     ];
     final found = <String, Json>{};
     var cutoff = double.infinity;
+    var arrivalCutoff = double.infinity, scoreCutoff = double.infinity;
     List<Map<String, double>>? latest;
+    int rank(Json a, Json b) {
+      final arrival = numValue(a['arrival']).compareTo(numValue(b['arrival']));
+      if (arrival != 0) return arrival;
+      final walk = numValue(
+        a['walkingMeters'],
+      ).compareTo(numValue(b['walkingMeters']));
+      if (walk != 0) return walk;
+      return (a['legs'] as List)
+          .where((leg) => leg['kind'] == 'ride')
+          .length
+          .compareTo(
+            (b['legs'] as List).where((leg) => leg['kind'] == 'ride').length,
+          );
+    }
+
+    bool competitive(
+      double now,
+      double walked,
+      int rides,
+      int remaining,
+      String stop,
+    ) {
+      final leastWalk = walked + (bounds[remaining][stop] ?? double.infinity);
+      final optimistic =
+          now -
+          q.departure +
+          leastWalk / q.walkingSpeed / 60 * penalty +
+          max(0, rides - 1) * 3;
+      return now <= arrivalCutoff + 1e-6 || optimistic <= scoreCutoff + 1e-6;
+    }
+
     void add(List<Json> legs, double walked) {
       final key = legs
           .map((l) => '${l['routeId'] ?? 'walk'}:${l['from']}:${l['to']}')
           .join('|');
-      found.putIfAbsent(
-        key,
-        () => {
-          'id': key,
-          'legs': legs,
-          'arrival': legs.last['arrive'],
-          'walkingMeters': walked,
-        },
-      );
+      final candidate = <String, dynamic>{
+        'id': key,
+        'legs': legs,
+        'arrival': legs.last['arrive'],
+        'walkingMeters': walked,
+        if (scored)
+          'recommendationScore':
+              numValue(legs.last['arrive']) -
+              q.departure +
+              walked / q.walkingSpeed / 60 * penalty +
+              max(0, legs.where((leg) => leg['kind'] == 'ride').length - 1) * 3,
+      };
+      if (found.containsKey(key) && rank(found[key]!, candidate) <= 0) return;
+      found[key] = candidate;
       if (found.length > 20) {
         final keys = found.keys.toList()
-          ..sort(
-            (a, b) => numValue(
-              found[a]!['arrival'],
-            ).compareTo(numValue(found[b]!['arrival'])),
-          );
-        for (final key in keys.skip(20)) {
-          found.remove(key);
+          ..sort((a, b) => rank(found[a]!, found[b]!));
+        final keep = keys.take(20).toSet();
+        if (scored) {
+          keys.sort((a, b) {
+            final score = numValue(
+              found[a]!['recommendationScore'],
+            ).compareTo(numValue(found[b]!['recommendationScore']));
+            return score != 0 ? score : rank(found[a]!, found[b]!);
+          });
+          keep.add(keys.first);
         }
+        found.removeWhere((key, _) => !keep.contains(key));
       }
-      if (found.length == 20) {
-        cutoff = found.values.map((j) => numValue(j['arrival'])).reduce(max);
+      if (found.length >= 20) {
+        final arrivals = found.values.toList()..sort(rank);
+        arrivalCutoff = numValue(arrivals[19]['arrival']);
+        if (scored) {
+          final scores =
+              found.values
+                  .map((row) => numValue(row['recommendationScore']))
+                  .toList()
+                ..sort();
+          scoreCutoff = scores.first;
+        }
+        cutoff = scored
+            ? max(arrivalCutoff, q.departure + scoreCutoff)
+            : arrivalCutoff;
       }
     }
 
     for (final f in walks[q.origin] ?? <Json>[]) {
       if (f['from'] == q.origin &&
           f['to'] == q.destination &&
-          f['meters'] <= q.maxWalk) {
+          f['meters'] <= walkLimit) {
         add([
           {
             'kind': 'walk',
@@ -122,6 +178,16 @@ class JourneyEngine {
       final next = <Json>[];
       for (final state in frontier) {
         if (numValue(state['now']) > cutoff) continue;
+        if (scored &&
+            !competitive(
+              numValue(state['now']),
+              numValue(state['walked']),
+              (state['used'] as Set).length,
+              q.maxTransfers - round + 1,
+              state['stop'],
+            )) {
+          continue;
+        }
         if (latest != null &&
             numValue(state['now']) >
                 (latest[q.maxTransfers - round + 1][state['stop']] ??
@@ -132,7 +198,7 @@ class JourneyEngine {
         if (numValue(state['walked']) +
                 (bounds[q.maxTransfers - round + 1][state['stop']] ??
                     double.infinity) >
-            q.maxWalk + .001) {
+            walkLimit + .001) {
           continue;
         }
         final accesses = <Json>[
@@ -145,7 +211,7 @@ class JourneyEngine {
         ];
         for (final f in walks[state['stop']] ?? <Json>[]) {
           if (f['from'] == state['stop'] &&
-              state['walked'] + f['meters'] <= q.maxWalk) {
+              state['walked'] + f['meters'] <= walkLimit) {
             final end =
                 numValue(state['now']) + f['meters'] / q.walkingSpeed / 60;
             accesses.add({
@@ -167,6 +233,16 @@ class JourneyEngine {
           }
         }
         for (final access in accesses) {
+          if (scored &&
+              !competitive(
+                numValue(access['now']),
+                numValue(access['walked']),
+                (state['used'] as Set).length,
+                q.maxTransfers - round + 1,
+                access['stop'],
+              )) {
+            continue;
+          }
           if (latest != null &&
               numValue(access['now']) >
                   (latest[q.maxTransfers - round + 1][access['stop']] ??
@@ -191,6 +267,16 @@ class JourneyEngine {
             final trip = departures[index];
             for (var ai = bi + 1; ai < stops.length; ai++) {
               if (trip + offsets[ai] > cutoff) continue;
+              if (scored &&
+                  !competitive(
+                    (trip + offsets[ai]).toDouble(),
+                    numValue(access['walked']),
+                    used.length + 1,
+                    q.maxTransfers - round,
+                    stops[ai],
+                  )) {
+                continue;
+              }
               if (latest != null &&
                   trip + offsets[ai] >
                       (latest[q.maxTransfers - round][stops[ai]] ??
@@ -202,7 +288,7 @@ class JourneyEngine {
               if (numValue(access['walked']) +
                       (bounds[q.maxTransfers - round][stops[ai]] ??
                           double.infinity) >
-                  q.maxWalk + .001) {
+                  walkLimit + .001) {
                 continue;
               }
               final leg = <String, dynamic>{
@@ -227,7 +313,7 @@ class JourneyEngine {
                 for (final f in walks[stops[ai]] ?? <Json>[]) {
                   if (f['from'] == stops[ai] &&
                       f['to'] == q.destination &&
-                      numValue(access['walked']) + f['meters'] <= q.maxWalk) {
+                      numValue(access['walked']) + f['meters'] <= walkLimit) {
                     final last = <String, dynamic>{
                       'kind': 'walk',
                       'from': stops[ai],
@@ -287,37 +373,70 @@ class JourneyEngine {
         );
       }
     }
-    final candidates = found.values.toList()
-      ..sort((a, b) => (a['arrival'] as num).compareTo(b['arrival']));
-    final evaluated = candidates.take(20).map((j) => evaluate(j, q)).toList();
+    final candidates = found.values.toList()..sort(rank);
+    var evaluated = candidates.map((j) => evaluate(j, q)).toList();
     if (evaluated.isEmpty) {
       return network.data['catalogFallback'] == true
           ? topologyConnections(network, q)
           : [];
     }
-    final earliest = evaluated.reduce(
-      (a, b) => a['arrival'] <= b['arrival'] ? a : b,
-    );
+    if (scored) {
+      final singleRides = <String, Json>{}, alternatives = <Json>[];
+      for (final journey in evaluated) {
+        final rides = (journey['legs'] as List)
+            .where((leg) => leg['kind'] == 'ride')
+            .toList();
+        if (rides.length != 1) {
+          alternatives.add(journey);
+          continue;
+        }
+        final ride = rides.single,
+            key = '${ride['routeId']}:${ride['trip']}:${ride['alightIndex']}';
+        if (!singleRides.containsKey(key) ||
+            rank(journey, singleRides[key]!) < 0) {
+          singleRides[key] = journey;
+        }
+      }
+      evaluated = [...alternatives, ...singleRides.values];
+    }
+    final earliest = evaluated.reduce((a, b) => rank(a, b) <= 0 ? a : b);
     final safest = evaluated.reduce(
       (a, b) =>
-          a['p90Arrival'] < b['p90Arrival'] ||
-              a['p90Arrival'] == b['p90Arrival'] &&
+          (a['safeScore'] ?? a['p90Arrival']) <
+                  (b['safeScore'] ?? b['p90Arrival']) ||
+              (a['safeScore'] ?? a['p90Arrival']) ==
+                      (b['safeScore'] ?? b['p90Arrival']) &&
                   a['expectedArrival'] < b['expectedArrival']
           ? a
           : b,
     );
+    final recommended = scored
+        ? evaluated.reduce(
+            (a, b) =>
+                a['recommendationScore'] < b['recommendationScore'] ||
+                    a['recommendationScore'] == b['recommendationScore'] &&
+                        rank(a, b) <= 0
+                ? a
+                : b,
+          )
+        : null;
     for (final j in evaluated) {
       j['tags'] = <String>[
+        if (j['id'] == recommended?['id']) '추천',
         if (j['id'] == earliest['id']) 'ANY%',
         if (j['id'] == safest['id']) 'SAFE',
       ];
     }
     evaluated.sort((a, b) {
+      if (scored) {
+        final score = numValue(
+          a['recommendationScore'],
+        ).compareTo(numValue(b['recommendationScore']));
+        return score != 0 ? score : rank(a, b);
+      }
       final priority = (a['tags'] as List).isEmpty ? 1 : 0;
       final other = (b['tags'] as List).isEmpty ? 1 : 0;
-      return priority == other
-          ? (a['arrival'] as num).compareTo(b['arrival'])
-          : priority.compareTo(other);
+      return priority == other ? rank(a, b) : priority.compareTo(other);
     });
     return evaluated;
   }
@@ -456,6 +575,16 @@ class JourneyEngine {
           ? null
           : max(0, numValue(scenario['arrival']) - numValue(j['arrival'])),
     });
+    if (q.walkingPenalty != null || q.maxWalk == null) {
+      final extra =
+          numValue(j['walkingMeters']) /
+              q.walkingSpeed /
+              60 *
+              (q.walkingPenalty ?? 1) +
+          numValue(j['transfers']) * 3;
+      j['recommendationScore'] = numValue(j['arrival']) - q.departure + extra;
+      j['safeScore'] = numValue(j['p90Arrival']) - q.departure + extra;
+    }
     return j;
   }
 }

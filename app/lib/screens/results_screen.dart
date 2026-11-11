@@ -67,7 +67,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           children: [
             const Expanded(
               child: Text(
-                '도착 예측 비교',
+                '추천 경로',
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
@@ -102,27 +102,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
           const Text('연결할 수 있는 경로가 없습니다.', textAlign: TextAlign.center),
           const SizedBox(height: 10),
           const Text(
-            '보행거리나 환승 횟수를 늘려보세요.',
+            '출발 시각이나 환승 조건을 바꿔보세요.',
             textAlign: TextAlign.center,
             style: TextStyle(color: muted),
           ),
-          if (widget.query.maxWalk < 5000)
-            TextButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ResultsScreen(
-                    session: widget.session,
-                    query: widget.query.copyWith(
-                      maxWalk: widget.query.maxWalk < 2000 ? 2000 : 5000,
-                    ),
-                  ),
-                ),
-              ),
-              child: Text(
-                '총 도보 ${widget.query.maxWalk < 2000 ? '2' : '5'}km로 다시 찾기',
-              ),
-            ),
         ] else
           ...displayRows().map(
             (j) => Padding(
@@ -158,9 +141,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
     final list = [...rows!];
     if (safeFirst) {
       list.sort(
-        (a, b) => ((a['p90Arrival'] ?? a['topologyCost']) as num).compareTo(
-          (b['p90Arrival'] ?? b['topologyCost']) as num,
-        ),
+        (a, b) =>
+            ((a['safeScore'] ?? a['p90Arrival'] ?? a['topologyCost']) as num)
+                .compareTo(
+                  (b['safeScore'] ?? b['p90Arrival'] ?? b['topologyCost'])
+                      as num,
+                ),
       );
     }
     return list;
@@ -236,7 +222,7 @@ class JourneyCard extends StatelessWidget {
       );
     }
     final tags = List<String>.from(journey['tags']),
-        isAny = tags.contains('ANY%');
+        isAny = tags.contains('추천') || tags.contains('ANY%');
     return Semantics(
       button: true,
       label: '${tags.join(' ')} 경로 상세 보기',

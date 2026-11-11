@@ -54,7 +54,8 @@ class Search(BaseModel):
     destination: str
     departure: float = Field(default=430,ge=0,lt=1440)
     walking_speed: float = Field(default=1.2,ge=.3,le=3)
-    max_walk: float = Field(default=500,ge=0,le=5000)
+    max_walk: float | None = Field(default=500,ge=0,allow_inf_nan=False)
+    walking_penalty: float | None = Field(default=None,ge=0,le=5)
     max_transfers: int = Field(default=2,ge=0,le=2)
     delay: float = Field(default=0,ge=0,le=30)
     samples: int = Field(default=300,ge=20,le=1000)

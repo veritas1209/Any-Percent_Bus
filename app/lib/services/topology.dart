@@ -174,6 +174,7 @@ List<Json> paretoLabels(List<Json> states) {
 }
 
 List<Json> topologyConnections(Network network, SearchQuery q) {
+  final walkLimit = q.maxWalk ?? double.infinity;
   final routes = network.routes.values
       .where((r) => r['scheduleSource'] == 'catalog_topology')
       .toList();
@@ -193,7 +194,7 @@ List<Json> topologyConnections(Network network, SearchQuery q) {
     network.data['footpaths'],
     q.destination,
     q.maxTransfers + 1,
-    q.maxWalk,
+    walkLimit,
   );
   var frontier = <Json>[
     {
@@ -218,7 +219,7 @@ List<Json> topologyConnections(Network network, SearchQuery q) {
         },
       ];
       for (final f in walks[state['stop']] ?? <Json>[]) {
-        if (state['walked'] + f['meters'] <= q.maxWalk) {
+        if (state['walked'] + f['meters'] <= walkLimit) {
           accesses.add({
             'stop': f['to'],
             'now': state['now'] + f['meters'] * 2,
@@ -264,7 +265,7 @@ List<Json> topologyConnections(Network network, SearchQuery q) {
               if (end != q.destination)
                 for (final f in walks[end] ?? <Json>[])
                   if (f['to'] == q.destination &&
-                      access['walked'] + f['meters'] <= q.maxWalk)
+                      access['walked'] + f['meters'] <= walkLimit)
                     {
                       'legs': <Json>[
                         {

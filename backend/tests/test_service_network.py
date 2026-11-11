@@ -9,6 +9,42 @@ from fastapi.testclient import TestClient
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def test_unlimited_walking_uses_preferences_and_keeps_the_fastest_route():
+    network = {'stops':[{'id':s} for s in ('o','near','far','d')], 'routes':[
+        {'id':'fast','stops':['far','d'],'offsets':[0,10],'departures':[15],'delaySamples':[0]},
+        {'id':'shortwalk','stops':['near','d'],'offsets':[0,10],'departures':[20],'delaySamples':[0]}],
+        'footpaths':[{'from':'o','to':'far','meters':800},{'from':'o','to':'near','meters':50}]}
+    engine = Engine(network)
+    def search(penalty):
+        return engine.search(Query('o','d',departure=0,max_walk=None,walking_penalty=penalty,max_transfers=0,samples=20))
+    less = search(2)
+    willing = search(.25)
+    assert next(l['routeId'] for l in less[0]['legs'] if l['kind']=='ride') == 'shortwalk'
+    assert next(l['routeId'] for l in willing[0]['legs'] if l['kind']=='ride') == 'fast'
+    assert '추천' in less[0]['tags']
+    assert next(j for j in less if 'ANY%' in j['tags'])['arrival'] == 25
+    network['routes'] = [dict(network['routes'][0],departures=[100])]
+    network['footpaths'] = [{'from':'o','to':'far','meters':6000}]
+    assert Engine(network).search(Query('o','d',departure=0,max_walk=None,samples=20))[0]['walkingMeters'] == 6000
+    assert Engine(network).search(Query('o','d',departure=0,max_walk=5000,samples=20)) == []
+
+
+def test_1415_campus_route_uses_the_near_stop_and_has_a_continuous_bridge_shape():
+    network = json.loads((ROOT/'shared/service_network.json').read_text(encoding='utf-8'))
+    rows = Engine(network).search(Query('campus','upsquare',departure=855,max_walk=None,walking_penalty=1,
+        max_transfers=1,samples=20,origin_point={'name':'campus','lat':35.4972505,'lon':129.4158209},
+        destination_point={'name':'upsquare','lat':35.5412587,'lon':129.3388543}))
+    fastest = next(row for row in rows if 'ANY%' in row['tags'])
+    ride = next(leg for leg in fastest['legs'] if leg['kind']=='ride')
+    stop = next(stop for stop in network['stops'] if stop['id']==ride['from'])
+    assert stop['publicId'] == '27121'
+    assert fastest['walkingMeters'] < 700
+    route = next(route for route in network['routes'] if route['id']=='its:194000091')
+    assert all(network['shapes'][key]['points'] for key in route['shapeSegments'])
+    bridge = network['shapes'][route['shapeSegments'][61]]
+    assert bridge['source'] == 'ulsan_its_osm_connected' and len(bridge['points']) > 90
+
+
 def test_deadline_pruning_preserves_wide_walk_two_transfer_results(monkeypatch):
     network = json.loads((ROOT / 'shared/service_network.json').read_text(encoding='utf-8'))
     query = Query('campus', 'upsquare', departure=765, max_walk=5000, max_transfers=2, samples=20,

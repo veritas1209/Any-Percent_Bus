@@ -21,7 +21,7 @@ class ConditionsScreen extends StatefulWidget {
 }
 
 class _ConditionsScreenState extends State<ConditionsScreen> {
-  double departure = 540, speed = 1.2, walk = 500;
+  double departure = 540, speed = 1.2, walkingPenalty = 1;
   int transfers = 2;
   String serviceDay = 'weekday';
   @override
@@ -31,7 +31,6 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
     departure = widget.session.network!.official
         ? (now.hour * 60 + now.minute).toDouble()
         : widget.session.network!.defaultDeparture;
-    if (widget.session.network!.official) walk = 2000;
     serviceDay = now.weekday == 6
         ? 'saturday'
         : now.weekday == 7
@@ -57,7 +56,8 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
               dataset: widget.session.network!.dataset,
               departure: departure,
               walkingSpeed: speed,
-              maxWalk: walk,
+              maxWalk: null,
+              walkingPenalty: walkingPenalty,
               maxTransfers: transfers,
               serviceDay: serviceDay,
             ),
@@ -124,14 +124,19 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
           ],
         ),
         const SizedBox(height: 28),
-        _label('총 보행거리  ${walk.toInt()}m'),
-        Slider(
-          value: walk,
-          min: 0,
-          max: 5000,
-          divisions: 50,
-          label: '${walk.toInt()}m',
-          onChanged: (v) => setState(() => walk = v),
+        _label('보행 선호'),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          children: [
+            for (final item in [(2.0, '적게 걷기'), (1.0, '보통'), (.25, '걷기 허용')])
+              ChoiceChip(
+                label: Text(item.$2),
+                selected: walkingPenalty == item.$1,
+                onSelected: (_) => setState(() => walkingPenalty = item.$1),
+                selectedColor: lime,
+              ),
+          ],
         ),
         const SizedBox(height: 20),
         _label('최대 환승'),

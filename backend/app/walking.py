@@ -42,9 +42,10 @@ class WalkingGraph:
             if best is None or (error,edge)<(best['error'],best['edge']):best=dict(a=a,b=b,f=f,point=p,error=error,edge=edge,length=math.sqrt(den))
         return best if best and best['error']<=80 else None
 
-    def connections(self,point,stops,budget,reverse=False):
+    def connections(self,point,stops,budget,reverse=False,stats=None):
         candidates=[s for s in stops if distance(point,(s['lat'],s['lon']))<=budget+.01]
         snap=self.snap(point);costs={};parent={};queue=[]
+        boundary = set()
         if snap:
             for node,cost in [(snap['a'],snap['error']+snap['length']*snap['f']),(snap['b'],snap['error']+snap['length']*(1-snap['f']))]:
                 if cost<=budget and cost<costs.get(node,float('inf')):costs[node]=cost;parent[node]=None;heapq.heappush(queue,(cost,node))
@@ -56,6 +57,10 @@ class WalkingGraph:
                 other=self.neighbors[i];new=cost+distance(a,self.point(other))
                 if new<=budget and new<costs.get(other,float('inf')):
                     costs[other]=new;parent[other]=node;heapq.heappush(queue,(new,other))
+                elif stats is not None and new > budget:
+                    boundary.add(other)
+        if stats is not None:
+            stats['exhausted'] = not (boundary - costs.keys()) and (not costs or budget >= max(costs.values()) + 80)
         results=[]
         for stop in candidates:
             end=(stop['lat'],stop['lon'])
@@ -89,15 +94,19 @@ class WalkingGraph:
 def default_graph():return WalkingGraph((Path(__file__).resolve().parents[2]/'shared/walk_graph.bin').read_bytes())
 
 
-def prepare_locations(network,q,graph):
+def prepare_locations(network,q,graph,stats=None):
     points=[];links=[];stops=[s for s in network['stops'] if not s['id'].startswith('@')]
+    progress = []
     for kind,value in [('origin',q.origin_point),('destination',q.destination_point)]:
         if value is None:continue
         sid='@'+kind;point=dict(value,id=sid,direction='선택한 지점',isLocation=True);points.append(point)
-        for stop,meters,path in graph.connections((value['lat'],value['lon']),stops,q.max_walk,reverse=kind=='destination'):
+        targets = stops + ([dict(q.destination_point,id='@destination')] if kind == 'origin' and q.destination_point else [])
+        part = {} if stats is not None else None
+        for stop,meters,path in graph.connections((value['lat'],value['lon']),targets,q.max_walk,reverse=kind=='destination',stats=part):
             links.append({'from':sid if kind=='origin' else stop,'to':stop if kind=='origin' else sid,
                           'meters':meters,'shape':{'points':path,'meters':meters,'source':'osm_pedestrian_access'},'access':True})
-    if q.origin_point and q.destination_point:
-        for _,meters,path in graph.connections((q.origin_point['lat'],q.origin_point['lon']),[dict(q.destination_point,id='@destination')],q.max_walk):
-            links.append({'from':'@origin','to':'@destination','meters':meters,'shape':{'points':path,'meters':meters,'source':'osm_pedestrian_access'},'access':True})
+        if part is not None:
+            progress.append(part['exhausted'])
+    if stats is not None:
+        stats['exhausted'] = all(progress)
     return dict(network,stops=stops+points,footpaths=network.get('footpaths',[])+links),points

@@ -167,6 +167,7 @@ class WalkingGraph {
     Iterable<Json> stops,
     double budget, {
     bool reverse = false,
+    Json? stats,
   }) {
     final lat = numValue(point['lat']), lon = numValue(point['lon']);
     final candidates = stops
@@ -180,6 +181,7 @@ class WalkingGraph {
         costs = <int, double>{},
         parent = <int, int>{},
         queue = _Heap();
+    final boundary = <int>{};
     if (snap != null) {
       for (final (node, cost) in [
         (snap.a, snap.error + snap.length * snap.fraction),
@@ -201,8 +203,15 @@ class WalkingGraph {
           costs[other] = next;
           parent[other] = node;
           queue.add(next, other);
+        } else if (stats != null && next > budget) {
+          boundary.add(other);
         }
       }
+    }
+    if (stats != null) {
+      stats['exhausted'] =
+          boundary.every(costs.containsKey) &&
+          (costs.isEmpty || budget >= costs.values.reduce(max) + 80);
     }
     final results = <Json>[];
     for (final stop in candidates) {
@@ -279,9 +288,11 @@ class WalkingGraph {
 (Network, List<Json>) prepareLocations(
   Network network,
   SearchQuery q,
-  WalkingGraph graph,
-) {
+  WalkingGraph graph, {
+  Json? stats,
+}) {
   final points = <Json>[], links = <Json>[];
+  final progress = <bool>[];
   final stops = network.stops.values
       .where((s) => !(s['id'] as String).startsWith('@'))
       .toList();
@@ -292,11 +303,18 @@ class WalkingGraph {
     if (value == null) continue;
     final id = '@$kind';
     points.add({...value, 'id': id, 'direction': '선택한 지점', 'isLocation': true});
+    final targets = <Json>[
+      ...stops,
+      if (kind == 'origin' && q.destinationPoint != null)
+        {...q.destinationPoint!, 'id': '@destination'},
+    ];
+    final part = stats == null ? null : <String, dynamic>{};
     for (final link in graph.connections(
       value,
-      stops,
-      q.maxWalk,
+      targets,
+      q.maxWalk ?? double.infinity,
       reverse: kind == 'destination',
+      stats: part,
     )) {
       links.add({
         'from': kind == 'origin' ? id : link['stop'],
@@ -310,24 +328,9 @@ class WalkingGraph {
         'access': true,
       });
     }
+    if (part != null) progress.add(part['exhausted'] as bool);
   }
-  if (q.originPoint != null && q.destinationPoint != null) {
-    for (final link in graph.connections(q.originPoint!, [
-      {...q.destinationPoint!, 'id': '@destination'},
-    ], q.maxWalk)) {
-      links.add({
-        'from': '@origin',
-        'to': '@destination',
-        'meters': link['meters'],
-        'shape': {
-          'points': link['points'],
-          'meters': link['meters'],
-          'source': 'osm_pedestrian_access',
-        },
-        'access': true,
-      });
-    }
-  }
+  if (stats != null) stats['exhausted'] = progress.every((value) => value);
   return (
     Network({
       ...network.data,

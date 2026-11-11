@@ -39,7 +39,7 @@
     }
   ],
   "skippedTimeValues": [],
-  "sha256": "e198b65970ada6e175cc3a51e136fe8035e38daabdea832ad994369c4b3d1538",
+  "sha256": "8c0b3045da5de76d74326bf6595ebd2c9f627cee4309e50af025973460f8100d",
   "estimatedStopTimes": {
     "movingKmh": 22,
     "dwellSecondsPerStop": 20

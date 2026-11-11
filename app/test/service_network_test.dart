@@ -8,6 +8,129 @@ import 'package:anypercent_app/services/journey_engine.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   test(
+    'walking preferences change the recommendation without a hard distance limit',
+    () {
+      final network = Network({
+        'stops': [
+          for (final s in ['o', 'near', 'far', 'd']) {'id': s},
+        ],
+        'routes': <Json>[
+          {
+            'id': 'fast',
+            'stops': ['far', 'd'],
+            'offsets': [0, 10],
+            'departures': [15],
+            'delaySamples': [0],
+          },
+          {
+            'id': 'shortwalk',
+            'stops': ['near', 'd'],
+            'offsets': [0, 10],
+            'departures': [20],
+            'delaySamples': [0],
+          },
+        ],
+        'footpaths': <Json>[
+          {'from': 'o', 'to': 'far', 'meters': 800},
+          {'from': 'o', 'to': 'near', 'meters': 50},
+        ],
+      });
+      List<Json> search(double penalty) => JourneyEngine(network).search(
+        SearchQuery(
+          origin: 'o',
+          destination: 'd',
+          departure: 0,
+          maxWalk: null,
+          walkingPenalty: penalty,
+          maxTransfers: 0,
+          samples: 20,
+        ),
+      );
+      final less = search(2), willing = search(.25);
+      String ride(Json row) => (row['legs'] as List).firstWhere(
+        (leg) => leg['kind'] == 'ride',
+      )['routeId'];
+      expect(ride(less.first), 'shortwalk');
+      expect(ride(willing.first), 'fast');
+      expect(less.first['tags'], contains('추천'));
+      expect(
+        less.firstWhere(
+          (row) => (row['tags'] as List).contains('ANY%'),
+        )['arrival'],
+        25,
+      );
+      network.data['routes'] = <Json>[
+        {
+          'id': 'fast',
+          'stops': ['far', 'd'],
+          'offsets': [0, 10],
+          'departures': [100],
+          'delaySamples': [0],
+        },
+      ];
+      network.data['footpaths'] = <Json>[
+        {'from': 'o', 'to': 'far', 'meters': 6000},
+      ];
+      final long = JourneyEngine(Network(network.data)).search(
+        const SearchQuery(
+          origin: 'o',
+          destination: 'd',
+          departure: 0,
+          maxWalk: null,
+          samples: 20,
+        ),
+      );
+      expect(long.first['walkingMeters'], 6000);
+    },
+  );
+  test(
+    '14:15 campus search chooses the near stop and retains the middle road line',
+    () {
+      final network = Network.decode(
+        File('assets/data/service_network.json').readAsStringSync(),
+      );
+      final rows = runLocal({
+        ...const SearchQuery(
+          origin: 'campus',
+          destination: 'upsquare',
+          dataset: 'service',
+          departure: 855,
+          maxWalk: null,
+          walkingPenalty: 1,
+          maxTransfers: 1,
+          samples: 20,
+          originPoint: {
+            'name': 'campus',
+            'lat': 35.4972505,
+            'lon': 129.4158209,
+          },
+          destinationPoint: {
+            'name': 'upsquare',
+            'lat': 35.5412587,
+            'lon': 129.3388543,
+          },
+        ).toJson(),
+        'network': network.routingData,
+        'walkGraph': File('assets/data/walk_graph.bin').readAsBytesSync(),
+      });
+      final fastest = rows.firstWhere(
+        (row) => (row['tags'] as List).contains('ANY%'),
+      );
+      final ride = (fastest['legs'] as List).firstWhere(
+        (leg) => leg['kind'] == 'ride',
+      );
+      expect(network.stops[ride['from']]!['publicId'], '27121');
+      expect(fastest['walkingMeters'], lessThan(700));
+      final route = network.routes['its:194000091']!;
+      expect(
+        (route['shapeSegments'] as List).every(
+          (key) => (network.shape(key)['points'] as List).isNotEmpty,
+        ),
+        isTrue,
+      );
+    },
+  );
+  test(
     'wide walking and two transfers retain the faster one-transfer option',
     () {
       final n = Network.decode(

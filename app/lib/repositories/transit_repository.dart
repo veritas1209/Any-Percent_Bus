@@ -14,7 +14,10 @@ List<Json> runLocal(Json payload) {
     destination: payload['destination'],
     departure: numValue(payload['departure']),
     walkingSpeed: numValue(payload['walking_speed']),
-    maxWalk: numValue(payload['max_walk']),
+    maxWalk: payload['max_walk'] == null ? null : numValue(payload['max_walk']),
+    walkingPenalty: payload['walking_penalty'] == null
+        ? null
+        : numValue(payload['walking_penalty']),
     maxTransfers: payload['max_transfers'],
     delay: numValue(payload['delay']),
     samples: payload['samples'],
@@ -28,33 +31,105 @@ List<Json> runLocal(Json payload) {
     serviceDay: payload['service_day'] ?? 'weekday',
   );
   network = network.forServiceDay(q.serviceDay);
-  var places = <Json>[];
-  if (q.originPoint != null || q.destinationPoint != null) {
-    (network, places) = prepareLocations(
-      network,
-      q,
-      WalkingGraph(payload['walkGraph'] as Uint8List),
+  final graph = payload['walkGraph'] == null
+      ? null
+      : WalkingGraph(payload['walkGraph'] as Uint8List);
+  List<Json> search(SearchQuery query, {Json? stats}) {
+    var prepared = network;
+    var places = <Json>[];
+    if (query.originPoint != null || query.destinationPoint != null) {
+      (prepared, places) = prepareLocations(
+        network,
+        query,
+        graph!,
+        stats: stats,
+      );
+    } else if (stats != null) {
+      stats['exhausted'] = true;
+    }
+    final rows = JourneyEngine(prepared).search(
+      SearchQuery(
+        origin: query.originPoint == null ? query.origin : '@origin',
+        destination: query.destinationPoint == null
+            ? query.destination
+            : '@destination',
+        dataset: q.dataset,
+        departure: q.departure,
+        walkingSpeed: q.walkingSpeed,
+        maxWalk: query.maxWalk,
+        walkingPenalty: query.walkingPenalty,
+        maxTransfers: q.maxTransfers,
+        delay: q.delay,
+        samples: q.samples,
+        seed: q.seed,
+        serviceDay: q.serviceDay,
+      ),
+    );
+    for (final j in rows) {
+      if (places.isNotEmpty) j['places'] = places;
+    }
+    return rows;
+  }
+
+  if (q.maxWalk != null) return search(q);
+  final origin = q.originPoint ?? network.stops[q.origin],
+      destination = q.destinationPoint ?? network.stops[q.destination];
+  if (origin == null || destination == null) {
+    throw ArgumentError('존재하지 않는 정류장입니다.');
+  }
+  final penalty = q.walkingPenalty ?? 1.0;
+  if (origin['lat'] == null || destination['lat'] == null) {
+    return search(
+      q.copyWith(maxWalk: double.infinity, walkingPenalty: penalty),
     );
   }
-  final rows = JourneyEngine(network).search(
-    SearchQuery(
-      origin: q.originPoint == null ? q.origin : '@origin',
-      destination: q.destinationPoint == null ? q.destination : '@destination',
+  var radius = 2000.0;
+  var fallback = <Json>[];
+  while (true) {
+    final stats = <String, dynamic>{};
+    final limited = SearchQuery(
+      origin: q.origin,
+      destination: q.destination,
       dataset: q.dataset,
       departure: q.departure,
       walkingSpeed: q.walkingSpeed,
-      maxWalk: q.maxWalk,
+      maxWalk: radius,
+      walkingPenalty: penalty,
       maxTransfers: q.maxTransfers,
       delay: q.delay,
       samples: q.samples,
       seed: q.seed,
       serviceDay: q.serviceDay,
-    ),
-  );
-  for (final j in rows) {
-    if (places.isNotEmpty) j['places'] = places;
+      originPoint: origin,
+      destinationPoint: destination,
+    );
+    final rows = search(limited, stats: stats),
+        timed = rows.where((row) => row['arrival'] != null).toList();
+    double nextRadius;
+    if (timed.isNotEmpty) {
+      final fastest =
+          timed
+              .map((row) => numValue(row['arrival']))
+              .reduce((a, b) => a < b ? a : b) -
+          q.departure;
+      final recommended = timed
+          .map((row) => numValue(row['recommendationScore']))
+          .reduce((a, b) => a < b ? a : b);
+      final sufficient =
+          (fastest > recommended / (1 + penalty)
+              ? fastest
+              : recommended / (1 + penalty)) *
+          q.walkingSpeed *
+          60;
+      if (radius + .01 >= sufficient) return timed;
+      nextRadius = sufficient + .1;
+    } else {
+      if (rows.isNotEmpty) fallback = rows;
+      nextRadius = radius * 2;
+    }
+    if (stats['exhausted'] == true) return timed.isNotEmpty ? timed : fallback;
+    radius = nextRadius;
   }
-  return rows;
 }
 
 abstract class TransitRepository {
@@ -91,7 +166,9 @@ class AssetTransitRepository extends TransitRepository {
     return compute(runLocal, <String, dynamic>{
       ...query.toJson(),
       'network': network.routingData,
-      if (query.originPoint != null || query.destinationPoint != null)
+      if (query.maxWalk == null ||
+          query.originPoint != null ||
+          query.destinationPoint != null)
         'walkGraph': await (_walk ??= rootBundle
             .load('assets/data/walk_graph.bin')
             .then(

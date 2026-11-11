@@ -33,8 +33,9 @@ try:
                     with sftp.open(marker,'w') as f:f.write('isolated Anypercent development demo\n')
                 else:raise RuntimeError('Unmanaged existing remote folder; refusing to overwrite')
             remote_hashes = {}
-            if args.action == 'deploy-web':
-                _, hashes, hash_errors = client.exec_command('find '+shlex.quote(base+'/web')+' -type f -exec sha256sum {} +', timeout=45)
+            if args.action in ('deploy-web','deploy-backend'):
+                roots = [base+'/web'] if args.action == 'deploy-web' else [base+'/shared',base+'/backend/app']
+                _, hashes, hash_errors = client.exec_command('find '+' '.join(shlex.quote(path) for path in roots)+' -type f -exec sha256sum {} +', timeout=45)
                 lines = hashes.read().decode().splitlines()
                 if hashes.channel.recv_exit_status() != 0:
                     raise RuntimeError('Could not read the existing web bundle hashes')
@@ -48,7 +49,8 @@ try:
                 else:
                     if remote_hashes.get(target) == hashlib.sha256(source.read_bytes()).hexdigest():
                         return
-                    sftp.put(str(source),target)
+                    sftp.put(str(source),target+'.uploading')
+                    sftp.posix_rename(target+'.uploading',target)
             if args.action in ('deploy-backend','deploy-backend-code'):
                 for folder in ('backend','shared','tools'):
                     try:sftp.mkdir(base+'/'+folder)

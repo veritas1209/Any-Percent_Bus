@@ -10,6 +10,9 @@ The derived pedestrian graph (`walk_graph.bin`) and place/address index
 The `service_network.json` bus routes, stop sequences, road coordinates and
 terminal timetables were retrieved from the [Ulsan Traffic Management Center](https://its.ulsan.kr/route/timetable.do)
 on 2026-11-11. Its walking links use the local OpenStreetMap pedestrian graph.
+Sparse official road links are connected through the local directed OpenStreetMap
+road graph when the endpoints match within 40 metres and the road length remains
+consistent with the supplied link. These shapes use `ulsan_its_osm_connected`.
 Source response hashes and retrieval times are recorded in `artifacts/official-data.json`.
 The input bus GPS recording was supplied by the project owner; its rights remain
 with its owner. The raw recording is not included in release archives.

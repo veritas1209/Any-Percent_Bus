@@ -142,7 +142,8 @@ class SearchQuery {
   final String serviceDay;
   final String dataset;
   final String origin, destination;
-  final double departure, walkingSpeed, maxWalk, delay;
+  final double departure, walkingSpeed, delay;
+  final double? maxWalk, walkingPenalty;
   final int maxTransfers, samples, seed;
   final Json? originPoint, destinationPoint;
   const SearchQuery({
@@ -152,6 +153,7 @@ class SearchQuery {
     this.departure = 540,
     this.walkingSpeed = 1.2,
     this.maxWalk = 500,
+    this.walkingPenalty,
     this.delay = 0,
     this.maxTransfers = 2,
     this.samples = 300,
@@ -161,13 +163,18 @@ class SearchQuery {
     this.serviceDay = 'weekday',
   });
   SearchQuery withDelay(double value) => copyWith(delay: value);
-  SearchQuery copyWith({double? delay, double? maxWalk}) => SearchQuery(
+  SearchQuery copyWith({
+    double? delay,
+    double? maxWalk,
+    double? walkingPenalty,
+  }) => SearchQuery(
     origin: origin,
     destination: destination,
     dataset: dataset,
     departure: departure,
     walkingSpeed: walkingSpeed,
     maxWalk: maxWalk ?? this.maxWalk,
+    walkingPenalty: walkingPenalty ?? this.walkingPenalty,
     delay: delay ?? this.delay,
     maxTransfers: maxTransfers,
     samples: samples,
@@ -183,6 +190,7 @@ class SearchQuery {
     'departure': departure,
     'walking_speed': walkingSpeed,
     'max_walk': maxWalk,
+    if (walkingPenalty != null) 'walking_penalty': walkingPenalty,
     'delay': delay,
     'max_transfers': maxTransfers,
     'samples': samples,
