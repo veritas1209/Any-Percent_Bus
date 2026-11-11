@@ -7,7 +7,7 @@ import random
 from bisect import bisect_left
 from collections import defaultdict
 from dataclasses import dataclass,replace
-from .topology import connections,reachable,labels,walking_bounds
+from .topology import connections,reachable,labels,walking_bounds,latest_departures
 
 
 @dataclass(frozen=True)
@@ -79,6 +79,7 @@ class Engine:
         bounds=walking_bounds(self.timed_routes,self.network.get('footpaths',[]),q.destination,q.max_transfers+1)
         found = {}
         cutoff=float('inf')
+        latest = None
         def add(legs,walked):
             nonlocal cutoff
             key='|'.join(f"{l.get('routeId','walk')}:{l['from']}:{l['to']}" for l in legs)
@@ -95,6 +96,8 @@ class Engine:
             next_frontier = []
             for stop, now, legs, used, walked in frontier:
                 if now>cutoff:continue
+                if latest is not None and now > latest[q.max_transfers-round+1].get(stop, -float('inf')) + 1e-6:
+                    continue
                 if walked+bounds[q.max_transfers-round+1].get(stop,float('inf'))>q.max_walk+.001:continue
                 accesses = [(stop, now, [], walked)]
                 for f in self.walks[stop]:
@@ -102,6 +105,8 @@ class Engine:
                         end = now+f['meters']/q.walking_speed/60
                         accesses.append((f['to'], end, [{'kind':'walk','from':stop,'to':f['to'],'depart':now,'arrive':end,'meters':f['meters'],'shape':f.get('shape')}],walked+f['meters']))
                 for board, ready, walk_legs, total_walk in accesses:
+                    if latest is not None and ready > latest[q.max_transfers-round+1].get(board, -float('inf')) + 1e-6:
+                        continue
                     for r,bi in self.boardings[board]:
                         if r['id'] in used:
                             continue
@@ -113,6 +118,8 @@ class Engine:
                         for ai in range(bi+1,len(r['stops'])):
                             if trip+r['offsets'][ai]>cutoff:continue
                             endstop = r['stops'][ai]
+                            if latest is not None and trip+r['offsets'][ai] > latest[q.max_transfers-round].get(endstop, -float('inf')) + 1e-6:
+                                continue
                             if endstop not in layers[q.max_transfers-round]:continue
                             if total_walk+bounds[q.max_transfers-round].get(endstop,float('inf'))>q.max_walk+.001:continue
                             leg = {'kind':'ride','routeId':r['id'],'from':board,'to':endstop,'boardIndex':bi,'alightIndex':ai,'trip':trip,'depart':trip+r['offsets'][bi],'arrive':trip+r['offsets'][ai]}
@@ -127,7 +134,16 @@ class Engine:
                                 if round<q.max_transfers:
                                     next_frontier.append((endstop,leg['arrive'],newlegs,used|{r['id']},total_walk))
             # Keep alternatives by route sequence, not just earliest label: late safe journeys matter.
-            frontier = list(labels(s for s in next_frontier if s[1]<=cutoff)) if round<q.max_transfers else []
+            if round < q.max_transfers:
+                remaining = q.max_transfers - round
+                latest = latest_departures(
+                    self.timed_routes, self.network.get('footpaths', []), q.destination,
+                    remaining, cutoff, q.walking_speed,
+                ) if math.isfinite(cutoff) else None
+                frontier = list(labels(
+                    state for state in next_frontier if state[1] <= cutoff and
+                    (latest is None or state[1] <= latest[remaining].get(state[0], -float('inf')) + 1e-6)
+                ))
         candidates = sorted(found.values(), key=lambda j:j['arrival'])[:20]
         evaluated = [self.evaluate(j,q) for j in candidates]
         if not evaluated:

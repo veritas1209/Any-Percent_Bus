@@ -106,6 +106,23 @@ class _ResultsScreenState extends State<ResultsScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(color: muted),
           ),
+          if (widget.query.maxWalk < 5000)
+            TextButton(
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ResultsScreen(
+                    session: widget.session,
+                    query: widget.query.copyWith(
+                      maxWalk: widget.query.maxWalk < 2000 ? 2000 : 5000,
+                    ),
+                  ),
+                ),
+              ),
+              child: Text(
+                '총 도보 ${widget.query.maxWalk < 2000 ? '2' : '5'}km로 다시 찾기',
+              ),
+            ),
         ] else
           ...displayRows().map(
             (j) => Padding(

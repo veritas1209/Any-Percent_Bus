@@ -31,6 +31,7 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
     departure = widget.session.network!.official
         ? (now.hour * 60 + now.minute).toDouble()
         : widget.session.network!.defaultDeparture;
+    if (widget.session.network!.official) walk = 2000;
     serviceDay = now.weekday == 6
         ? 'saturday'
         : now.weekday == 7
@@ -123,12 +124,12 @@ class _ConditionsScreenState extends State<ConditionsScreen> {
           ],
         ),
         const SizedBox(height: 28),
-        _label('허용 보행거리  ${walk.toInt()}m'),
+        _label('총 보행거리  ${walk.toInt()}m'),
         Slider(
           value: walk,
           min: 0,
-          max: 2000,
-          divisions: 20,
+          max: 5000,
+          divisions: 50,
           label: '${walk.toInt()}m',
           onChanged: (v) => setState(() => walk = v),
         ),

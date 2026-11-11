@@ -1,5 +1,72 @@
 import '../models/transit.dart';
 import 'dart:collection';
+import 'dart:math';
+
+List<Map<String, double>> latestDepartures(
+  Iterable<Json> routes,
+  List<dynamic> paths,
+  String destination,
+  int rides,
+  double deadline,
+  double walkingSpeed,
+) {
+  final incoming = <String, List<(String, double)>>{};
+  for (final path in paths) {
+    incoming.putIfAbsent(path['to'], () => []).add((
+      path['from'] as String,
+      numValue(path['meters']) / walkingSpeed / 60,
+    ));
+  }
+  Map<String, double> spread(Map<String, double> values) {
+    final queue = Queue<String>.of(values.keys), queued = values.keys.toSet();
+    while (queue.isNotEmpty) {
+      final stop = queue.removeFirst();
+      queued.remove(stop);
+      for (final (other, minutes) in incoming[stop] ?? <(String, double)>[]) {
+        final candidate = values[stop]! - minutes;
+        if (candidate > (values[other] ?? double.negativeInfinity)) {
+          values[other] = candidate;
+          if (queued.add(other)) queue.add(other);
+        }
+      }
+    }
+    return values;
+  }
+
+  final layers = [
+    spread({destination: deadline}),
+  ];
+  for (var ride = 0; ride < rides; ride++) {
+    final previous = layers.last,
+        values = Map<String, double>.from(layers.last);
+    for (final route in routes) {
+      final stops = (route['stops'] as List).cast<String>(),
+          offsets = (route['offsets'] as List).cast<num>(),
+          departures = (route['departures'] as List).cast<num>();
+      var trip = double.negativeInfinity;
+      for (var index = stops.length - 1; index >= 0; index--) {
+        final stop = stops[index], board = trip + offsets[index];
+        if (board > (values[stop] ?? double.negativeInfinity)) {
+          values[stop] = board;
+        }
+        final limit =
+            (previous[stop] ?? double.negativeInfinity) - offsets[index];
+        var low = 0, high = departures.length;
+        while (low < high) {
+          final middle = (low + high) ~/ 2;
+          if (departures[middle] <= limit + 1e-9) {
+            low = middle + 1;
+          } else {
+            high = middle;
+          }
+        }
+        if (low > 0) trip = max(trip, departures[low - 1].toDouble());
+      }
+    }
+    layers.add(spread(values));
+  }
+  return layers;
+}
 
 List<Map<String, double>> walkingBounds(
   Iterable<Json> routes,

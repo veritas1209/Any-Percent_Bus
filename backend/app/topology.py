@@ -1,6 +1,48 @@
 """Schedule-free route connections. Never manufacture arrival times or probabilities."""
 from collections import defaultdict
 import heapq
+from bisect import bisect_right
+
+
+def latest_departures(routes, footpaths, destination, rides, deadline, walking_speed):
+    """Optimistic latest departure times, ignoring walk budgets and used routes."""
+    incoming = defaultdict(list)
+    for path in footpaths:
+        incoming[path['to']].append((path['from'], path['meters'] / walking_speed / 60))
+
+    def spread(values):
+        queue = [(-value, stop) for stop, value in values.items()]
+        heapq.heapify(queue)
+        while queue:
+            negative, stop = heapq.heappop(queue)
+            latest = -negative
+            if latest != values[stop]:
+                continue
+            for other, minutes in incoming[stop]:
+                candidate = latest - minutes
+                if candidate > values.get(other, -float('inf')):
+                    values[other] = candidate
+                    heapq.heappush(queue, (-candidate, other))
+        return values
+
+    layers = [spread({destination: deadline})]
+    for _ in range(rides):
+        previous = layers[-1]
+        values = dict(previous)
+        for route in routes:
+            trip = -float('inf')
+            departures, offsets = route['departures'], route['offsets']
+            for index in range(len(route['stops']) - 1, -1, -1):
+                stop = route['stops'][index]
+                board = trip + offsets[index]
+                if board > values.get(stop, -float('inf')):
+                    values[stop] = board
+                limit = previous.get(stop, -float('inf')) - offsets[index]
+                last = bisect_right(departures, limit + 1e-9) - 1
+                if last >= 0:
+                    trip = max(trip, departures[last])
+        layers.append(spread(values))
+    return layers
 
 
 def walking_bounds(routes,footpaths,destination,rides):

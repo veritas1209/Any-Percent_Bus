@@ -29,7 +29,7 @@ try:
         existing=web.get(key,{}).get('Handlers',{})
         allowed={'/':'http://100.119.23.4:8080'}
         if public:
-            for path in ('/v1/network','/v1/journeys/search'):
+            for path in ('/v1/network','/v1/journeys/search','/v1/places/search'):
                 allowed[path] = 'http://100.119.23.4:8001' + path
         else:
             allowed['/v1'] = 'http://100.119.23.4:8001/v1'

@@ -1,0 +1,41 @@
+{
+  "cases": [
+    {
+      "case": "east-2000",
+      "departure": "12:45",
+      "maxWalk": 2000,
+      "maxTransfers": 2,
+      "journeys": 20,
+      "serverMs": 1502.78,
+      "earliestArrival": 812.2083444444444
+    },
+    {
+      "case": "west-2000",
+      "departure": "12:45",
+      "maxWalk": 2000,
+      "maxTransfers": 2,
+      "journeys": 20,
+      "serverMs": 933.92,
+      "earliestArrival": 811.9341111111111
+    },
+    {
+      "case": "west-5000",
+      "departure": "12:45",
+      "maxWalk": 5000,
+      "maxTransfers": 2,
+      "journeys": 20,
+      "serverMs": 2635.03,
+      "earliestArrival": 811.9341111111111
+    }
+  ],
+  "defaultWalkMeters": 2000,
+  "maximumWalkMeters": 5000,
+  "compactNetworkBytes": 2292547,
+  "fullNetworkBytes": 13914370,
+  "clientSeconds": {
+    "east-2000": 1.671763,
+    "west-2000": 1.081722,
+    "west-5000": 2.815122
+  },
+  "measurement": "Single request to the Jetson HTTPS API for each case; simulated campus origins"
+}

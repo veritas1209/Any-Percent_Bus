@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 import '../models/transit.dart';
 import '../theme.dart';
 import 'transit_map.dart';
@@ -71,6 +73,7 @@ class LocationPicker extends StatefulWidget {
   final DeviceLocation? locationService;
   final Json? devicePosition;
   final ValueChanged<Json>? onDeviceLocated;
+  final String? placesSearchUrl;
   const LocationPicker({
     super.key,
     required this.network,
@@ -81,6 +84,7 @@ class LocationPicker extends StatefulWidget {
     this.locationService,
     this.devicePosition,
     this.onDeviceLocated,
+    this.placesSearchUrl,
   });
   @override
   State<LocationPicker> createState() => _LocationPickerState();
@@ -91,9 +95,13 @@ class _LocationPickerState extends State<LocationPicker> {
   String query = '', mode = 'place';
   List<Json>? places;
   bool loadFailed = false;
+  List<Json> remoteMatches = [];
+  Timer? debounce;
+  bool searching = false;
   @override
   void initState() {
     super.initState();
+    if (widget.placesSearchUrl != null) return;
     places = LocalPlaces.ready;
     if (places != null) {
       return;
@@ -115,8 +123,51 @@ class _LocationPickerState extends State<LocationPicker> {
 
   @override
   void dispose() {
+    debounce?.cancel();
     controller.dispose();
     super.dispose();
+  }
+
+  void changeQuery(String value) {
+    debounce?.cancel();
+    setState(() {
+      query = value;
+      searching = widget.placesSearchUrl != null && value.trim().isNotEmpty;
+      remoteMatches = [];
+      loadFailed = false;
+    });
+    if (searching) {
+      debounce = Timer(
+        const Duration(milliseconds: 180),
+        () => searchRemote(value),
+      );
+    }
+  }
+
+  Future<void> searchRemote(String value) async {
+    try {
+      final uri = Uri.parse(
+        widget.placesSearchUrl!,
+      ).replace(queryParameters: {'q': value});
+      final response = await http.get(uri).timeout(const Duration(seconds: 8));
+      if (response.statusCode != 200) throw Exception('Place search failed');
+      final rows = List<Json>.from(
+        jsonDecode(utf8.decode(response.bodyBytes))['places'],
+      );
+      if (mounted && query == value) {
+        setState(() {
+          remoteMatches = rows;
+          searching = false;
+        });
+      }
+    } catch (_) {
+      if (mounted && query == value) {
+        setState(() {
+          searching = false;
+          loadFailed = true;
+        });
+      }
+    }
   }
 
   void pick(Json value) => Navigator.pop(context, <String, dynamic>{
@@ -145,7 +196,9 @@ class _LocationPickerState extends State<LocationPicker> {
         onDeviceLocated: widget.onDeviceLocated,
       );
     }
-    final matches = LocalPlaces.search(places ?? [], query, widget.initial);
+    final matches = widget.placesSearchUrl == null
+        ? LocalPlaces.search(places ?? [], query, widget.initial)
+        : remoteMatches;
     final stops = query.trim().isEmpty
         ? <Json>[]
         : widget.network.searchStops(query).take(15).toList();
@@ -175,7 +228,7 @@ class _LocationPickerState extends State<LocationPicker> {
               TextField(
                 controller: controller,
                 autofocus: true,
-                onChanged: (s) => setState(() => query = s),
+                onChanged: changeQuery,
                 decoration: const InputDecoration(
                   hintText: '장소 이름 또는 도로명주소 검색',
                   prefixIcon: Icon(Icons.search),
@@ -210,17 +263,23 @@ class _LocationPickerState extends State<LocationPicker> {
               ),
               Text(
                 loadFailed
-                    ? '장소 목록을 불러오지 못했습니다. 지도나 정류장에서 선택해주세요.'
+                    ? '검색에 실패했습니다. 다시 입력하거나 지도에서 선택해주세요.'
                     : '검색되지 않는 장소는 지도에서 지점을 골라주세요.',
                 style: const TextStyle(fontSize: 11, color: muted),
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: places == null
+                child:
+                    searching ||
+                        (widget.placesSearchUrl == null && places == null)
                     ? const Center(child: CircularProgressIndicator())
                     : rows.isEmpty
-                    ? const Center(
-                        child: Text('검색 결과가 없습니다. 지도에서 지점을 선택할 수 있어요.'),
+                    ? Center(
+                        child: Text(
+                          query.trim().isEmpty
+                              ? '장소 이름이나 주소를 입력하거나 지도에서 선택해주세요.'
+                              : '검색 결과가 없습니다. 지도에서 지점을 선택할 수 있어요.',
+                        ),
                       )
                     : ListView.separated(
                         itemCount: rows.length,

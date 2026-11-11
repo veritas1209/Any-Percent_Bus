@@ -11,7 +11,7 @@ import 'package:anypercent_app/repositories/transit_repository.dart';
 import 'support/map_tiles.dart';
 import 'package:anypercent_app/widgets/location_picker.dart';
 
-class MemoryRepository implements TransitRepository {
+class MemoryRepository extends TransitRepository {
   final Network network;
   MemoryRepository(this.network);
   @override

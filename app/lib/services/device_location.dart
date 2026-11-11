@@ -5,15 +5,12 @@ import '../models/transit.dart';
 
 const secureWebUrl = String.fromEnvironment(
   'SECURE_WEB_URL',
-  defaultValue: 'https://hajin-desktop.tailfb939b.ts.net:9443',
+  defaultValue: 'https://hajin-desktop.tailfb939b.ts.net:10000',
 );
 
 String get defaultApiUrl => kIsWeb && Uri.base.scheme == 'https'
     ? Uri.base.origin
-    : const String.fromEnvironment(
-        'API_URL',
-        defaultValue: 'http://100.119.23.4:8001',
-      );
+    : const String.fromEnvironment('API_URL', defaultValue: secureWebUrl);
 
 enum LocationIssue {
   denied,
@@ -39,6 +36,8 @@ abstract class DeviceLocation {
 class GeolocatorLocation implements DeviceLocation {
   final GeolocatorPlatform? platform;
   final bool web, secure;
+  Position? _recent;
+  Future<Json>? _pending;
   GeolocatorLocation({this.platform, bool? web, bool? secure})
     : web = web ?? kIsWeb,
       secure =
@@ -49,7 +48,10 @@ class GeolocatorLocation implements DeviceLocation {
   GeolocatorPlatform get api => platform ?? GeolocatorPlatform.instance;
 
   @override
-  Future<Json> current() async {
+  Future<Json> current() =>
+      _pending ??= _current().whenComplete(() => _pending = null);
+
+  Future<Json> _current() async {
     try {
       return await _read().timeout(const Duration(seconds: 35));
     } on LocationFailure {
@@ -112,12 +114,28 @@ class GeolocatorLocation implements DeviceLocation {
     }
     // A browser prompts from getCurrentPosition itself. Calling its permission
     // request first would read GPS twice and lose the original timeout/error.
-    final p = await api.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        timeLimit: Duration(seconds: 18),
-      ),
-    );
+    final recent = _recent;
+    final age = recent == null
+        ? null
+        : DateTime.now().difference(recent.timestamp);
+    final p =
+        recent != null &&
+            age! >= Duration.zero &&
+            age <= const Duration(seconds: 30) &&
+            recent.accuracy <= 100
+        ? recent
+        : await api.getCurrentPosition(
+            locationSettings: web
+                ? WebSettings(
+                    accuracy: LocationAccuracy.medium,
+                    maximumAge: const Duration(seconds: 30),
+                    timeLimit: const Duration(seconds: 8),
+                  )
+                : const LocationSettings(
+                    accuracy: LocationAccuracy.medium,
+                    timeLimit: Duration(seconds: 8),
+                  ),
+          );
     if (!p.latitude.isFinite || !p.longitude.isFinite || !p.accuracy.isFinite) {
       throw const LocationFailure(
         LocationIssue.unavailable,
@@ -134,6 +152,7 @@ class GeolocatorLocation implements DeviceLocation {
       );
     }
     final accuracy = p.accuracy.clamp(0.0, double.infinity);
+    _recent = p;
     return {
       'id': 'device-location',
       'name': '현재 위치',

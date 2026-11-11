@@ -13,10 +13,14 @@ import 'package:anypercent_app/widgets/current_location_button.dart';
 import 'package:anypercent_app/widgets/location_picker.dart';
 import 'support/map_tiles.dart';
 
-Position position({double lat = 35.49971, double lon = 129.41719}) => Position(
+Position position({
+  double lat = 35.49971,
+  double lon = 129.41719,
+  DateTime? timestamp,
+}) => Position(
   latitude: lat,
   longitude: lon,
-  timestamp: DateTime.utc(2026, 11, 10),
+  timestamp: timestamp ?? DateTime.utc(2026, 11, 10),
   accuracy: 15,
   altitude: 0,
   altitudeAccuracy: 0,
@@ -33,6 +37,7 @@ class FakePlatform extends GeolocatorPlatform {
   int requests = 0, reads = 0;
   Object? error;
   Position value = position();
+  LocationSettings? settings;
   @override
   Future<bool> isLocationServiceEnabled() async => enabled;
   @override
@@ -48,6 +53,7 @@ class FakePlatform extends GeolocatorPlatform {
     LocationSettings? locationSettings,
   }) async {
     reads++;
+    settings = locationSettings;
     if (error != null) throw error!;
     return value;
   }
@@ -75,7 +81,7 @@ class FakeLocation implements DeviceLocation {
   Future<bool> openSettings({bool service = false}) async => true;
 }
 
-class MemoryRepo implements TransitRepository {
+class MemoryRepo extends TransitRepository {
   final Network n;
   MemoryRepo(this.n);
   @override
@@ -91,6 +97,28 @@ void main() {
   setUpAll(() async {
     await LocalPlaces.load();
   });
+  test(
+    'recent accurate position is reused and concurrent GPS requests share one read',
+    () async {
+      final platform = FakePlatform()
+        ..value = position(timestamp: DateTime.now());
+      final service = GeolocatorLocation(
+        platform: platform,
+        web: true,
+        secure: true,
+      );
+      final rows = await Future.wait([service.current(), service.current()]);
+      expect(rows[0]['lat'], rows[1]['lat']);
+      await service.current();
+      expect(platform.reads, 1);
+      expect(platform.settings, isA<WebSettings>());
+      expect(
+        (platform.settings as WebSettings).maximumAge,
+        const Duration(seconds: 30),
+      );
+      expect(platform.settings!.accuracy, LocationAccuracy.medium);
+    },
+  );
   test(
     'Android permission grant preserves the actual coordinate and accuracy',
     () async {

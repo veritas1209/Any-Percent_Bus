@@ -84,6 +84,14 @@ class Network {
             )
             .toList();
   Network(this.data);
+  Network withGeometry(Json geometry) => Network({
+    ...data,
+    'shapes': {...?data['shapes'] as Map?, ...geometry['shapes'] as Map},
+    'routes': [
+      for (final route in data['routes'])
+        {...Json.from(route), ...?geometry['routes'][route['id']] as Map?},
+    ],
+  });
   final Map<String, Network> _days = {};
   Network forServiceDay(String day) {
     if (!official || day == (data['serviceDay'] ?? 'weekday')) return this;
@@ -152,14 +160,15 @@ class SearchQuery {
     this.destinationPoint,
     this.serviceDay = 'weekday',
   });
-  SearchQuery withDelay(double value) => SearchQuery(
+  SearchQuery withDelay(double value) => copyWith(delay: value);
+  SearchQuery copyWith({double? delay, double? maxWalk}) => SearchQuery(
     origin: origin,
     destination: destination,
     dataset: dataset,
     departure: departure,
     walkingSpeed: walkingSpeed,
-    maxWalk: maxWalk,
-    delay: value,
+    maxWalk: maxWalk ?? this.maxWalk,
+    delay: delay ?? this.delay,
     maxTransfers: maxTransfers,
     samples: samples,
     seed: seed,

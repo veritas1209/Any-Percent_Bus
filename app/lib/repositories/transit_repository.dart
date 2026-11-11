@@ -61,9 +61,10 @@ abstract class TransitRepository {
   Future<Network> loadNetwork();
   Future<List<Json>> search(SearchQuery query);
   String get label;
+  String? get placesSearchUrl => null;
 }
 
-class AssetTransitRepository implements TransitRepository {
+class AssetTransitRepository extends TransitRepository {
   final String dataset;
   AssetTransitRepository({this.dataset = 'service'});
   Network? _network;
@@ -100,7 +101,7 @@ class AssetTransitRepository implements TransitRepository {
   }
 }
 
-class ApiTransitRepository implements TransitRepository {
+class ApiTransitRepository extends TransitRepository {
   Network? _network;
   final String baseUrl;
   final String dataset;
@@ -113,10 +114,16 @@ class ApiTransitRepository implements TransitRepository {
       ? 'BusTracker · 백엔드 연결'
       : '백엔드 연결';
   @override
+  String get placesSearchUrl => '$baseUrl/v1/places/search';
+  @override
   Future<Network> loadNetwork() async {
     if (_network != null) return _network!;
     final response = await http
-        .get(Uri.parse('$baseUrl/v1/network?dataset=$dataset'))
+        .get(
+          Uri.parse(
+            '$baseUrl/v1/network?dataset=$dataset${dataset == 'service' ? '&compact=true' : ''}',
+          ),
+        )
         .timeout(const Duration(seconds: 20));
     if (response.statusCode != 200) {
       throw Exception('노선망을 불러올 수 없습니다 (${response.statusCode})');
@@ -130,13 +137,21 @@ class ApiTransitRepository implements TransitRepository {
         .post(
           Uri.parse('$baseUrl/v1/journeys/search'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(query.toJson()),
+          body: jsonEncode({
+            ...query.toJson(),
+            if (dataset == 'service') 'include_geometry': true,
+          }),
         )
         .timeout(const Duration(seconds: 20));
     if (response.statusCode != 200) {
       throw Exception('경로 검색에 실패했습니다 (${response.statusCode})');
     }
     final data = jsonDecode(response.body);
+    if (data['geometry'] != null) {
+      _network = (await loadNetwork()).withGeometry(
+        Json.from(data['geometry']),
+      );
+    }
     return List<Json>.from((data['journeys'] as List).map((e) => Json.from(e)));
   }
 }

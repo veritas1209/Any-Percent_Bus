@@ -84,6 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
           locationService: session.locationService,
           devicePosition: session.devicePosition,
           onDeviceLocated: (point) => session.devicePosition = point,
+          placesSearchUrl: session.repository.placesSearchUrl,
           advancedBuilder: (routes, picked, back) => _StopPicker(
             session.network!,
             from ? '출발 정류장' : '도착 정류장',

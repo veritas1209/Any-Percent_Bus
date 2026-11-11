@@ -7,7 +7,7 @@ import struct
 import time
 import zlib
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from playwright.async_api import async_playwright, expect
 
@@ -15,8 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--url', default='https://hajin-desktop.tailfb939b.ts.net:9443')
 parser.add_argument('--report', default='browser-acceptance.json')
+parser.add_argument('--latitude', type=float, default=35.499699)
+parser.add_argument('--longitude', type=float, default=129.417175)
+parser.add_argument('--departure', default='10:07')
 args = parser.parse_args()
 URL = args.url.rstrip('/')
+HOUR, MINUTE = map(int, args.departure.split(':'))
+DEPARTURE = HOUR * 60 + MINUTE
 
 
 def png_chunk(kind, data):
@@ -31,12 +36,13 @@ async def run():
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(
             executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe', headless=True)
-        context = await browser.new_context(viewport={'width': 390, 'height': 844},
-            permissions=['geolocation'], geolocation={'latitude': 35.499699, 'longitude': 129.417175, 'accuracy': 15})
+        context = await browser.new_context(viewport={'width': 390, 'height': 844}, timezone_id='Asia/Seoul',
+            permissions=['geolocation'], geolocation={'latitude': args.latitude, 'longitude': args.longitude, 'accuracy': 15})
         page = await context.new_page()
-        await page.clock.set_fixed_time(datetime(2026, 11, 11, 1, 0, tzinfo=timezone.utc))
-        errors, requests = [], []
+        await page.clock.set_fixed_time(datetime(2026, 11, 11, HOUR, MINUTE, tzinfo=timezone(timedelta(hours=9))))
+        errors, requests, resource_urls = [], [], []
         page.on('pageerror', lambda error: errors.append(str(error)))
+        page.on('request', lambda request: resource_urls.append(request.url))
         page.on('request', lambda request: requests.append(request.post_data_json)
                 if request.method == 'POST' and request.url.endswith('/v1/journeys/search') else None)
         await page.route('https://tile.openstreetmap.org/**', lambda route: route.fulfill(
@@ -50,21 +56,13 @@ async def run():
             await page.get_by_role('button', name='현재 위치를 출발지로', exact=True).dispatch_event('click')
             await page.get_by_role('button', name=re.compile('출발 지점 선택.*현재 위치')).wait_for()
             await page.get_by_role('button', name='도착 지점 선택', exact=False).click()
+            place_started = time.perf_counter()
             await page.get_by_role('textbox').fill('업스퀘어')
+            await page.get_by_role('button', name='업스퀘어', exact=False).first.wait_for()
+            place_elapsed = round((time.perf_counter() - place_started) * 1000, 1)
             await page.get_by_role('button', name='업스퀘어', exact=False).first.click()
             await page.get_by_role('button', name='나의 경로 만들기', exact=True).click()
-            await page.get_by_role('button', name=re.compile(r'^\d\d:\d\d$')).dispatch_event('click')
-            await page.get_by_role('button', name=re.compile('입력 모드')).dispatch_event('click')
-            fields = page.get_by_role('textbox')
-            await fields.nth(0).click()
-            await fields.nth(0).fill('10')
-            await fields.nth(1).click()
-            await fields.nth(1).fill('07')
-            morning = page.get_by_role('button', name=re.compile('^오전'))
-            if await morning.count():
-                await morning.first.click()
-            await page.get_by_role('button', name='확인', exact=True).click()
-            await page.get_by_role('button', name='10:07', exact=True).wait_for()
+            await page.get_by_role('button', name=args.departure, exact=True).wait_for()
             await page.get_by_role('button', name='1회', exact=True).dispatch_event('click')
             await expect(page.get_by_role('button', name='1회', exact=True)).to_have_attribute('aria-current', 'true')
             await page.screenshot(path=str(ROOT / 'artifacts/screenshots/24-official-conditions-mobile.png'))
@@ -77,7 +75,8 @@ async def run():
             await page.get_by_role('button', name=re.compile('^ANY%.*경로 상세 보기')).first.wait_for()
             elapsed = round((time.perf_counter() - started) * 1000, 1)
             query = requests[-1]
-            assert query['dataset'] == 'service' and query['departure'] == 607 and query['max_transfers'] == 1, query
+            assert query['dataset'] == 'service' and query['departure'] == DEPARTURE and query['max_transfers'] == 1, query
+            assert query['max_walk'] == 2000 and query['include_geometry'] and result['geometry']['shapes'], query
             assert query['destination_point']['name'] == '업스퀘어', query
             snapshot = await page.locator('body').aria_snapshot()
             assert '추정' not in snapshot and 'A BETTER WAY' not in snapshot
@@ -93,17 +92,20 @@ async def run():
                 await page.get_by_role('button', name='경로 비교하기', exact=True).click(force=True)
             saturday = await (await pending.value).json()
             assert requests[-1]['service_day'] == 'saturday' and saturday['journeys']
-            assert saturday['journeys'][0]['arrival'] != result['journeys'][0]['arrival']
-            resources = await page.evaluate("performance.getEntriesByType('resource').map(r=>({url:r.name,bytes:r.encodedBodySize}))")
-            assert not any('walk_graph.bin' in r['url'] for r in resources)
+            assert all(row['arrival'] >= DEPARTURE and row['walkingMeters'] <= 2000 and row['transfers'] <= 1
+                       for row in saturday['journeys'])
+            assert not any('walk_graph.bin' in url for url in resource_urls)
+            assert not any('places.json' in url for url in resource_urls)
+            assert any('compact=true' in url for url in resource_urls), [url for url in resource_urls if '/v1/' in url]
             await page.set_viewport_size({'width': 1440, 'height': 900})
             await page.screenshot(path=str(ROOT / 'artifacts/screenshots/27-official-results-desktop.png'))
             assert not errors, errors
             report = {'passed': ['official timetable is the default', 'GPS origin and place destination',
-                '10:07 departure and one-transfer condition', 'timed journeys to Upsquare',
-                'concise result copy', 'route detail and location control', 'Saturday selection changes schedule',
-                'web search avoids the 24MB walking-graph download'], 'errors': errors,
-                'url': URL, 'queryToVisibleResultsMs': elapsed, 'networkVersion': result['networkVersion'],
+                f'{args.departure} departure, 2km walking and one-transfer condition', 'timed journeys to Upsquare',
+                'concise result copy', 'route detail and location control', 'Saturday selection uses the matching service day',
+                'web search avoids walking-graph and full place-index downloads', 'compact network with selected road shapes'], 'errors': errors,
+                'url': URL, 'queryToVisibleResultsMs': elapsed, 'placeSearchToVisibleResultsMs': place_elapsed,
+                'simulatedOrigin': {'lat': args.latitude, 'lon': args.longitude}, 'networkVersion': result['networkVersion'],
                 'geolocation': 'Simulated Ulsan campus coordinate; no actual user GPS read', 'tiles': 'Memory PNG fixtures only'}
             (ROOT / 'artifacts' / args.report).write_text(json.dumps(report, indent=2), encoding='utf-8')
             print(json.dumps(report), flush=True)

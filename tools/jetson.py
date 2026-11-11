@@ -1,5 +1,6 @@
 """Task-scoped SSH helper. Password is read from stdin and never written to disk."""
 import argparse
+import hashlib
 import json
 import shlex
 import sys
@@ -9,14 +10,14 @@ import paramiko
 
 ROOT=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser()
-parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-web','deploy-web-server','deploy-apk','status'])
+parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status'])
 args=parser.parse_args()
 client=paramiko.SSHClient()
 client.load_system_host_keys()
 client.connect('100.119.23.4',username='hajin',password=sys.stdin.readline().strip(),look_for_keys=False,allow_agent=False,timeout=10,auth_timeout=10)
 client.get_transport().set_keepalive(15)
 try:
-    if args.action in ('deploy-backend','deploy-web','deploy-web-server','deploy-apk','status'):
+    if args.action in ('deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status'):
         base='/home/hajin/anypercent'
         sftp=client.open_sftp()
         sftp.get_channel().settimeout(60)
@@ -31,6 +32,13 @@ try:
                     sftp.mkdir(base)
                     with sftp.open(marker,'w') as f:f.write('isolated Anypercent development demo\n')
                 else:raise RuntimeError('Unmanaged existing remote folder; refusing to overwrite')
+            remote_hashes = {}
+            if args.action == 'deploy-web':
+                _, hashes, hash_errors = client.exec_command('find '+shlex.quote(base+'/web')+' -type f -exec sha256sum {} +', timeout=45)
+                lines = hashes.read().decode().splitlines()
+                if hashes.channel.recv_exit_status() != 0:
+                    raise RuntimeError('Could not read the existing web bundle hashes')
+                remote_hashes = {line[66:]: line[:64] for line in lines}
             def upload(source,target):
                 if source.is_dir():
                     try:sftp.mkdir(target)
@@ -38,14 +46,17 @@ try:
                     for child in source.iterdir():
                         if child.name not in ('__pycache__','.pytest_cache'):upload(child,target+'/'+child.name)
                 else:
+                    if remote_hashes.get(target) == hashlib.sha256(source.read_bytes()).hexdigest():
+                        return
                     sftp.put(str(source),target)
-            if args.action=='deploy-backend':
+            if args.action in ('deploy-backend','deploy-backend-code'):
                 for folder in ('backend','shared','tools'):
                     try:sftp.mkdir(base+'/'+folder)
                     except OSError:pass
                 upload(ROOT/'backend/app',base+'/backend/app')
-                for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
-                    upload(ROOT/'shared'/name,base+'/shared/'+name)
+                if args.action == 'deploy-backend':
+                    for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
+                        upload(ROOT/'shared'/name,base+'/shared/'+name)
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             elif args.action in ('deploy-web','deploy-web-server'):
                 if args.action == 'deploy-web':
@@ -55,13 +66,15 @@ try:
             else:
                 manifest=json.loads((ROOT/'release/manifest.json').read_text())
                 apk=next(item for item in manifest['files'] if item['name'].endswith('.apk'))
-                upload(ROOT/'release'/apk['name'],base+'/web/AnyPercent.apk')
-                _,check,check_err=client.exec_command('sha256sum '+shlex.quote(base+'/web/AnyPercent.apk'),timeout=20)
+                temporary = base + '/web/AnyPercent.apk.uploading'
+                upload(ROOT/'release'/apk['name'],temporary)
+                _,check,check_err=client.exec_command('sha256sum '+shlex.quote(temporary),timeout=20)
                 if check.read().decode().split()[0]!=apk['sha256']:
                     raise RuntimeError('Uploaded APK checksum mismatch')
+                sftp.posix_rename(temporary, base + '/web/AnyPercent.apk')
                 print('APK SHA256 verified')
         sftp.close()
-        action={'deploy-backend':'start-backend','deploy-web':'start-web','deploy-web-server':'start-web','deploy-apk':'status','status':'status'}[args.action]
+        action={'deploy-backend':'start-backend','deploy-backend-code':'start-backend','deploy-web':'start-web','deploy-web-server':'start-web','deploy-apk':'status','status':'status'}[args.action]
         _,out,err=client.exec_command('python3 '+base+'/tools/remote_runtime.py '+action,timeout=30)
         print(out.read().decode());print(err.read().decode())
         if out.channel.recv_exit_status()!=0:raise RuntimeError('Remote demo command failed')

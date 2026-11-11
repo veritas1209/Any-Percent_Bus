@@ -26,6 +26,10 @@ NETWORKS = {'demo': NETWORK, 'observed': OBSERVED}
 SERVICE = json.loads((ROOT / 'shared/service_network.json').read_text(encoding='utf-8'))
 NETWORKS['service'] = SERVICE
 NETWORK_JSON={name:json.dumps(data,ensure_ascii=False,separators=(',',':')).encode('utf-8') for name,data in NETWORKS.items()}
+COMPACT_SERVICE = dict(SERVICE, compact=True,
+    routes=[{k:v for k,v in route.items() if k != 'shapeSegments'} for route in SERVICE['routes']])
+COMPACT_SERVICE.pop('shapes', None)
+COMPACT_SERVICE_JSON = json.dumps(COMPACT_SERVICE, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
 ENGINES = {name: Engine(data) for name, data in NETWORKS.items()}
 HISTORY=generate_history(NETWORK)
 app = FastAPI(title='Any% journey planner', version='0.3.0')
@@ -50,7 +54,7 @@ class Search(BaseModel):
     destination: str
     departure: float = Field(default=430,ge=0,lt=1440)
     walking_speed: float = Field(default=1.2,ge=.3,le=3)
-    max_walk: float = Field(default=500,ge=0,le=2000)
+    max_walk: float = Field(default=500,ge=0,le=5000)
     max_transfers: int = Field(default=2,ge=0,le=2)
     delay: float = Field(default=0,ge=0,le=30)
     samples: int = Field(default=300,ge=20,le=1000)
@@ -58,6 +62,7 @@ class Search(BaseModel):
     origin_point: Location | None = None
     destination_point: Location | None = None
     service_day: Literal['weekday','saturday','holiday'] = 'weekday'
+    include_geometry: bool = False
 
 
 @app.get('/v1/places/search')
@@ -85,8 +90,9 @@ def health():
 
 
 @app.get('/v1/network')
-def network(dataset: Literal['demo','observed','service']='observed'):
-    return Response(content=NETWORK_JSON[dataset],media_type='application/json')
+def network(dataset: Literal['demo','observed','service']='observed', compact: bool=False):
+    content = COMPACT_SERVICE_JSON if dataset == 'service' and compact else NETWORK_JSON[dataset]
+    return Response(content=content,media_type='application/json')
 
 
 @app.get('/v1/stops/search')
@@ -117,7 +123,7 @@ def coverage():
 def journeys(body: Search):
     started=time.perf_counter()
     try:
-        payload = body.model_dump(exclude={'dataset'})
+        payload = body.model_dump(exclude={'dataset', 'include_geometry'})
         if body.dataset == 'service':
             key = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(',', ':'))
             rows = _service_search(key)
@@ -127,8 +133,20 @@ def journeys(body: Search):
         raise HTTPException(400,str(e)) from e
     selected=NETWORKS[body.dataset]
     topology_only=bool(rows) and all(j.get('scheduleAvailable') is False for j in rows)
-    return {'journeys':rows,'source':'catalog_topology' if topology_only else selected['source'],'delaySource':'unavailable' if topology_only else 'simulated','networkVersion':selected['version'],'elapsedMs':round((time.perf_counter()-started)*1000,2),
+    result = {'journeys':rows,'source':'catalog_topology' if topology_only else selected['source'],'delaySource':'unavailable' if topology_only else 'simulated','networkVersion':selected['version'],'elapsedMs':round((time.perf_counter()-started)*1000,2),
             'warning':('시각 자료가 없는 노선 연결 후보입니다. 도착시각·환승 성공률을 제공하지 않습니다.' if topology_only else selected['description']+' 지연 확률은 가상 표본의 추정치입니다.')}
+    if body.dataset == 'service' and body.include_geometry:
+        route_ids = {leg['routeId'] for row in rows for leg in row['legs'] if leg['kind'] == 'ride'}
+        routes = {route['id']: {'shapeSegments': route['shapeSegments']} for route in selected['routes'] if route['id'] in route_ids}
+        shape_ids = set()
+        for row in rows:
+            for leg in row['legs']:
+                if leg['kind'] == 'ride':
+                    shape_ids.update(routes[leg['routeId']]['shapeSegments'][leg['boardIndex']:leg['alightIndex']])
+                elif isinstance(leg.get('shape'), str):
+                    shape_ids.add(leg['shape'])
+        result['geometry'] = {'routes': routes, 'shapes': {key:selected['shapes'][key] for key in shape_ids}}
+    return result
 
 
 @lru_cache(maxsize=32)

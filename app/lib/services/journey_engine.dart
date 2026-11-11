@@ -71,6 +71,7 @@ class JourneyEngine {
     ];
     final found = <String, Json>{};
     var cutoff = double.infinity;
+    List<Map<String, double>>? latest;
     void add(List<Json> legs, double walked) {
       final key = legs
           .map((l) => '${l['routeId'] ?? 'walk'}:${l['from']}:${l['to']}')
@@ -121,6 +122,13 @@ class JourneyEngine {
       final next = <Json>[];
       for (final state in frontier) {
         if (numValue(state['now']) > cutoff) continue;
+        if (latest != null &&
+            numValue(state['now']) >
+                (latest[q.maxTransfers - round + 1][state['stop']] ??
+                        double.negativeInfinity) +
+                    1e-6) {
+          continue;
+        }
         if (numValue(state['walked']) +
                 (bounds[q.maxTransfers - round + 1][state['stop']] ??
                     double.infinity) >
@@ -159,6 +167,13 @@ class JourneyEngine {
           }
         }
         for (final access in accesses) {
+          if (latest != null &&
+              numValue(access['now']) >
+                  (latest[q.maxTransfers - round + 1][access['stop']] ??
+                          double.negativeInfinity) +
+                      1e-6) {
+            continue;
+          }
           for (final (route, bi) in boards[access['stop']] ?? <(Json, int)>[]) {
             final used = state['used'] as Set<String>;
             final stops = (route['stops'] as List).cast<String>();
@@ -176,6 +191,13 @@ class JourneyEngine {
             final trip = departures[index];
             for (var ai = bi + 1; ai < stops.length; ai++) {
               if (trip + offsets[ai] > cutoff) continue;
+              if (latest != null &&
+                  trip + offsets[ai] >
+                      (latest[q.maxTransfers - round][stops[ai]] ??
+                              double.negativeInfinity) +
+                          1e-6) {
+                continue;
+              }
               if (!layers[q.maxTransfers - round].contains(stops[ai])) continue;
               if (numValue(access['walked']) +
                       (bounds[q.maxTransfers - round][stops[ai]] ??
@@ -237,11 +259,33 @@ class JourneyEngine {
           }
         }
       }
-      frontier = round < q.maxTransfers
-          ? paretoLabels(
-              next.where((s) => numValue(s['now']) <= cutoff).toList(),
-            )
-          : [];
+      if (round < q.maxTransfers) {
+        final remaining = q.maxTransfers - round;
+        latest = cutoff.isFinite
+            ? latestDepartures(
+                timedRoutes,
+                network.data['footpaths'],
+                q.destination,
+                remaining,
+                cutoff,
+                q.walkingSpeed,
+              )
+            : null;
+        final limits = latest;
+        frontier = paretoLabels(
+          next
+              .where(
+                (s) =>
+                    numValue(s['now']) <= cutoff &&
+                    (limits == null ||
+                        numValue(s['now']) <=
+                            (limits[remaining][s['stop']] ??
+                                    double.negativeInfinity) +
+                                1e-6),
+              )
+              .toList(),
+        );
+      }
     }
     final candidates = found.values.toList()
       ..sort((a, b) => (a['arrival'] as num).compareTo(b['arrival']));
