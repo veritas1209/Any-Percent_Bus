@@ -1,6 +1,10 @@
 {
-  "version": "0.3.1",
+  "version": "0.4.0",
+  "deployedAt": "2026-11-11T02:51:03.577953+00:00",
+  "sourceCommit": "a842a1177b62bbdc58550d625e9a1221bd8e98d0",
   "webUrl": "https://hajin-desktop.tailfb939b.ts.net:9443",
+  "appDataset": "service",
+  "serviceNetworkVersion": "ulsan-its-2026-11-11",
   "health": {
     "status": "ok",
     "mode": "prototype",
@@ -8,12 +12,15 @@
     "defaultDataset": "observed",
     "datasets": [
       "demo",
-      "observed"
+      "observed",
+      "service"
     ]
   },
   "webStatus": 200,
-  "apkBytes": 76446552,
-  "apkSha256VerifiedBySftp": "009f68b10729219b2313efd91cc7fbaf452d984a7b81fbe70a756336741ffb97",
-  "geolocationBrowserAcceptance": "Simulated positions; passed",
-  "bustracker": "active; separate process and files unchanged"
+  "apkBytes": 79029048,
+  "apkSha256VerifiedBySftp": "b4dfe9f70b9bee018c9c851ee353312764da674acdceccafea0a2473d7070cbc",
+  "browserChecksPassed": 8,
+  "geolocationBrowserAcceptance": "Simulated Ulsan coordinate; passed",
+  "androidInstallation": "No physical Android device connected",
+  "bustracker": "active"
 }
