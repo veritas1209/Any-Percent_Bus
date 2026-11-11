@@ -1,9 +1,10 @@
 {
+  "version": "0.4.1",
   "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
-  "javaScriptBytes": 3491413,
-  "compressedJavaScriptBytes": 1022599,
+  "javaScriptBytes": 3497390,
+  "compressedJavaScriptBytes": 1024697,
   "compressedContentMatchesBuild": true,
   "apkRangeStatus": 206,
   "apkRangeBytesMatchBuild": true,
-  "clientNetwork": "Outside the Jetson tailnet, no exit node"
+  "network": "Public Funnel IPv4 gateway forced with curl --resolve"
 }

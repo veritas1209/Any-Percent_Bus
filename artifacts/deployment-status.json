@@ -1,7 +1,7 @@
 {
-  "version": "0.4.0",
-  "deployedAt": "2026-11-11T02:51:03.577953+00:00",
-  "sourceCommit": "a842a1177b62bbdc58550d625e9a1221bd8e98d0",
+  "version": "0.4.1",
+  "deployedAt": "2026-11-11T04:33:17.788532+00:00",
+  "sourceCommit": "0981f622c5e9621f8dc6a7d0bf16be7291670737",
   "webUrl": "https://hajin-desktop.tailfb939b.ts.net:10000",
   "appDataset": "service",
   "serviceNetworkVersion": "ulsan-its-2026-11-11",
@@ -17,16 +17,22 @@
     ]
   },
   "webStatus": 200,
-  "apkBytes": 79029048,
-  "apkSha256VerifiedBySftp": "b4dfe9f70b9bee018c9c851ee353312764da674acdceccafea0a2473d7070cbc",
-  "browserChecksPassed": 8,
+  "apkBytes": 79045432,
+  "apkSha256VerifiedBySftp": "d830493bb38d9dd9cca88fcf33fb45eb2958cd4c1993a10d02b21f9eb7009334",
+  "browserChecksPassed": 9,
   "geolocationBrowserAcceptance": "Simulated Ulsan coordinate; passed",
-  "androidInstallation": "No physical Android device connected",
+  "androidInstallation": "Not tested on a physical device",
   "bustracker": "active",
   "apkUrl": "https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk",
   "publicAccess": true,
   "clientRequiresTailscale": false,
   "publicEnabledAt": "2026-11-11T03:23:37.421705+00:00",
-  "apkSha256VerifiedByPublicDownload": "b4dfe9f70b9bee018c9c851ee353312764da674acdceccafea0a2473d7070cbc",
-  "webServer": "Uvicorn static files with gzip and APK range requests"
+  "webServer": "Uvicorn static files with gzip and APK range requests",
+  "apkPublicRangeVerified": true,
+  "campusBrowserChecks": {
+    "east": 9,
+    "west": 9
+  },
+  "defaultWalkingMeters": 2000,
+  "maximumWalkingMeters": 5000
 }

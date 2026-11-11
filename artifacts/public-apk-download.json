@@ -1,8 +1,12 @@
 {
+  "version": "0.4.1",
+  "verifiedAt": "2026-11-11T04:33:17.788532+00:00",
   "url": "https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk",
-  "bytes": 79029048,
-  "sha256": "b4dfe9f70b9bee018c9c851ee353312764da674acdceccafea0a2473d7070cbc",
-  "matchesBuiltApk": true,
-  "network": "Public IPv4, outside the Jetson tailnet; no exit node",
-  "downloadSeconds": 188
+  "bytes": 79045432,
+  "sha256": "d830493bb38d9dd9cca88fcf33fb45eb2958cd4c1993a10d02b21f9eb7009334",
+  "verification": "Whole-file SSH hash plus public HEAD and first/last byte ranges",
+  "publicHttpStatus": 200,
+  "publicRangeStatus": 206,
+  "rangeBytesMatchBuiltApk": true,
+  "fullPublicDownloadPerformed": false
 }
