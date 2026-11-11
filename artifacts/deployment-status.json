@@ -1,9 +1,9 @@
 {
-  "version": "0.4.2",
-  "sourceCommit": "5785d4a166032790434edfc2d4c42792e56fa389",
+  "version": "0.4.3",
+  "sourceCommit": "d0fe9012e9475539f568e4268fbac1c00741bbba",
   "webUrl": "https://hajin-desktop.tailfb939b.ts.net:10000",
   "appDataset": "service",
-  "serviceNetworkVersion": "ulsan-its-2026-11-11+shape2",
+  "serviceNetworkVersion": "ulsan-its-2026-11-11+sources3",
   "health": {
     "status": "ok",
     "mode": "prototype",
@@ -18,8 +18,8 @@
   "webStatus": 200,
   "apkBytes": 79045432,
   "apkSha256VerifiedBySftp": "d830493bb38d9dd9cca88fcf33fb45eb2958cd4c1993a10d02b21f9eb7009334",
-  "browserChecksPassed": 10,
-  "geolocationBrowserAcceptance": "Simulated Ulsan coordinate; passed",
+  "browserChecksPassed": 40,
+  "geolocationBrowserAcceptance": "Simulated public coordinates in four flows; no actual user GPS read",
   "androidInstallation": "Not tested on a physical device",
   "bustracker": "active",
   "apkUrl": "https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk",
@@ -28,16 +28,12 @@
   "publicEnabledAt": "2026-11-11T03:23:37.421705+00:00",
   "webServer": "Uvicorn static files with gzip and APK range requests",
   "apkPublicRangeVerified": true,
-  "campusBrowserChecks": {
-    "east": 10,
-    "west": 10
-  },
   "apkSourceCommit": "0981f622c5e9621f8dc6a7d0bf16be7291670737",
-  "webVersion": "0.4.2",
+  "webVersion": "0.4.3",
   "apkVersion": "0.4.1",
   "apkReleaseDeferred": true,
-  "verifiedAt": "2026-11-11T06:04:02.272005+00:00",
-  "liveMapChecksPassed": 10,
+  "verifiedAt": "2026-11-11T09:18:42.180005+00:00",
+  "liveMapChecksPassed": 40,
   "walkingMaximum": null,
   "walkingPreferences": {
     "less": 2,
@@ -47,10 +43,52 @@
   "nearbyBoardingVerified": "울산과학대학앞 27121; east campus 14:15 to Upsquare",
   "route124SegmentsWithGeometry": 10,
   "webBytesMatchBuild": true,
-  "apkVerification": "Existing 0.4.1 retained; no new APK uploaded",
-  "webLastModified": "2026-11-11T05:44:25+00:00",
+  "apkVerification": "Existing 0.4.1 retained; no new APK built or uploaded",
   "processes": {
-    "backend": 1246030,
-    "web": 1247397
-  }
+    "backend": 1297252,
+    "web": 1299262
+  },
+  "serviceNetworkSha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
+  "webJavaScriptSha256": "0b263df2ee6c5ac5a18d6d8ea8ed2f43be1f83080b4b7fd00ed96856b2f421e9",
+  "backendTestsPassed": 42,
+  "flutterTestsPassed": 39,
+  "flutterAnalyzeIssues": 0,
+  "browserFlows": {
+    "browser-airport-direct.json": {
+      "passed": 10,
+      "resultMs": 593.0,
+      "placeSearchMs": 992.1,
+      "mapTiles": 6
+    },
+    "browser-ktx-direct.json": {
+      "passed": 10,
+      "resultMs": 1861.5,
+      "placeSearchMs": 1457.9,
+      "mapTiles": 6
+    },
+    "browser-hospital-airport-transfer.json": {
+      "passed": 10,
+      "resultMs": 2597.7,
+      "placeSearchMs": 953.5,
+      "mapTiles": 12
+    },
+    "browser-hospital-namchang-transfer.json": {
+      "passed": 10,
+      "resultMs": 2950.0,
+      "placeSearchMs": 958.7,
+      "mapTiles": 8
+    }
+  },
+  "browserTimingScope": "Flow latency with potentially warm request caches; use service-performance.json for uncached server times",
+  "routeMatrixCasesPassed": 50,
+  "uncachedServerTiming": {
+    "minMs": 186.33,
+    "maxMs": 5056.24,
+    "meanMs": 1783.38,
+    "medianMs": 1238.89
+  },
+  "publicIpv4VerifiedWithoutJetsonTailnet": true,
+  "dataAudit": "artifacts/service-data-audit.json",
+  "geometryMissingSegments": 0,
+  "correctedStopPositions": 78
 }
