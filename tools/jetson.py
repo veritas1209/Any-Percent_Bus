@@ -9,14 +9,14 @@ import paramiko
 
 ROOT=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser()
-parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-web','deploy-apk','status'])
+parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-web','deploy-web-server','deploy-apk','status'])
 args=parser.parse_args()
 client=paramiko.SSHClient()
 client.load_system_host_keys()
 client.connect('100.119.23.4',username='hajin',password=sys.stdin.readline().strip(),look_for_keys=False,allow_agent=False,timeout=10,auth_timeout=10)
 client.get_transport().set_keepalive(15)
 try:
-    if args.action in ('deploy-backend','deploy-web','deploy-apk','status'):
+    if args.action in ('deploy-backend','deploy-web','deploy-web-server','deploy-apk','status'):
         base='/home/hajin/anypercent'
         sftp=client.open_sftp()
         sftp.get_channel().settimeout(60)
@@ -47,8 +47,10 @@ try:
                 for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
                     upload(ROOT/'shared'/name,base+'/shared/'+name)
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
-            elif args.action=='deploy-web':
-                upload(ROOT/'app/build/web',base+'/web')
+            elif args.action in ('deploy-web','deploy-web-server'):
+                if args.action == 'deploy-web':
+                    upload(ROOT/'app/build/web',base+'/web')
+                upload(ROOT/'tools/web_server.py',base+'/tools/web_server.py')
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             else:
                 manifest=json.loads((ROOT/'release/manifest.json').read_text())
@@ -59,7 +61,7 @@ try:
                     raise RuntimeError('Uploaded APK checksum mismatch')
                 print('APK SHA256 verified')
         sftp.close()
-        action={'deploy-backend':'start-backend','deploy-web':'start-web','deploy-apk':'status','status':'status'}[args.action]
+        action={'deploy-backend':'start-backend','deploy-web':'start-web','deploy-web-server':'start-web','deploy-apk':'status','status':'status'}[args.action]
         _,out,err=client.exec_command('python3 '+base+'/tools/remote_runtime.py '+action,timeout=30)
         print(out.read().decode());print(err.read().decode())
         if out.channel.recv_exit_status()!=0:raise RuntimeError('Remote demo command failed')

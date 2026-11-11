@@ -132,12 +132,12 @@ Windows에서는 `tools/start_backend.ps1`, `tools/serve_web.ps1`로 이미 준�
 
 권한 거절·차단, 위치 기능 꺼짐, 시간 초과, 시연 범위 밖 위치를 안내하며 실패 시 기존 출발지를 유지합니다. Android는 대략적·정확한 위치 권한을 함께 요청하며 위치 정확도를 표시합니다. 실제 기기 설치와 실내외 GPS 품질은 미검증이며, 브라우저 검증은 주입한 울산 좌표를 사용합니다.
 
-웹 현재 위치는 **https://hajin-desktop.tailfb939b.ts.net:9443**에서 사용합니다. 기존 HTTP 주소에서는 HTTPS 앱 열기를 안내합니다. HTTPS 웹의 API는 같은 주소의 `/v1`로 연결하여 혼합 콘텐츠 없이 동작합니다. Tailscale Serve의 별도 9443 포트만 추가했으며 다른 서비스 설정은 유지합니다. 이 포트에 Funnel은 활성화하지 않았습니다. 참고: [Geolocator 문서](https://pub.dev/packages/geolocator), [Tailscale Serve](https://tailscale.com/docs/reference/tailscale-cli/serve).
+공개 웹 주소는 **https://hajin-desktop.tailfb939b.ts.net:10000**입니다. Tailscale 앱 설치나 연결 없이 접속하고 현재 위치를 사용할 수 있습니다. HTTPS 웹의 경로 검색은 같은 주소의 API로 연결합니다. Jetson의 Tailscale Funnel 10000 포트에서 웹·APK와 `/v1/network`, `/v1/journeys/search`를 제공합니다. 공개 설정은 `tools/jetson_https.py enable-public`으로 적용합니다. 참고 자료는 [Tailscale Funnel](https://tailscale.com/docs/features/tailscale-funnel)입니다.
 
 ## Jetson 시연 서버
 
-- 앱: `https://hajin-desktop.tailfb939b.ts.net:9443` (같은 Tailscale 네트워크에서 접속)
-- Android 설치파일: `https://hajin-desktop.tailfb939b.ts.net:9443/AnyPercent.apk` (Tailscale 연결된 휴대폰에서 다운로드 가능)
+- 앱: `https://hajin-desktop.tailfb939b.ts.net:10000`
+- Android 설치파일: `https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk`
 - Any% API와 Swagger: `http://100.119.23.4:8001/docs`
 - 위치: `/home/hajin/anypercent`, 기존 BusTracker와 별도 디렉터리·프로세스·SQLite
 - 기본 앱은 울산 공식 시간표를 사용합니다. HTTPS 웹은 API 계산, Android는 기본적으로 오프라인 계산으로 실행됩니다.

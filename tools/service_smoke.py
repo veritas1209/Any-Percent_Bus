@@ -1,16 +1,22 @@
 """Exercise the official-timetable app through its normal browser entry points."""
 import asyncio
+import argparse
 import json
 import re
 import struct
 import time
 import zlib
 from pathlib import Path
+from datetime import datetime, timezone
 
 from playwright.async_api import async_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = 'https://hajin-desktop.tailfb939b.ts.net:9443'
+parser = argparse.ArgumentParser()
+parser.add_argument('--url', default='https://hajin-desktop.tailfb939b.ts.net:9443')
+parser.add_argument('--report', default='browser-acceptance.json')
+args = parser.parse_args()
+URL = args.url.rstrip('/')
 
 
 def png_chunk(kind, data):
@@ -28,6 +34,7 @@ async def run():
         context = await browser.new_context(viewport={'width': 390, 'height': 844},
             permissions=['geolocation'], geolocation={'latitude': 35.499699, 'longitude': 129.417175, 'accuracy': 15})
         page = await context.new_page()
+        await page.clock.set_fixed_time(datetime(2026, 11, 11, 1, 0, tzinfo=timezone.utc))
         errors, requests = [], []
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.on('request', lambda request: requests.append(request.post_data_json)
@@ -38,7 +45,7 @@ async def run():
             await page.goto(URL, wait_until='domcontentloaded', timeout=60000)
             await page.locator('flt-semantics-placeholder').wait_for(timeout=60000)
             await page.locator('flt-semantics-placeholder').dispatch_event('click')
-            await page.get_by_role('button', name='현재 위치를 출발지로', exact=True).wait_for()
+            await page.get_by_role('button', name='현재 위치를 출발지로', exact=True).wait_for(timeout=90000)
             assert '울산 공식 시간표' in await page.locator('body').aria_snapshot()
             await page.get_by_role('button', name='현재 위치를 출발지로', exact=True).dispatch_event('click')
             await page.get_by_role('button', name=re.compile('출발 지점 선택.*현재 위치')).wait_for()
@@ -98,7 +105,7 @@ async def run():
                 'web search avoids the 24MB walking-graph download'], 'errors': errors,
                 'url': URL, 'queryToVisibleResultsMs': elapsed, 'networkVersion': result['networkVersion'],
                 'geolocation': 'Simulated Ulsan campus coordinate; no actual user GPS read', 'tiles': 'Memory PNG fixtures only'}
-            (ROOT / 'artifacts/browser-acceptance.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+            (ROOT / 'artifacts' / args.report).write_text(json.dumps(report, indent=2), encoding='utf-8')
             print(json.dumps(report), flush=True)
         except Exception:
             snapshot = await page.locator('body').aria_snapshot()

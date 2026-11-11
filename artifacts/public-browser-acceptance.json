@@ -1,0 +1,18 @@
+{
+  "passed": [
+    "official timetable is the default",
+    "GPS origin and place destination",
+    "10:07 departure and one-transfer condition",
+    "timed journeys to Upsquare",
+    "concise result copy",
+    "route detail and location control",
+    "Saturday selection changes schedule",
+    "web search avoids the 24MB walking-graph download"
+  ],
+  "errors": [],
+  "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
+  "queryToVisibleResultsMs": 574.4,
+  "networkVersion": "ulsan-its-2026-11-11",
+  "geolocation": "Simulated Ulsan campus coordinate; no actual user GPS read",
+  "tiles": "Memory PNG fixtures only"
+}

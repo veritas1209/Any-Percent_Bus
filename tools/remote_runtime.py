@@ -27,8 +27,8 @@ def managed(kind):
         if (proc/'stat').read_text().split(') ',1)[1].split()[0]=='Z':return None
         command=(proc/'cmdline').read_bytes().replace(b'\0',b' ').decode()
         if not command.strip():return None
-        expected='uvicorn app.main:app' if kind=='backend' else 'http.server 8080'
-        if (proc/'cwd').resolve()!=ROOT or expected not in command:
+        expected=('uvicorn app.main:app',) if kind=='backend' else ('http.server 8080','tools/web_server.py')
+        if (proc/'cwd').resolve()!=ROOT or not any(value in command for value in expected):
             if (proc/'stat').read_text().split(') ',1)[1].split()[0]=='Z':return None
             raise RuntimeError(f'{kind}: PID does not belong to this demo; refusing to stop it')
         return pid
@@ -56,7 +56,7 @@ def start(kind):
         env.update(BUSTRACKER_CSV='/home/hajin/bustracker/gps_replay.csv',BUSTRACKER_URL=f'http://{HOST}:8001',BUSTRACKER_INTEGRATION_KEY=keyfile.read_text().strip())
         command=[sys.executable,'-m','uvicorn','app.main:app','--app-dir','backend','--host',HOST,'--port','8001']
     else:
-        command=[sys.executable,'-m','http.server','8080','--bind',HOST,'--directory',str(ROOT/'web')]
+        command=[sys.executable,str(ROOT/'tools/web_server.py'),'--host',HOST,'--port','8080']
     with (ROOT/f'{kind}.log').open('a') as log:
         child=subprocess.Popen(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
     (ROOT/f'.{kind}.pid').write_text(str(child.pid))

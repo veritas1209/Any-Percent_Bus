@@ -1,0 +1,9 @@
+{
+  "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
+  "javaScriptBytes": 3491413,
+  "compressedJavaScriptBytes": 1022599,
+  "compressedContentMatchesBuild": true,
+  "apkRangeStatus": 206,
+  "apkRangeBytesMatchBuild": true,
+  "clientNetwork": "Outside the Jetson tailnet, no exit node"
+}

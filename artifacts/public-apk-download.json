@@ -1,0 +1,8 @@
+{
+  "url": "https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk",
+  "bytes": 79029048,
+  "sha256": "b4dfe9f70b9bee018c9c851ee353312764da674acdceccafea0a2473d7070cbc",
+  "matchesBuiltApk": true,
+  "network": "Public IPv4, outside the Jetson tailnet; no exit node",
+  "downloadSeconds": 188
+}
