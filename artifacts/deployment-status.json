@@ -1,10 +1,9 @@
 {
-  "version": "0.4.1",
-  "deployedAt": "2026-11-11T04:33:17.788532+00:00",
-  "sourceCommit": "0981f622c5e9621f8dc6a7d0bf16be7291670737",
+  "version": "0.4.2",
+  "sourceCommit": "5785d4a166032790434edfc2d4c42792e56fa389",
   "webUrl": "https://hajin-desktop.tailfb939b.ts.net:10000",
   "appDataset": "service",
-  "serviceNetworkVersion": "ulsan-its-2026-11-11",
+  "serviceNetworkVersion": "ulsan-its-2026-11-11+shape2",
   "health": {
     "status": "ok",
     "mode": "prototype",
@@ -19,7 +18,7 @@
   "webStatus": 200,
   "apkBytes": 79045432,
   "apkSha256VerifiedBySftp": "d830493bb38d9dd9cca88fcf33fb45eb2958cd4c1993a10d02b21f9eb7009334",
-  "browserChecksPassed": 9,
+  "browserChecksPassed": 10,
   "geolocationBrowserAcceptance": "Simulated Ulsan coordinate; passed",
   "androidInstallation": "Not tested on a physical device",
   "bustracker": "active",
@@ -30,9 +29,28 @@
   "webServer": "Uvicorn static files with gzip and APK range requests",
   "apkPublicRangeVerified": true,
   "campusBrowserChecks": {
-    "east": 9,
-    "west": 9
+    "east": 10,
+    "west": 10
   },
-  "defaultWalkingMeters": 2000,
-  "maximumWalkingMeters": 5000
+  "apkSourceCommit": "0981f622c5e9621f8dc6a7d0bf16be7291670737",
+  "webVersion": "0.4.2",
+  "apkVersion": "0.4.1",
+  "apkReleaseDeferred": true,
+  "verifiedAt": "2026-11-11T06:04:02.272005+00:00",
+  "liveMapChecksPassed": 10,
+  "walkingMaximum": null,
+  "walkingPreferences": {
+    "less": 2,
+    "normal": 1,
+    "allow": 0.25
+  },
+  "nearbyBoardingVerified": "울산과학대학앞 27121; east campus 14:15 to Upsquare",
+  "route124SegmentsWithGeometry": 10,
+  "webBytesMatchBuild": true,
+  "apkVerification": "Existing 0.4.1 retained; no new APK uploaded",
+  "webLastModified": "2026-11-11T05:44:25+00:00",
+  "processes": {
+    "backend": 1246030,
+    "web": 1247397
+  }
 }
