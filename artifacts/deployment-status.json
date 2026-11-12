@@ -1,9 +1,9 @@
 {
-  "version": "0.4.3",
-  "sourceCommit": "d0fe9012e9475539f568e4268fbac1c00741bbba",
+  "version": "0.4.4",
+  "sourceCommit": "6b26d6efce979f5313c0eaf92a8501bf1e782ae4",
   "webUrl": "https://hajin-desktop.tailfb939b.ts.net:10000",
   "appDataset": "service",
-  "serviceNetworkVersion": "ulsan-its-2026-11-11+sources3",
+  "serviceNetworkVersion": "ulsan-its-2026-11-11+sources4+walk1",
   "health": {
     "status": "ok",
     "mode": "prototype",
@@ -13,13 +13,16 @@
       "demo",
       "observed",
       "service"
-    ]
+    ],
+    "transferRouting": "pedestrian_road_graph",
+    "walkingMaximumMeters": null,
+    "routingAccelerator": "scipy-1.14.1"
   },
   "webStatus": 200,
   "apkBytes": 79045432,
   "apkSha256VerifiedBySftp": "d830493bb38d9dd9cca88fcf33fb45eb2958cd4c1993a10d02b21f9eb7009334",
-  "browserChecksPassed": 40,
-  "geolocationBrowserAcceptance": "Simulated public coordinates in four flows; no actual user GPS read",
+  "browserChecksPassed": 20,
+  "geolocationBrowserAcceptance": "Simulated public coordinates in two flows; no actual user GPS read",
   "androidInstallation": "Not tested on a physical device",
   "bustracker": "active",
   "apkUrl": "https://hajin-desktop.tailfb939b.ts.net:10000/AnyPercent.apk",
@@ -29,11 +32,11 @@
   "webServer": "Uvicorn static files with gzip and APK range requests",
   "apkPublicRangeVerified": true,
   "apkSourceCommit": "0981f622c5e9621f8dc6a7d0bf16be7291670737",
-  "webVersion": "0.4.3",
+  "webVersion": "0.4.4",
   "apkVersion": "0.4.1",
   "apkReleaseDeferred": true,
-  "verifiedAt": "2026-11-11T09:18:42.180005+00:00",
-  "liveMapChecksPassed": 40,
+  "verifiedAt": "2026-11-12T02:11:42.691073+00:00",
+  "liveMapChecksPassed": 20,
   "walkingMaximum": null,
   "walkingPreferences": {
     "less": 2,
@@ -45,50 +48,65 @@
   "webBytesMatchBuild": true,
   "apkVerification": "Existing 0.4.1 retained; no new APK built or uploaded",
   "processes": {
-    "backend": 1297252,
-    "web": 1299262
+    "backend": 1557065,
+    "web": 1554265
   },
-  "serviceNetworkSha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
-  "webJavaScriptSha256": "0b263df2ee6c5ac5a18d6d8ea8ed2f43be1f83080b4b7fd00ed96856b2f421e9",
-  "backendTestsPassed": 42,
-  "flutterTestsPassed": 39,
+  "serviceNetworkSha256": "a29382f699b10e16ee612c9277df476ec6d228e539e26becc65998c0e98bd730",
+  "webJavaScriptSha256": "08902d16a277cf49a9c51fc4e6f5ca58c104e4b8dea5e691a152d9d2e2106625",
+  "backendTestsPassed": 49,
+  "flutterTestsPassed": 41,
   "flutterAnalyzeIssues": 0,
   "browserFlows": {
-    "browser-airport-direct.json": {
-      "passed": 10,
-      "resultMs": 593.0,
-      "placeSearchMs": 992.1,
-      "mapTiles": 6
+    "browser-unlimited-direct.json": {
+      "checks": 10,
+      "resultMs": 1586.2,
+      "selection": {
+        "arrival": 873.4563555555555,
+        "walkingMeters": 566.0,
+        "transferWalkingMeters": [],
+        "longTransferSelected": false
+      }
     },
-    "browser-ktx-direct.json": {
-      "passed": 10,
-      "resultMs": 1861.5,
-      "placeSearchMs": 1457.9,
-      "mapTiles": 6
-    },
-    "browser-hospital-airport-transfer.json": {
-      "passed": 10,
-      "resultMs": 2597.7,
-      "placeSearchMs": 953.5,
-      "mapTiles": 12
-    },
-    "browser-hospital-namchang-transfer.json": {
-      "passed": 10,
-      "resultMs": 2950.0,
-      "placeSearchMs": 958.7,
-      "mapTiles": 8
+    "browser-unlimited-long-transfer.json": {
+      "checks": 10,
+      "resultMs": 5911.4,
+      "selection": {
+        "arrival": 965.6576,
+        "walkingMeters": 765.9000000000001,
+        "transferWalkingMeters": [
+          161.1,
+          306.0
+        ],
+        "longTransferSelected": true
+      }
     }
   },
   "browserTimingScope": "Flow latency with potentially warm request caches; use service-performance.json for uncached server times",
-  "routeMatrixCasesPassed": 50,
+  "routeMatrixCasesPassed": 60,
   "uncachedServerTiming": {
-    "minMs": 186.33,
-    "maxMs": 5056.24,
-    "meanMs": 1783.38,
-    "medianMs": 1238.89
+    "minMs": 132.97,
+    "meanMs": 2315.18,
+    "medianMs": 1307.77,
+    "maxMs": 5900.37
   },
   "publicIpv4VerifiedWithoutJetsonTailnet": true,
   "dataAudit": "artifacts/service-data-audit.json",
   "geometryMissingSegments": 0,
-  "correctedStopPositions": 78
+  "correctedStopPositions": 78,
+  "walkingGraphSha256": "3ab2383b8055716dc471fe4fe21b5a3e8c3c7606dd1290ba914a3d94bf1dba18",
+  "transferGraphSha256": "294b14e6914ca3fea9294aa18d1503bd42cff417f249c5291e75820941294a64",
+  "transferWalkingMaximum": null,
+  "pedestrianSnapGaps": 0,
+  "pedestrianWalkingLinesAdded": 6,
+  "selectedLongTransferMeters": 306.0,
+  "liveHistory": {
+    "source": "ulsan_its_live_gps",
+    "snapshots": 178,
+    "lastObservedAt": 1794449287.4332585,
+    "passages": 27973,
+    "routes": 314,
+    "serviceDays": 1,
+    "travelSamples": 20400
+  },
+  "nativeDependencyScope": "Project-specific SciPy 1.14.1; global packages unchanged"
 }
