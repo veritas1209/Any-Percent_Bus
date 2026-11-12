@@ -213,6 +213,8 @@ class SearchQuery {
     double? maxWalk,
     double? walkingPenalty,
     double? transferMargin,
+    Json? originPoint,
+    Json? destinationPoint,
   }) => SearchQuery(
     origin: origin,
     destination: destination,
@@ -226,8 +228,8 @@ class SearchQuery {
     maxTransfers: maxTransfers,
     samples: samples,
     seed: seed,
-    originPoint: originPoint,
-    destinationPoint: destinationPoint,
+    originPoint: originPoint ?? this.originPoint,
+    destinationPoint: destinationPoint ?? this.destinationPoint,
     serviceDay: serviceDay,
     serviceDate: serviceDate,
   );

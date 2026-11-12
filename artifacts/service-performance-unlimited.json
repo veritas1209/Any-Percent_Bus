@@ -1,0 +1,362 @@
+{
+  "networkVersion": "ulsan-its-2026-11-11+sources4+walk1",
+  "networkSha256": "a29382f699b10e16ee612c9277df476ec6d228e539e26becc65998c0e98bd730",
+  "cases": 60,
+  "allPassed": true,
+  "walkingMaximumMeters": null,
+  "sampleCount": 300,
+  "platform": "Same Jetson; final SciPy 1.14.1 in isolated project directory",
+  "timingScope": "Uncached individual requests; shared graph/snap caches may be warm; server calculation excludes transport and rendering",
+  "after": {
+    "minMs": 132.97,
+    "meanMs": 2315.18,
+    "medianMs": 1307.77,
+    "maxMs": 5900.37
+  },
+  "initialExpandedBuildWeekday": {
+    "minMs": 142.49,
+    "meanMs": 4829.71,
+    "medianMs": 1088.96,
+    "maxMs": 18442.29
+  },
+  "finalWeekday": {
+    "minMs": 132.97,
+    "meanMs": 2271.11,
+    "medianMs": 1330.7,
+    "maxMs": 5620.15
+  },
+  "casesWithTransfersOver250Meters": 21,
+  "nominalBestPreservedAcross30SameDataCases": true,
+  "comparisons": [
+    {
+      "case": "taehwa-university",
+      "departure": 480,
+      "fastestBefore": 519.2829,
+      "fastestAfter": 519.2829,
+      "scoreBefore": 40.641233333333375,
+      "scoreAfter": 40.641233333333375,
+      "beforeMs": 757.81,
+      "afterMs": 810.57,
+      "passed": true
+    },
+    {
+      "case": "ktx-university",
+      "departure": 480,
+      "fastestBefore": 541.7431,
+      "fastestAfter": 541.7431,
+      "scoreBefore": 62.550044444444474,
+      "scoreAfter": 62.550044444444474,
+      "beforeMs": 671.17,
+      "afterMs": 1376.77,
+      "passed": true
+    },
+    {
+      "case": "airport-taehwa",
+      "departure": 480,
+      "fastestBefore": 514.0966333333333,
+      "fastestAfter": 514.0966333333333,
+      "scoreBefore": 37.59802222222222,
+      "scoreAfter": 37.59802222222222,
+      "beforeMs": 1073.09,
+      "afterMs": 491.79,
+      "passed": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "departure": 480,
+      "fastestBefore": 493.421,
+      "fastestAfter": 493.421,
+      "scoreBefore": 13.420999999999992,
+      "scoreAfter": 13.420999999999992,
+      "beforeMs": 142.49,
+      "afterMs": 132.97,
+      "passed": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "departure": 480,
+      "fastestBefore": 532.5736333333333,
+      "fastestAfter": 532.5736333333333,
+      "scoreBefore": 53.93196666666664,
+      "scoreAfter": 53.93196666666664,
+      "beforeMs": 697.51,
+      "afterMs": 725.05,
+      "passed": true
+    },
+    {
+      "case": "cityhall-airport",
+      "departure": 480,
+      "fastestBefore": 516.4289,
+      "fastestAfter": 516.4289,
+      "scoreBefore": 37.58723333333333,
+      "scoreAfter": 37.58723333333333,
+      "beforeMs": 602.03,
+      "afterMs": 601.96,
+      "passed": true
+    },
+    {
+      "case": "hospital-airport",
+      "departure": 480,
+      "fastestBefore": 558.3158,
+      "fastestAfter": 558.3158,
+      "scoreBefore": 84.3616333333333,
+      "scoreAfter": 84.3616333333333,
+      "beforeMs": 4315.24,
+      "afterMs": 3375.27,
+      "passed": true
+    },
+    {
+      "case": "namchang-unist",
+      "departure": 480,
+      "fastestBefore": 600.9069,
+      "fastestAfter": 600.9069,
+      "scoreBefore": 130.3846777777777,
+      "scoreAfter": 130.3846777777777,
+      "beforeMs": 12458.36,
+      "afterMs": 4981.14,
+      "passed": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "departure": 480,
+      "fastestBefore": 605.8995444444445,
+      "fastestAfter": 605.8995444444445,
+      "scoreBefore": 136.3689888888889,
+      "scoreAfter": 136.3689888888889,
+      "beforeMs": 18442.29,
+      "afterMs": 5464.32,
+      "passed": true
+    },
+    {
+      "case": "hospital-namchang",
+      "departure": 480,
+      "fastestBefore": 617.5358,
+      "fastestAfter": 617.5358,
+      "scoreBefore": 147.6858,
+      "scoreAfter": 147.6858,
+      "beforeMs": 11599.69,
+      "afterMs": 5620.15,
+      "passed": true
+    },
+    {
+      "case": "taehwa-university",
+      "departure": 840,
+      "fastestBefore": 880.0296,
+      "fastestAfter": 880.0296,
+      "scoreBefore": 41.387933333333294,
+      "scoreAfter": 41.387933333333294,
+      "beforeMs": 1104.83,
+      "afterMs": 502.53,
+      "passed": true
+    },
+    {
+      "case": "ktx-university",
+      "departure": 840,
+      "fastestBefore": 916.3920777777778,
+      "fastestAfter": 916.3920777777778,
+      "scoreBefore": 77.42060000000004,
+      "scoreAfter": 77.42060000000004,
+      "beforeMs": 830.01,
+      "afterMs": 1559.25,
+      "passed": true
+    },
+    {
+      "case": "airport-taehwa",
+      "departure": 840,
+      "fastestBefore": 869.0966333333333,
+      "fastestAfter": 869.0966333333333,
+      "scoreBefore": 32.59802222222222,
+      "scoreAfter": 32.59802222222222,
+      "beforeMs": 356.38,
+      "afterMs": 397.66,
+      "passed": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "departure": 840,
+      "fastestBefore": 848.1737,
+      "fastestAfter": 848.1737,
+      "scoreBefore": 8.173700000000053,
+      "scoreAfter": 8.173700000000053,
+      "beforeMs": 169.37,
+      "afterMs": 213.63,
+      "passed": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "departure": 840,
+      "fastestBefore": 902.9005333333333,
+      "fastestAfter": 902.9005333333333,
+      "scoreBefore": 64.25886666666666,
+      "scoreAfter": 64.25886666666666,
+      "beforeMs": 1401.84,
+      "afterMs": 763.77,
+      "passed": true
+    },
+    {
+      "case": "cityhall-airport",
+      "departure": 840,
+      "fastestBefore": 877.0504,
+      "fastestAfter": 877.0504,
+      "scoreBefore": 38.2087333333333,
+      "scoreAfter": 38.2087333333333,
+      "beforeMs": 649.89,
+      "afterMs": 1273.99,
+      "passed": true
+    },
+    {
+      "case": "hospital-airport",
+      "departure": 840,
+      "fastestBefore": 907.6962,
+      "fastestAfter": 907.6962,
+      "scoreBefore": 70.69619999999998,
+      "scoreAfter": 70.69619999999998,
+      "beforeMs": 3623.02,
+      "afterMs": 2133.77,
+      "passed": true
+    },
+    {
+      "case": "namchang-unist",
+      "departure": 840,
+      "fastestBefore": 952.3369444444445,
+      "fastestAfter": 952.3369444444445,
+      "scoreBefore": 128.57382222222228,
+      "scoreAfter": 128.57382222222228,
+      "beforeMs": 12028.07,
+      "afterMs": 5532.89,
+      "passed": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "departure": 840,
+      "fastestBefore": 955.8995444444445,
+      "fastestAfter": 955.8995444444445,
+      "scoreBefore": 122.56204444444447,
+      "scoreAfter": 122.56204444444447,
+      "beforeMs": 16789.31,
+      "afterMs": 4701.94,
+      "passed": true
+    },
+    {
+      "case": "hospital-namchang",
+      "departure": 840,
+      "fastestBefore": 965.6576,
+      "fastestAfter": 965.6576,
+      "scoreBefore": 138.93954444444444,
+      "scoreAfter": 138.93954444444444,
+      "beforeMs": 8894.79,
+      "afterMs": 4972.83,
+      "passed": true
+    },
+    {
+      "case": "taehwa-university",
+      "departure": 1080,
+      "fastestBefore": 1120.0296,
+      "fastestAfter": 1120.0296,
+      "scoreBefore": 41.38793333333341,
+      "scoreAfter": 41.38793333333341,
+      "beforeMs": 478.82,
+      "afterMs": 487.56,
+      "passed": true
+    },
+    {
+      "case": "ktx-university",
+      "departure": 1080,
+      "fastestBefore": 1153.591688888889,
+      "fastestAfter": 1153.591688888889,
+      "scoreBefore": 77.55004444444435,
+      "scoreAfter": 77.55004444444435,
+      "beforeMs": 761.06,
+      "afterMs": 1485.87,
+      "passed": true
+    },
+    {
+      "case": "airport-taehwa",
+      "departure": 1080,
+      "fastestBefore": 1119.4016333333334,
+      "fastestAfter": 1119.4016333333334,
+      "scoreBefore": 48.45996666666672,
+      "scoreAfter": 48.45996666666672,
+      "beforeMs": 1119.03,
+      "afterMs": 493.31,
+      "passed": true
+    },
+    {
+      "case": "eonyang-ktx",
+      "departure": 1080,
+      "fastestBefore": 1094.1639,
+      "fastestAfter": 1094.1639,
+      "scoreBefore": 14.163900000000012,
+      "scoreAfter": 14.163900000000012,
+      "beforeMs": 159.63,
+      "afterMs": 160.92,
+      "passed": true
+    },
+    {
+      "case": "ilsan-taehwa",
+      "departure": 1080,
+      "fastestBefore": 1137.9005333333334,
+      "fastestAfter": 1137.9005333333334,
+      "scoreBefore": 59.258866666666776,
+      "scoreAfter": 59.258866666666776,
+      "beforeMs": 632.47,
+      "afterMs": 655.56,
+      "passed": true
+    },
+    {
+      "case": "cityhall-airport",
+      "departure": 1080,
+      "fastestBefore": 1118.005,
+      "fastestAfter": 1118.005,
+      "scoreBefore": 39.16333333333344,
+      "scoreAfter": 39.16333333333344,
+      "beforeMs": 580.47,
+      "afterMs": 1284.63,
+      "passed": true
+    },
+    {
+      "case": "hospital-airport",
+      "departure": 1080,
+      "fastestBefore": 1143.3158,
+      "fastestAfter": 1143.3158,
+      "scoreBefore": 69.36163333333342,
+      "scoreAfter": 69.36163333333342,
+      "beforeMs": 3896.72,
+      "afterMs": 2257.8,
+      "passed": true
+    },
+    {
+      "case": "namchang-unist",
+      "departure": 1080,
+      "fastestBefore": 1196.1266,
+      "fastestAfter": 1196.1266,
+      "scoreBefore": 123.3716777777778,
+      "scoreAfter": 123.3716777777778,
+      "beforeMs": 11565.19,
+      "afterMs": 5193.88,
+      "passed": true
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "departure": 1080,
+      "fastestBefore": 1205.8995444444442,
+      "fastestAfter": 1205.8995444444442,
+      "scoreBefore": 132.4425999999998,
+      "scoreAfter": 132.4425999999998,
+      "beforeMs": 17043.43,
+      "afterMs": 5247.39,
+      "passed": true
+    },
+    {
+      "case": "hospital-namchang",
+      "departure": 1080,
+      "fastestBefore": 1195.6576,
+      "fastestAfter": 1195.6576,
+      "scoreBefore": 128.93954444444444,
+      "scoreAfter": 128.93954444444444,
+      "beforeMs": 12047.43,
+      "afterMs": 5234.17,
+      "passed": true
+    }
+  ]
+}

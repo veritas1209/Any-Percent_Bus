@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "source": "ulsan_its_live_gps",
+  "snapshots": 172,
+  "lastObservedAt": 1794449100.6500068,
+  "passages": 26955,
+  "routes": 314,
+  "serviceDays": 1,
+  "travelSamples": 19640,
+  "lastError": null,
+  "method": "Public live GPS geofence observations; collection timestamps, not door-open arrival times",
+  "historicalBackfill": false,
+  "calibrationMinimum": {
+    "samplesPerPair": 20,
+    "serviceDays": 3
+  }
+}

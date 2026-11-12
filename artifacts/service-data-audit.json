@@ -1,7 +1,7 @@
 {
-  "recordedAt": "2026-11-11T08:09:29.482314+00:00",
-  "networkVersion": "ulsan-its-2026-11-11+sources3",
-  "sha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
+  "recordedAt": "2026-11-12T00:34:28.871184+00:00",
+  "networkVersion": "ulsan-its-2026-11-11+sources4+walk1",
+  "sha256": "a29382f699b10e16ee612c9277df476ec6d228e539e26becc65998c0e98bd730",
   "officialRouteDirections": 534,
   "jointServiceGroups": [
     {
@@ -55,42 +55,15 @@
     }
   ],
   "remaining": {
-    "stopsOutsidePedestrianSnapCoverage": [
-      {
-        "id": "196021330",
-        "name": "들꽃학습원",
-        "publicId": "21330"
-      },
-      {
-        "id": "199000044",
-        "name": "서사시티프라디움",
-        "publicId": "21332"
-      },
-      {
-        "id": "999000094",
-        "name": "상출강",
-        "publicId": "24455"
-      },
-      {
-        "id": "199000096",
-        "name": "내기마을",
-        "publicId": "65710"
-      },
-      {
-        "id": "999000117",
-        "name": "강당경로당",
-        "publicId": "31626"
-      },
-      {
-        "id": "999000123",
-        "name": "강당경로당",
-        "publicId": "31627"
-      }
-    ],
+    "stopsOutsidePedestrianSnapCoverage": [],
     "maximumStoredTransferWalkMeters": 250.0,
-    "transferWalkingCoverage": "Stored nearby-stop walking links; longer transfers across an absent link are not yet exhaustive",
+    "storedFootpathsRole": "Legacy nearby-stop cache; not the transfer walking search limit",
+    "transferWalkingMaximumMeters": null,
+    "transferWalkingCoverage": "Query-time pedestrian road-graph closure; arrival/walking Pareto labels and preference scoring, without a fixed distance cap",
     "intermediateStopTimes": "Distance and speed model; not recorded passage times",
     "delayAndTransferProbability": "Synthetic delay samples; not calibrated to contemporary observations",
-    "timetableRefresh": "Reviewed snapshot; automatic change collection is not configured"
+    "timetableRefresh": "Reviewed snapshot; automatic change collection is not configured",
+    "liveHistory": "Public ITS live GPS collection enabled on the deployed backend; historical days must accumulate",
+    "liveHistorySource": "https://its.ulsan.kr/route/route.do"
   }
 }

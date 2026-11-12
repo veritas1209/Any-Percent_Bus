@@ -1,7 +1,7 @@
 name: anypercent_app
 description: 울산 버스 환승 신뢰도 기반 경로 추천 Flutter 앱
 publish_to: none
-version: 0.4.3+12
+version: 0.4.4+13
 environment:
   sdk: '>=3.8.0 <4.0.0'
 dependencies:
@@ -26,6 +26,7 @@ flutter:
     - assets/data/service_network.json
     - assets/data/places.json
     - assets/data/walk_graph.bin
+    - assets/data/transfer_graph.bin
   fonts:
     - family: Pretendard
       fonts:

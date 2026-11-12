@@ -8,8 +8,11 @@ List<Map<String, double>> latestDepartures(
   String destination,
   int rides,
   double deadline,
-  double walkingSpeed,
-) {
+  double walkingSpeed, {
+  Map<String, double> Function(Map<String, double>, double, double)?
+  transferLatest,
+  double earliest = double.negativeInfinity,
+}) {
   final incoming = <String, List<(String, double)>>{};
   for (final path in paths) {
     incoming.putIfAbsent(path['to'], () => []).add((
@@ -17,20 +20,29 @@ List<Map<String, double>> latestDepartures(
       numValue(path['meters']) / walkingSpeed / 60,
     ));
   }
-  Map<String, double> spread(Map<String, double> values) {
+  Map<String, double> legacySpread(Map<String, double> values) {
     final queue = Queue<String>.of(values.keys), queued = values.keys.toSet();
     while (queue.isNotEmpty) {
       final stop = queue.removeFirst();
       queued.remove(stop);
       for (final (other, minutes) in incoming[stop] ?? <(String, double)>[]) {
         final candidate = values[stop]! - minutes;
-        if (candidate > (values[other] ?? double.negativeInfinity)) {
+        if (candidate >= earliest - 1e-6 &&
+            candidate > (values[other] ?? double.negativeInfinity)) {
           values[other] = candidate;
           if (queued.add(other)) queue.add(other);
         }
       }
     }
     return values;
+  }
+
+  Map<String, double> spread(Map<String, double> values) {
+    values.removeWhere((_, value) => value < earliest - 1e-6);
+    values = legacySpread(values);
+    return transferLatest == null
+        ? values
+        : legacySpread(transferLatest(values, walkingSpeed, earliest));
   }
 
   final layers = [

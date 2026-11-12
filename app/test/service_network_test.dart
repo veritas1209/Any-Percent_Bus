@@ -112,6 +112,9 @@ void main() {
         ).toJson(),
         'network': network.routingData,
         'walkGraph': File('assets/data/walk_graph.bin').readAsBytesSync(),
+        'transferGraph': File(
+          'assets/data/transfer_graph.bin',
+        ).readAsBytesSync(),
       });
       final fastest = rows.firstWhere(
         (row) => (row['tags'] as List).contains('ANY%'),
@@ -159,6 +162,9 @@ void main() {
         ).toJson(),
         'network': n.routingData,
         'walkGraph': walk,
+        'transferGraph': File(
+          'assets/data/transfer_graph.bin',
+        ).readAsBytesSync(),
       });
       final one = search(1), two = search(2);
       expect(two.length, 20);
@@ -203,6 +209,9 @@ void main() {
           ).toJson(),
           'network': n.routingData,
           'walkGraph': walk,
+          'transferGraph': File(
+            'assets/data/transfer_graph.bin',
+          ).readAsBytesSync(),
         });
         expect(rows, isNotEmpty);
         expect(
@@ -315,6 +324,9 @@ void main() {
         ).toJson(),
         'network': n.routingData,
         'walkGraph': File('assets/data/walk_graph.bin').readAsBytesSync(),
+        'transferGraph': File(
+          'assets/data/transfer_graph.bin',
+        ).readAsBytesSync(),
       });
       expect(rows, isNotEmpty);
       expect(rows.any((r) => (r['tags'] as List).contains('ANY%')), isTrue);

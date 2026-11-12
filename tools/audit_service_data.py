@@ -47,10 +47,14 @@ def main():
         directionsWithoutIndependentTimetable=untimed,
         remaining=dict(stopsOutsidePedestrianSnapCoverage=unsnapped,
             maximumStoredTransferWalkMeters=max(f['meters'] for f in n['footpaths']),
-            transferWalkingCoverage='Stored nearby-stop walking links; longer transfers across an absent link are not yet exhaustive',
+            storedFootpathsRole='Legacy nearby-stop cache; not the transfer walking search limit',
+            transferWalkingMaximumMeters=None if n.get('walkingTransfers')=='road_graph' else 250,
+            transferWalkingCoverage='Query-time pedestrian road-graph closure; arrival/walking Pareto labels and preference scoring, without a fixed distance cap',
             intermediateStopTimes='Distance and speed model; not recorded passage times',
             delayAndTransferProbability='Synthetic delay samples; not calibrated to contemporary observations',
-            timetableRefresh='Reviewed snapshot; automatic change collection is not configured'))
+            timetableRefresh='Reviewed snapshot; automatic change collection is not configured',
+            liveHistory='Public ITS live GPS collection enabled on the deployed backend; historical days must accumulate',
+            liveHistorySource='https://its.ulsan.kr/route/route.do'))
     (ROOT/'artifacts/service-data-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     official=json.loads((ROOT/'artifacts/official-data.json').read_text(encoding='utf-8'))
     official.update(sha256=report['sha256'],derivedNetworkVersion=n['version'],routes=len(n['routes']),

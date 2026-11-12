@@ -17,7 +17,7 @@ class _Snap {
   );
 }
 
-class _Heap {
+class DistanceHeap {
   final values = <(double, int)>[];
   bool get isNotEmpty => values.isNotEmpty;
   void add(double cost, int node) {
@@ -180,7 +180,7 @@ class WalkingGraph {
     final snap = _snap(lat, lon),
         costs = <int, double>{},
         parent = <int, int>{},
-        queue = _Heap();
+        queue = DistanceHeap();
     final boundary = <int>{};
     if (snap != null) {
       for (final (node, cost) in [

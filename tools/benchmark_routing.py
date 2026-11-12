@@ -16,6 +16,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--references',nargs='+',default=['service-route-matrix.json','service-route-weekends.json'])
     parser.add_argument('--report',default='routing-optimization.json')
+    parser.add_argument('--allow-expanded-network',action='store_true')
     args=parser.parse_args()
     path=ROOT/'shared/service_network.json'
     data=json.loads(path.read_text(encoding='utf-8'))
@@ -24,7 +25,7 @@ def main():
     output=[]
     for name in args.references:
         reference=json.loads((ROOT/'artifacts'/name).read_text(encoding='utf-8'))
-        assert reference['networkVersion']==data['version']
+        assert args.allow_expanded_network or reference['networkVersion']==data['version']
         for old in reference['cases']:
             _,_,origin,destination,transfers=cases[old['case']]
             point=lambda sid:{k:engine.stops[sid][k] for k in ('name','lat','lon')}

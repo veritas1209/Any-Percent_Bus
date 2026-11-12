@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/transit.dart';
 import '../services/journey_engine.dart';
 import '../services/walking_graph.dart';
+import '../services/transfers.dart';
 
 List<Json> runLocal(Json payload) {
   var network = Network(Json.from(payload['network']));
@@ -35,13 +36,30 @@ List<Json> runLocal(Json payload) {
   final graph = payload['walkGraph'] == null
       ? null
       : WalkingGraph(payload['walkGraph'] as Uint8List);
+  final transfers = payload['transferGraph'] == null
+      ? null
+      : TransferGraph(payload['transferGraph'] as Uint8List);
+  if (network.data['walkingTransfers'] == 'road_graph' && transfers == null) {
+    throw StateError('보행 환승 자료를 불러오지 못했습니다.');
+  }
   JourneyEngine? finalEngine;
   SearchQuery? finalQuery;
   List<Json> search(
     SearchQuery query, {
     Json? stats,
     bool evaluateCandidates = true,
+    List<Json> incumbents = const [],
   }) {
+    if (transfers != null &&
+        query.originPoint == null &&
+        query.destinationPoint == null &&
+        network.stops[query.origin]?['lat'] != null &&
+        network.stops[query.destination]?['lat'] != null) {
+      query = query.copyWith(
+        originPoint: network.stops[query.origin],
+        destinationPoint: network.stops[query.destination],
+      );
+    }
     var prepared = network;
     var places = <Json>[];
     if (query.originPoint != null || query.destinationPoint != null) {
@@ -54,7 +72,11 @@ List<Json> runLocal(Json payload) {
     } else if (stats != null) {
       stats['exhausted'] = true;
     }
-    finalEngine = JourneyEngine(prepared);
+    finalEngine = JourneyEngine(
+      prepared,
+      walkingGraph: graph,
+      transferGraph: transfers,
+    );
     finalQuery = SearchQuery(
       origin: query.originPoint == null ? query.origin : '@origin',
       destination: query.destinationPoint == null
@@ -75,6 +97,7 @@ List<Json> runLocal(Json payload) {
     final rows = finalEngine!.search(
       finalQuery!,
       evaluateCandidates: evaluateCandidates,
+      incumbents: incumbents,
     );
     for (final j in rows) {
       if (places.isNotEmpty) j['places'] = places;
@@ -96,6 +119,7 @@ List<Json> runLocal(Json payload) {
   }
   var radius = 2000.0;
   var fallback = <Json>[];
+  var incumbents = <Json>[];
   while (true) {
     final stats = <String, dynamic>{};
     final limited = SearchQuery(
@@ -115,8 +139,14 @@ List<Json> runLocal(Json payload) {
       originPoint: origin,
       destinationPoint: destination,
     );
-    final rows = search(limited, stats: stats, evaluateCandidates: false),
+    final rows = search(
+          limited,
+          stats: stats,
+          evaluateCandidates: false,
+          incumbents: incumbents,
+        ),
         timed = rows.where((row) => row['arrival'] != null).toList();
+    incumbents = timed;
     double nextRadius;
     if (timed.isNotEmpty) {
       final fastest =
@@ -162,6 +192,7 @@ class AssetTransitRepository extends TransitRepository {
   AssetTransitRepository({this.dataset = 'service'});
   Network? _network;
   Future<Uint8List>? _walk;
+  Future<Uint8List>? _transfers;
   @override
   String get label => dataset == 'service'
       ? '울산 공식 시간표 · 오프라인'
@@ -184,11 +215,18 @@ class AssetTransitRepository extends TransitRepository {
     return compute(runLocal, <String, dynamic>{
       ...query.toJson(),
       'network': network.routingData,
-      if (query.maxWalk == null ||
+      if (network.data['walkingTransfers'] == 'road_graph' ||
+          query.maxWalk == null ||
           query.originPoint != null ||
           query.destinationPoint != null)
         'walkGraph': await (_walk ??= rootBundle
             .load('assets/data/walk_graph.bin')
+            .then(
+              (b) => b.buffer.asUint8List(b.offsetInBytes, b.lengthInBytes),
+            )),
+      if (network.data['walkingTransfers'] == 'road_graph')
+        'transferGraph': await (_transfers ??= rootBundle
+            .load('assets/data/transfer_graph.bin')
             .then(
               (b) => b.buffer.asUint8List(b.offsetInBytes, b.lengthInBytes),
             )),

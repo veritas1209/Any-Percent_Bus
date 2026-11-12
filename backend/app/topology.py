@@ -4,13 +4,13 @@ import heapq
 from bisect import bisect_right
 
 
-def latest_departures(routes, footpaths, destination, rides, deadline, walking_speed):
+def latest_departures(routes, footpaths, destination, rides, deadline, walking_speed, transfer_graph=None,earliest=-float('inf')):
     """Optimistic latest departure times, ignoring walk budgets and used routes."""
     incoming = defaultdict(list)
     for path in footpaths:
         incoming[path['to']].append((path['from'], path['meters'] / walking_speed / 60))
 
-    def spread(values):
+    def legacy_spread(values):
         queue = [(-value, stop) for stop, value in values.items()]
         heapq.heapify(queue)
         while queue:
@@ -20,9 +20,16 @@ def latest_departures(routes, footpaths, destination, rides, deadline, walking_s
                 continue
             for other, minutes in incoming[stop]:
                 candidate = latest - minutes
-                if candidate > values.get(other, -float('inf')):
+                if candidate>=earliest-1e-6 and candidate > values.get(other, -float('inf')):
                     values[other] = candidate
                     heapq.heappush(queue, (-candidate, other))
+        return values
+
+    def spread(values):
+        values={stop:value for stop,value in values.items() if value>=earliest-1e-6}
+        values=legacy_spread(values)
+        if transfer_graph is not None:
+            values=legacy_spread(transfer_graph.latest(values,walking_speed,earliest))
         return values
 
     layers = [spread({destination: deadline})]

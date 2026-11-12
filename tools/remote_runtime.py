@@ -50,6 +50,10 @@ def start(kind):
             if managed(kind) is not None:raise RuntimeError('Existing demo process did not stop')
     env=os.environ.copy()
     if kind=='backend':
+        env['ANYPERCENT_LIVE_ITS']='1'
+        native=ROOT/'.native-scipy-1.14.1'
+        if (native/'scipy').is_dir():
+            env['PYTHONPATH']=str(native)+os.pathsep+env.get('PYTHONPATH','')
         keyfile=ROOT/'.integration-key'
         if not keyfile.exists():
             keyfile.write_text(secrets.token_urlsafe(32));keyfile.chmod(0o600)
@@ -87,4 +91,12 @@ else:
         with urlopen(f'http://{HOST}:8001/v1/health',timeout=5) as r:output['health']=json.load(r)
     except Exception as e:output['health']=str(e)
     output['bustracker']=subprocess.check_output(['systemctl','is-active','bustracker'],text=True).strip()
+    history=ROOT/'backend/live_history.db'
+    if history.exists():
+        with sqlite3.connect(f'file:{history}?mode=ro',uri=True) as db:
+            snapshots=db.execute('SELECT COUNT(*),MAX(observed_at) FROM snapshots').fetchone()
+            passages=db.execute('SELECT COUNT(*),COUNT(DISTINCT route_id),COUNT(DISTINCT service_date) FROM passages').fetchone()
+            samples=db.execute('SELECT COUNT(*) FROM travel_samples').fetchone()[0]
+        output['liveHistory']=dict(source='ulsan_its_live_gps',snapshots=snapshots[0],lastObservedAt=snapshots[1],
+            passages=passages[0],routes=passages[1],serviceDays=passages[2],travelSamples=samples)
     print(json.dumps(output))

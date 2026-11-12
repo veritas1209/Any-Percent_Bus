@@ -1,6 +1,8 @@
 import 'dart:math';
 import '../models/transit.dart';
 import 'topology.dart';
+import 'transfers.dart';
+import 'walking_graph.dart';
 
 int firstDeparture(List<num> departures, double minimum) {
   var low = 0, high = departures.length;
@@ -17,7 +19,9 @@ int firstDeparture(List<num> departures, double minimum) {
 
 class JourneyEngine {
   final Network network;
-  JourneyEngine(this.network);
+  final WalkingGraph? walkingGraph;
+  final TransferGraph? transferGraph;
+  JourneyEngine(this.network, {this.walkingGraph, this.transferGraph});
   final _routingCache =
       <(String, int, double), (List<Set<String>>, List<Map<String, double>>)>{};
   late final timedRoutes = network.routes.values
@@ -64,35 +68,73 @@ class JourneyEngine {
         );
   }
 
-  List<Json> search(SearchQuery q, {bool evaluateCandidates = true}) {
+  List<Json> search(
+    SearchQuery q, {
+    bool evaluateCandidates = true,
+    List<Json> incumbents = const [],
+  }) {
     final selected = network.forServiceDay(q.serviceDay, date: q.serviceDate);
     if (!identical(selected, network)) {
       return JourneyEngine(
         selected,
-      ).search(q, evaluateCandidates: evaluateCandidates);
+        walkingGraph: walkingGraph,
+        transferGraph: transferGraph,
+      ).search(
+        q,
+        evaluateCandidates: evaluateCandidates,
+        incumbents: incumbents,
+      );
     }
     if (q.origin == q.destination) return [];
     final walkLimit = q.maxWalk ?? double.infinity,
         scored = q.walkingPenalty != null || q.maxWalk == null,
         penalty = q.walkingPenalty ?? 1.0;
+    final dynamicTransfers = transferGraph != null;
+    final reboarding = scored || dynamicTransfers;
     final cacheKey = (q.destination, q.maxTransfers, walkLimit);
     if (!_routingCache.containsKey(cacheKey)) {
       if (_routingCache.length >= 8) _routingCache.clear();
-      _routingCache[cacheKey] = (
-        reachableStops(
-          timedRoutes,
-          network.data['footpaths'],
-          q.destination,
-          q.maxTransfers + 1,
-          walkLimit,
-        ),
-        walkingBounds(
-          timedRoutes,
-          network.data['footpaths'],
-          q.destination,
-          q.maxTransfers + 1,
-        ),
-      );
+      if (dynamicTransfers) {
+        final tails = <String, double>{q.destination: 0};
+        for (final entry in walks.entries) {
+          for (final f in entry.value) {
+            if (f['to'] == q.destination && f['meters'] <= walkLimit) {
+              tails[entry.key] = min(
+                tails[entry.key] ?? double.infinity,
+                numValue(f['meters']),
+              );
+            }
+          }
+        }
+        _routingCache[cacheKey] = (
+          [
+            tails.keys.toSet(),
+            for (var i = 0; i <= q.maxTransfers; i++)
+              network.stops.keys.toSet(),
+          ],
+          [
+            tails,
+            for (var i = 0; i <= q.maxTransfers; i++)
+              {for (final sid in network.stops.keys) sid: 0.0},
+          ],
+        );
+      } else {
+        _routingCache[cacheKey] = (
+          reachableStops(
+            timedRoutes,
+            network.data['footpaths'],
+            q.destination,
+            q.maxTransfers + 1,
+            walkLimit,
+          ),
+          walkingBounds(
+            timedRoutes,
+            network.data['footpaths'],
+            q.destination,
+            q.maxTransfers + 1,
+          ),
+        );
+      }
     }
     final (layers, bounds) = _routingCache[cacheKey]!;
     List<Json> frontier = [
@@ -159,9 +201,11 @@ class JourneyEngine {
         }
         found.removeWhere((key, _) => !keep.contains(key));
       }
-      if (found.length >= 20) {
+      if (found.length >= 20 || (dynamicTransfers && scored)) {
         final arrivals = found.values.toList()..sort(rank);
-        arrivalCutoff = numValue(arrivals[19]['arrival']);
+        arrivalCutoff = numValue(
+          arrivals[dynamicTransfers && scored ? 0 : 19]['arrival'],
+        );
         if (scored) {
           final scores =
               found.values
@@ -176,6 +220,23 @@ class JourneyEngine {
       }
     }
 
+    for (final row in incumbents) {
+      if (row['arrival'] != null && row['walkingMeters'] <= walkLimit) {
+        add(List<Json>.from(row['legs']), numValue(row['walkingMeters']));
+      }
+    }
+    if (dynamicTransfers && cutoff.isFinite) {
+      latest = latestDepartures(
+        timedRoutes,
+        network.data['footpaths'],
+        q.destination,
+        q.maxTransfers + 1,
+        cutoff,
+        q.walkingSpeed,
+        transferLatest: transferGraph!.latest,
+        earliest: q.departure,
+      );
+    }
     for (final f in walks[q.origin] ?? <Json>[]) {
       if (f['from'] == q.origin &&
           f['to'] == q.destination &&
@@ -196,6 +257,23 @@ class JourneyEngine {
     for (var round = 0; round <= q.maxTransfers; round++) {
       final next = <Json>[];
       final tripBoardings = <(String, num), List<(int, double)>>{};
+      if (dynamicTransfers && round > 0) {
+        frontier = transferGraph!.spread(
+          frontier,
+          q.walkingSpeed,
+          walkLimit,
+          cutoff,
+          respectUsed: !reboarding,
+          boardable: latest == null
+              ? boards.keys.toSet()
+              : boards.keys
+                    .where(
+                      (sid) =>
+                          latest![q.maxTransfers - round + 1].containsKey(sid),
+                    )
+                    .toSet(),
+        );
+      }
       for (final state in frontier) {
         if (numValue(state['now']) > cutoff) continue;
         if (scored &&
@@ -229,7 +307,10 @@ class JourneyEngine {
             'walked': state['walked'],
           },
         ];
-        for (final f in walks[state['stop']] ?? <Json>[]) {
+        for (final f
+            in dynamicTransfers && round > 0
+                ? <Json>[]
+                : (walks[state['stop']] ?? <Json>[])) {
           if (f['from'] == state['stop'] &&
               state['walked'] + f['meters'] <= walkLimit) {
             final end =
@@ -273,7 +354,7 @@ class JourneyEngine {
           for (final (route, bi) in boards[access['stop']] ?? <(Json, int)>[]) {
             final used = state['used'] as Set<String>;
             final stops = (route['stops'] as List).cast<String>();
-            if ((!scored && used.contains(route['id'])) ||
+            if ((!reboarding && used.contains(route['id'])) ||
                 !stops.contains(access['stop'])) {
               continue;
             }
@@ -286,7 +367,7 @@ class JourneyEngine {
             );
             if (index == departures.length) continue;
             final trip = departures[index];
-            if (scored) {
+            if (reboarding) {
               final priorLegs = (state['legs'] as List).cast<Json>();
               if (priorLegs.isNotEmpty &&
                   priorLegs.last['kind'] == 'ride' &&
@@ -308,6 +389,7 @@ class JourneyEngine {
               boarded.add((bi, walked));
             }
             for (var ai = bi + 1; ai < stops.length; ai++) {
+              if (!layers[q.maxTransfers - round].contains(stops[ai])) continue;
               if (route['passengerStops'] != null &&
                   !(route['passengerStops'] as List).contains(stops[ai])) {
                 continue;
@@ -330,7 +412,6 @@ class JourneyEngine {
                           1e-6) {
                 continue;
               }
-              if (!layers[q.maxTransfers - round].contains(stops[ai])) continue;
               if (numValue(access['walked']) +
                       (bounds[q.maxTransfers - round][stops[ai]] ??
                           double.infinity) >
@@ -401,6 +482,8 @@ class JourneyEngine {
                 remaining,
                 cutoff,
                 q.walkingSpeed,
+                transferLatest: transferGraph?.latest,
+                earliest: q.departure,
               )
             : null;
         final limits = latest;
@@ -416,7 +499,7 @@ class JourneyEngine {
                                 1e-6),
               )
               .toList(),
-          respectUsed: !scored,
+          respectUsed: !reboarding,
         );
       }
     }
@@ -434,10 +517,28 @@ class JourneyEngine {
     var candidates = List<Json>.from(rows);
     final scored = q.walkingPenalty != null || q.maxWalk == null;
     if (scored && q.maxTransfers > 0 && q.transferMargin == 0) {
+      final safeSeeds = <Json>[];
+      for (final journey in candidates) {
+        double? prior;
+        var valid = true;
+        for (final leg in (journey['legs'] as List).cast<Json>()) {
+          if (leg['kind'] == 'ride') {
+            if (prior != null && numValue(leg['depart']) - prior < 5.5 - 1e-9) {
+              valid = false;
+              break;
+            }
+            prior = numValue(leg['arrive']);
+          } else if (prior != null) {
+            prior = numValue(leg['arrive']);
+          }
+        }
+        if (valid) safeSeeds.add(journey);
+      }
       final protected =
           search(
             q.copyWith(transferMargin: 5),
             evaluateCandidates: false,
+            incumbents: safeSeeds,
           ).where((j) => j['arrival'] != null).toList()..sort((a, b) {
             final score = numValue(
               a['recommendationScore'],
@@ -479,6 +580,7 @@ class JourneyEngine {
       }
       candidates = [...alternatives, ...singleRides.values];
     }
+    resolveWalkShapes(candidates);
     final evaluated = candidates.map((j) => evaluate(j, q)).toList();
     final earliest = evaluated.reduce((a, b) => rank(a, b) <= 0 ? a : b);
     final safest = evaluated.reduce(
@@ -520,6 +622,28 @@ class JourneyEngine {
       return priority == other ? rank(a, b) : priority.compareTo(other);
     });
     return evaluated;
+  }
+
+  void resolveWalkShapes(List<Json> candidates) {
+    if (transferGraph == null) return;
+    final resolved = <(String, String), Json>{};
+    for (final journey in candidates) {
+      for (final leg in (journey['legs'] as List).cast<Json>()) {
+        if (leg.remove('_transferWalk') != true) continue;
+        final key = (leg['from'] as String, leg['to'] as String);
+        leg['shape'] = resolved.putIfAbsent(key, () {
+          final paths = walkingGraph!.connections(network.stops[key.$1]!, [
+            network.stops[key.$2]!,
+          ], numValue(leg['meters']) + .2);
+          if (paths.isEmpty) throw StateError('환승 도보 경로를 연결할 수 없습니다.');
+          return {
+            'points': paths.first['points'],
+            'meters': paths.first['meters'],
+            'source': 'pedestrian_transfer',
+          };
+        });
+      }
+    }
   }
 
   Json replay(

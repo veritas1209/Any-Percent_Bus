@@ -1,0 +1,1084 @@
+{
+  "recordedAt": "2026-11-12T01:40:50.710067+00:00",
+  "url": "https://hajin-desktop.tailfb939b.ts.net:10000",
+  "networkVersion": "ulsan-its-2026-11-11+sources4+walk1",
+  "location": "Public stop coordinates; no user GPS",
+  "cases": [
+    {
+      "case": "taehwa-university",
+      "title": "태화강역 → 울산대학교",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 20,
+      "elapsedMs": 682.6,
+      "serverMs": 563.9,
+      "recommended": {
+        "arrival": 882.9993,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "fastest": {
+        "arrival": 882.9993,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "ktx-university",
+      "title": "울산역 → 울산대학교",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 10,
+      "elapsedMs": 1661.8,
+      "serverMs": 1548.72,
+      "recommended": {
+        "arrival": 916.7431,
+        "walkingMeters": 58.1,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5004"
+        ],
+        "boarding": [
+          "울산역"
+        ]
+      },
+      "fastest": {
+        "arrival": 916.7431,
+        "walkingMeters": 58.1,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5004"
+        ],
+        "boarding": [
+          "울산역"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "airport-taehwa",
+      "title": "울산공항 → 태화강역",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 11,
+      "elapsedMs": 503.1,
+      "serverMs": 407.68,
+      "recommended": {
+        "arrival": 874.0966333333333,
+        "walkingMeters": 252.10000000000002,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "482"
+        ],
+        "boarding": [
+          "울산공항"
+        ]
+      },
+      "fastest": {
+        "arrival": 874.0966333333333,
+        "walkingMeters": 252.10000000000002,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "482"
+        ],
+        "boarding": [
+          "울산공항"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "eonyang-ktx",
+      "title": "언양터미널 → 울산역",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 17,
+      "elapsedMs": 221.5,
+      "serverMs": 147.23,
+      "recommended": {
+        "arrival": 848.1737,
+        "walkingMeters": 0.0,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "513"
+        ],
+        "boarding": [
+          "언양임시시외터미널앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 848.1737,
+        "walkingMeters": 0.0,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "513"
+        ],
+        "boarding": [
+          "언양임시시외터미널앞"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "ilsan-taehwa",
+      "title": "일산해수욕장 → 태화강역",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 10,
+      "elapsedMs": 786.7,
+      "serverMs": 680.49,
+      "recommended": {
+        "arrival": 901.8702333333333,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "일산해수욕장"
+        ]
+      },
+      "fastest": {
+        "arrival": 901.8702333333333,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "일산해수욕장"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "cityhall-airport",
+      "title": "시청앞 → 울산공항",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 0,
+      "timedJourneys": 19,
+      "elapsedMs": 1463.8,
+      "serverMs": 1313.36,
+      "recommended": {
+        "arrival": 877.0504,
+        "walkingMeters": 83.4,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1234"
+        ],
+        "boarding": [
+          "시청앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 877.0504,
+        "walkingMeters": 83.4,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1234"
+        ],
+        "boarding": [
+          "시청앞"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "hospital-airport",
+      "title": "울산대병원 → 울산공항",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 2,
+      "timedJourneys": 22,
+      "elapsedMs": 2506.1,
+      "serverMs": 2360.76,
+      "recommended": {
+        "arrival": 913.2137,
+        "walkingMeters": 28.3,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          28.3
+        ],
+        "buses": [
+          "동구03",
+          "5002",
+          "762"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "서부패밀리 아파트",
+          "농심메가마트앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 913.2137,
+        "walkingMeters": 28.3,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          28.3
+        ],
+        "buses": [
+          "동구03",
+          "5002",
+          "762"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "서부패밀리 아파트",
+          "농심메가마트앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "194024216",
+          "toStop": "194024215",
+          "meters": 264.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024222",
+          "meters": 540.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024222",
+          "meters": 540.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024224",
+          "meters": 757.6
+        },
+        {
+          "fromStop": "194024225",
+          "toStop": "194024226",
+          "meters": 536.1
+        },
+        {
+          "fromStop": "194024225",
+          "toStop": "194024228",
+          "meters": 550.0
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024226",
+          "meters": 1276.9
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "namchang-unist",
+      "title": "남창역 → UNIST",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 2,
+      "timedJourneys": 25,
+      "elapsedMs": 6164.2,
+      "serverMs": 5667.34,
+      "recommended": {
+        "arrival": 966.8939,
+        "walkingMeters": 250.4,
+        "transfers": 1,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1715",
+          "513"
+        ],
+        "boarding": [
+          "온양우체국",
+          "덕하역/덕하시장"
+        ]
+      },
+      "fastest": {
+        "arrival": 952.3369444444445,
+        "walkingMeters": 1655.5,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          63.6
+        ],
+        "buses": [
+          "1715",
+          "115",
+          "5001"
+        ],
+        "boarding": [
+          "온양우체국",
+          "공업탑",
+          "시청앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "196022104",
+          "toStop": "196024633",
+          "meters": 449.9
+        },
+        {
+          "fromStop": "196022104",
+          "toStop": "196024635",
+          "meters": 623.2
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024633",
+          "meters": 692.4
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024635",
+          "meters": 696.3
+        },
+        {
+          "fromStop": "196022104",
+          "toStop": "196024633",
+          "meters": 449.9
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024633",
+          "meters": 692.4
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024635",
+          "meters": 696.3
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "title": "꽃바위 → 언양터미널",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 2,
+      "timedJourneys": 13,
+      "elapsedMs": 5950.6,
+      "serverMs": 5810.26,
+      "recommended": {
+        "arrival": 965.8995444444445,
+        "walkingMeters": 288.1,
+        "transfers": 1,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5001",
+          "1713"
+        ],
+        "boarding": [
+          "꽃바위(기점)",
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "fastest": {
+        "arrival": 965.8995444444445,
+        "walkingMeters": 288.1,
+        "transfers": 1,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5001",
+          "1713"
+        ],
+        "boarding": [
+          "꽃바위(기점)",
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "194025001",
+          "toStop": "199000122",
+          "meters": 330.0
+        },
+        {
+          "fromStop": "194025001",
+          "toStop": "199000122",
+          "meters": 330.0
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "hospital-namchang",
+      "title": "울산대병원 → 남창역",
+      "departure": 840,
+      "day": "saturday",
+      "serviceDate": "2026-11-14",
+      "maxTransfers": 2,
+      "timedJourneys": 22,
+      "elapsedMs": 6064.4,
+      "serverMs": 5900.37,
+      "recommended": {
+        "arrival": 977.5358,
+        "walkingMeters": 298.8,
+        "transfers": 2,
+        "transferWalkingMeters": [],
+        "buses": [
+          "동구03",
+          "134",
+          "1715"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "남목2동",
+          "평창리비에르아파트앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 977.5358,
+        "walkingMeters": 298.8,
+        "transfers": 2,
+        "transferWalkingMeters": [],
+        "buses": [
+          "동구03",
+          "134",
+          "1715"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "남목2동",
+          "평창리비에르아파트앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "195030606",
+          "toStop": "195030610",
+          "meters": 316.8
+        },
+        {
+          "fromStop": "194024216",
+          "toStop": "999000060",
+          "meters": 538.9
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "taehwa-university",
+      "title": "태화강역 → 울산대학교",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 19,
+      "elapsedMs": 1417.1,
+      "serverMs": 1302.18,
+      "recommended": {
+        "arrival": 882.9993,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "fastest": {
+        "arrival": 882.9993,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "ktx-university",
+      "title": "울산역 → 울산대학교",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 10,
+      "elapsedMs": 979.1,
+      "serverMs": 860.98,
+      "recommended": {
+        "arrival": 916.7431,
+        "walkingMeters": 58.1,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5004"
+        ],
+        "boarding": [
+          "울산역"
+        ]
+      },
+      "fastest": {
+        "arrival": 916.7431,
+        "walkingMeters": 58.1,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5004"
+        ],
+        "boarding": [
+          "울산역"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "airport-taehwa",
+      "title": "울산공항 → 태화강역",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 11,
+      "elapsedMs": 576.7,
+      "serverMs": 467.61,
+      "recommended": {
+        "arrival": 874.0966333333333,
+        "walkingMeters": 252.10000000000002,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "482"
+        ],
+        "boarding": [
+          "울산공항"
+        ]
+      },
+      "fastest": {
+        "arrival": 874.0966333333333,
+        "walkingMeters": 252.10000000000002,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "482"
+        ],
+        "boarding": [
+          "울산공항"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "eonyang-ktx",
+      "title": "언양터미널 → 울산역",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 17,
+      "elapsedMs": 273.4,
+      "serverMs": 202.53,
+      "recommended": {
+        "arrival": 848.1737,
+        "walkingMeters": 0.0,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "513"
+        ],
+        "boarding": [
+          "언양임시시외터미널앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 848.1737,
+        "walkingMeters": 0.0,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "513"
+        ],
+        "boarding": [
+          "언양임시시외터미널앞"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "ilsan-taehwa",
+      "title": "일산해수욕장 → 태화강역",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 10,
+      "elapsedMs": 1627.3,
+      "serverMs": 1502.44,
+      "recommended": {
+        "arrival": 901.8702333333333,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "일산해수욕장"
+        ]
+      },
+      "fastest": {
+        "arrival": 901.8702333333333,
+        "walkingMeters": 97.8,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "134"
+        ],
+        "boarding": [
+          "일산해수욕장"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "cityhall-airport",
+      "title": "시청앞 → 울산공항",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 0,
+      "timedJourneys": 19,
+      "elapsedMs": 706.4,
+      "serverMs": 595.34,
+      "recommended": {
+        "arrival": 877.0504,
+        "walkingMeters": 83.4,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1234"
+        ],
+        "boarding": [
+          "시청앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 877.0504,
+        "walkingMeters": 83.4,
+        "transfers": 0,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1234"
+        ],
+        "boarding": [
+          "시청앞"
+        ]
+      },
+      "transfersOver250Meters": [],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "hospital-airport",
+      "title": "울산대병원 → 울산공항",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 2,
+      "timedJourneys": 22,
+      "elapsedMs": 2453.2,
+      "serverMs": 2346.7,
+      "recommended": {
+        "arrival": 913.2137,
+        "walkingMeters": 28.3,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          28.3
+        ],
+        "buses": [
+          "동구03",
+          "5002",
+          "762"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "서부패밀리 아파트",
+          "농심메가마트앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 913.2137,
+        "walkingMeters": 28.3,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          28.3
+        ],
+        "buses": [
+          "동구03",
+          "5002",
+          "762"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "서부패밀리 아파트",
+          "농심메가마트앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "194024216",
+          "toStop": "194024215",
+          "meters": 264.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024222",
+          "meters": 540.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024222",
+          "meters": 540.5
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024224",
+          "meters": 757.6
+        },
+        {
+          "fromStop": "194024225",
+          "toStop": "194024226",
+          "meters": 536.1
+        },
+        {
+          "fromStop": "194024225",
+          "toStop": "194024228",
+          "meters": 550.0
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194024226",
+          "meters": 1276.9
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "namchang-unist",
+      "title": "남창역 → UNIST",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 2,
+      "timedJourneys": 24,
+      "elapsedMs": 5842.3,
+      "serverMs": 5685.63,
+      "recommended": {
+        "arrival": 966.8939,
+        "walkingMeters": 250.4,
+        "transfers": 1,
+        "transferWalkingMeters": [],
+        "buses": [
+          "1715",
+          "513"
+        ],
+        "boarding": [
+          "온양우체국",
+          "덕하역/덕하시장"
+        ]
+      },
+      "fastest": {
+        "arrival": 952.3369444444445,
+        "walkingMeters": 1655.5,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          63.6
+        ],
+        "buses": [
+          "1715",
+          "115",
+          "5001"
+        ],
+        "boarding": [
+          "온양우체국",
+          "공업탑",
+          "시청앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "196022104",
+          "toStop": "196024633",
+          "meters": 449.9
+        },
+        {
+          "fromStop": "196022104",
+          "toStop": "196024635",
+          "meters": 623.2
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024633",
+          "meters": 692.4
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024635",
+          "meters": 696.3
+        },
+        {
+          "fromStop": "196022104",
+          "toStop": "196024633",
+          "meters": 449.9
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024633",
+          "meters": 692.4
+        },
+        {
+          "fromStop": "196024621",
+          "toStop": "196024635",
+          "meters": 696.3
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "kkotbawi-eonyang",
+      "title": "꽃바위 → 언양터미널",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 2,
+      "timedJourneys": 15,
+      "elapsedMs": 5872.8,
+      "serverMs": 5752.82,
+      "recommended": {
+        "arrival": 965.8995444444445,
+        "walkingMeters": 288.1,
+        "transfers": 1,
+        "transferWalkingMeters": [],
+        "buses": [
+          "5001",
+          "1713"
+        ],
+        "boarding": [
+          "꽃바위(기점)",
+          "태화강역(2번 정류소)"
+        ]
+      },
+      "fastest": {
+        "arrival": 965.8995444444445,
+        "walkingMeters": 86.4,
+        "transfers": 2,
+        "transferWalkingMeters": [
+          72.4
+        ],
+        "buses": [
+          "721",
+          "1421",
+          "1713"
+        ],
+        "boarding": [
+          "꽃바위(기점)",
+          "송정타워",
+          "공업탑"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "194025001",
+          "toStop": "199000122",
+          "meters": 330.0
+        },
+        {
+          "fromStop": "194025001",
+          "toStop": "199000122",
+          "meters": 330.0
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    },
+    {
+      "case": "hospital-namchang",
+      "title": "울산대병원 → 남창역",
+      "departure": 840,
+      "day": "holiday",
+      "serviceDate": "2026-11-15",
+      "maxTransfers": 2,
+      "timedJourneys": 22,
+      "elapsedMs": 7393.7,
+      "serverMs": 5839.15,
+      "recommended": {
+        "arrival": 977.5358,
+        "walkingMeters": 298.8,
+        "transfers": 2,
+        "transferWalkingMeters": [],
+        "buses": [
+          "동구03",
+          "134",
+          "1715"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "남목2동",
+          "평창리비에르아파트앞"
+        ]
+      },
+      "fastest": {
+        "arrival": 977.5358,
+        "walkingMeters": 298.8,
+        "transfers": 2,
+        "transferWalkingMeters": [],
+        "buses": [
+          "동구03",
+          "134",
+          "1715"
+        ],
+        "boarding": [
+          "울산대학교병원",
+          "남목2동",
+          "평창리비에르아파트앞"
+        ]
+      },
+      "transfersOver250Meters": [
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "195040341",
+          "toStop": "999000149",
+          "meters": 319.9
+        },
+        {
+          "fromStop": "194070102",
+          "toStop": "194027107",
+          "meters": 629.3
+        },
+        {
+          "fromStop": "195030606",
+          "toStop": "195030610",
+          "meters": 316.8
+        },
+        {
+          "fromStop": "194024216",
+          "toStop": "999000060",
+          "meters": 538.9
+        }
+      ],
+      "missingShapeSegments": [],
+      "errors": []
+    }
+  ]
+}

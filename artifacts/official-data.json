@@ -35,7 +35,7 @@
     }
   ],
   "skippedTimeValues": [],
-  "sha256": "8b3b78f63e31779daf7190a927eb1e0c9bad0ed9e2ed3f2dc55e64171d1a70ae",
+  "sha256": "a29382f699b10e16ee612c9277df476ec6d228e539e26becc65998c0e98bd730",
   "estimatedStopTimes": {
     "movingKmh": 22,
     "dwellSecondsPerStop": 20
@@ -2727,7 +2727,7 @@
       "retrievedAt": "2026-11-11T01:21:48.618354+00:00"
     }
   ],
-  "derivedNetworkVersion": "ulsan-its-2026-11-11+sources3",
+  "derivedNetworkVersion": "ulsan-its-2026-11-11+sources4+walk1",
   "officialRouteCount": 534,
   "supplementalServiceGroups": 2,
   "supplementalSources": {

@@ -1,0 +1,34 @@
+{
+  "baseGraphSha256": "d28d9f05007a15060e456df805238b0491b5dac328becbf28f7392ffec3dfc3e",
+  "sha256": "3ab2383b8055716dc471fe4fe21b5a3e8c3c7606dd1290ba914a3d94bf1dba18",
+  "addedNodes": 94,
+  "addedEdges": 100,
+  "reviewedWalkingLines": 6,
+  "unsnappedStops": [],
+  "joins": [
+    {
+      "stopId": "196021330",
+      "endConnectionErrorMeters": 2.6851321287611962
+    },
+    {
+      "stopId": "199000044",
+      "endConnectionErrorMeters": 0.9123515754794588
+    },
+    {
+      "stopId": "999000094",
+      "endConnectionErrorMeters": 0.36675186383961256
+    },
+    {
+      "stopId": "199000096",
+      "endConnectionErrorMeters": 15.198386203145047
+    },
+    {
+      "stopId": "999000117",
+      "endConnectionErrorMeters": 4.313399999972489
+    },
+    {
+      "stopId": "999000123",
+      "endConnectionErrorMeters": 3.8311000001556295
+    }
+  ]
+}

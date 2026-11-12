@@ -1,0 +1,23 @@
+{
+  "checkedAtEpoch": 1794445209.3892877,
+  "sources": [
+    {
+      "day": "weekday",
+      "source": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=18",
+      "sha256": "0606d0463413e8f522ec9d307818c3372542935d47d5dd344e74512ffdd96847",
+      "unchanged": true
+    },
+    {
+      "day": "saturday",
+      "source": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=17",
+      "sha256": "b69431b3580a3372e2ff28a3cb0740c553fb78216a98eb10672a8857e8430aa6",
+      "unchanged": true
+    },
+    {
+      "day": "holiday",
+      "source": "http://www.ulsanbus.or.kr/bbs/board.php?bo_table=time&wr_id=16",
+      "sha256": "60fc10a70533696d204b6b71fdac6d0f2b71f50d74a9a9c7498556a589dff659",
+      "unchanged": true
+    }
+  ]
+}

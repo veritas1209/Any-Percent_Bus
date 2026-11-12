@@ -10,14 +10,22 @@ import paramiko
 
 ROOT=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser()
-parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status'])
+parser.add_argument('action',choices=['inspect','download','probe','deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status','prepare-native'])
 args=parser.parse_args()
 client=paramiko.SSHClient()
 client.load_system_host_keys()
 client.connect('100.119.23.4',username='hajin',password=sys.stdin.readline().strip(),look_for_keys=False,allow_agent=False,timeout=10,auth_timeout=10)
 client.get_transport().set_keepalive(15)
 try:
-    if args.action in ('deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status'):
+    if args.action=='prepare-native':
+        base='/home/hajin/anypercent'
+        with client.open_sftp() as sftp:sftp.stat(base+'/.anypercent-managed')
+        command=['python3','-m','pip','install','--disable-pip-version-check','--index-url','https://pypi.org/simple',
+            '--only-binary=:all:','--no-deps','--upgrade','--target',base+'/.native-scipy-1.14.1','scipy==1.14.1']
+        _,out,err=client.exec_command(shlex.join(command),timeout=180)
+        print(out.read().decode());print(err.read().decode())
+        if out.channel.recv_exit_status()!=0:raise RuntimeError('Isolated native dependency preparation failed')
+    elif args.action in ('deploy-backend','deploy-backend-code','deploy-web','deploy-web-server','deploy-apk','status'):
         base='/home/hajin/anypercent'
         sftp=client.open_sftp()
         sftp.get_channel().settimeout(60)
@@ -57,7 +65,7 @@ try:
                     except OSError:pass
                 upload(ROOT/'backend/app',base+'/backend/app')
                 if args.action == 'deploy-backend':
-                    for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','places.json'):
+                    for name in ('network.json','observed_network.json','service_network.json','bustracker_catalog.json','walk_graph.bin','transfer_graph.bin','places.json'):
                         upload(ROOT/'shared'/name,base+'/shared/'+name)
                 upload(ROOT/'tools/remote_runtime.py',base+'/tools/remote_runtime.py')
             elif args.action in ('deploy-web','deploy-web-server'):

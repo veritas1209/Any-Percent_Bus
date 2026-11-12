@@ -1,0 +1,11 @@
+{
+  "nodes": 53374,
+  "directedEdges": 167552,
+  "stops": 3670,
+  "unsnapped": [],
+  "originalRoadNodes": 656125,
+  "sourceGraphSha256": "3ab2383b8055716dc471fe4fe21b5a3e8c3c7606dd1290ba914a3d94bf1dba18",
+  "bytes": 2312448,
+  "sha256": "294b14e6914ca3fea9294aa18d1503bd42cff417f249c5291e75820941294a64",
+  "method": "Exact degree-two chain contraction; no transfer distance cap; stop projection offsets retained"
+}

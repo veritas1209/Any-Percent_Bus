@@ -3,6 +3,7 @@ import asyncio
 import argparse
 import json
 import re
+import math
 import struct
 import time
 import zlib
@@ -24,6 +25,7 @@ parser.add_argument('--destination',default='업스퀘어')
 parser.add_argument('--max-transfers',type=int,choices=(0,1,2),default=1)
 parser.add_argument('--require-transfer',action='store_true')
 parser.add_argument('--screenshot-prefix',default='')
+parser.add_argument('--long-transfer',action='store_true',help='Open an actual candidate containing a transfer walk longer than 250m')
 args = parser.parse_args()
 URL = args.url.rstrip('/')
 HOUR, MINUTE = map(int, args.departure.split(':'))
@@ -107,7 +109,15 @@ async def run():
             snapshot = await page.locator('body').aria_snapshot()
             assert '추정' not in snapshot and 'A BETTER WAY' not in snapshot
             await page.screenshot(path=shot('25-official-upsquare-mobile.png'))
-            any_card = page.get_by_role('button', name=re.compile('ANY%.*경로 상세 보기')).first
+            selected=fastest
+            if args.long_transfer:
+                selected=next((row for row in result['journeys'] if any(l['kind']=='walk' and l['from']!='@origin' and l['to']!='@destination' and l['meters']>250 for l in row['legs'])),None)
+                assert selected is not None,'No long-transfer candidate in this scenario'
+                minute=math.floor(selected['arrival']+.5)
+                label=f'{minute//60:02}:{minute%60:02}'
+                pattern='경로 상세 보기.*'+re.escape(label)+' 도착 예정.*도보 '+str(math.floor(selected['walkingMeters']+.5))+'m'
+            else:pattern='ANY%.*경로 상세 보기'
+            any_card = page.get_by_role('button', name=re.compile(pattern)).first
             # Flutter's ListView exposes only mounted rows in the semantics tree.
             for _ in range(40):
                 if await any_card.count() and await any_card.is_visible():break
@@ -131,6 +141,10 @@ async def run():
                 if args.live_tiles:
                     await page.wait_for_timeout(5000)
                 await page.screenshot(path=shot('28-route-desktop.png'))
+                if args.long_transfer:
+                    await page.mouse.wheel(0,550)
+                    await page.wait_for_timeout(300)
+                    await page.screenshot(path=shot('29-long-transfer-timeline.png'))
                 await page.set_viewport_size({'width': 390, 'height': 844})
             await page.get_by_role('button', name='뒤로', exact=True).click()
             await page.get_by_role('button', name='뒤로', exact=True).click()
@@ -160,6 +174,9 @@ async def run():
                 'clock': 'Real browser clock' if args.real_clock else 'Fixed departure clock',
                 'tiles': 'Live OpenStreetMap tiles' if args.live_tiles else 'Memory PNG fixtures only',
                 'successfulMapTileResponses': len([status for status in tile_responses if status == 200]),
+                'selectedJourney': {'arrival':selected['arrival'],'walkingMeters':selected['walkingMeters'],
+                    'transferWalkingMeters':[l['meters'] for l in selected['legs'] if l['kind']=='walk' and l['from']!='@origin' and l['to']!='@destination'],
+                    'longTransferSelected':args.long_transfer},
                 'fastestJourney': {'arrival': fastest['arrival'], 'walkingMeters': fastest['walkingMeters'],
                     'rides': [{'routeId': leg['routeId'], 'boardingStop': leg['from'],
                         'alightingStop': leg['to'], 'segmentCount': leg['alightIndex'] - leg['boardIndex'],

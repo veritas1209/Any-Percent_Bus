@@ -1,0 +1,36 @@
+{
+  "scipyVersion": "1.17.0",
+  "cases": [
+    {
+      "sources": {
+        "193012313": 900
+      },
+      "stops": 3395,
+      "maximumDifferenceMinutes": 1.3642420526593924e-12,
+      "pythonMs": 46.12,
+      "nativeMs": 5.73
+    },
+    {
+      "sources": {
+        "195040328": 950,
+        "196031532": 910
+      },
+      "stops": 3533,
+      "maximumDifferenceMinutes": 1.5916157281026244e-12,
+      "pythonMs": 71.76,
+      "nativeMs": 8.13
+    },
+    {
+      "sources": {
+        "194019014": 1000,
+        "196030401": 980,
+        "196040232": 930
+      },
+      "stops": 3602,
+      "maximumDifferenceMinutes": 1.3642420526593924e-12,
+      "pythonMs": 69.85,
+      "nativeMs": 7.33
+    }
+  ],
+  "passed": true
+}

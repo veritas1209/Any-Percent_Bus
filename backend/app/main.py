@@ -13,6 +13,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, Field, field_validator
 from datetime import date
+from contextlib import asynccontextmanager,suppress
+import asyncio
 
 from .engine import Engine, Query
 from . import bustracker
@@ -33,7 +35,21 @@ COMPACT_SERVICE.pop('shapes', None)
 COMPACT_SERVICE_JSON = json.dumps(COMPACT_SERVICE, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
 ENGINES = {name: Engine(data) for name, data in NETWORKS.items()}
 HISTORY=generate_history(NETWORK)
-app = FastAPI(title='Any% journey planner', version='0.3.0')
+@asynccontextmanager
+async def lifespan(app):
+    task=None
+    if os.getenv('ANYPERCENT_LIVE_ITS')=='1':
+        from .live_history import LiveHistory
+        app.state.live_history=LiveHistory(SERVICE,ROOT/'backend/live_history.db')
+        task=asyncio.create_task(app.state.live_history.run())
+    try:yield
+    finally:
+        if task:
+            task.cancel()
+            with suppress(asyncio.CancelledError):await task
+
+
+app = FastAPI(title='Any% journey planner', version='0.4.4',lifespan=lifespan)
 app.add_middleware(GZipMiddleware,minimum_size=1024,compresslevel=5)
 app.add_middleware(CORSMiddleware, allow_origin_regex=r'https?://(localhost|127\.0\.0\.1|100\.119\.23\.4)(:\d+)?',allow_methods=['GET','POST'],allow_headers=['Content-Type'])
 if os.getenv('BUSTRACKER_CSV'):
@@ -47,6 +63,12 @@ class Location(BaseModel):
     lat: float = Field(ge=35.2,le=35.85)
     lon: float = Field(ge=128.85,le=129.6)
     address: str = Field(default='',max_length=300)
+
+
+@app.get('/v1/service/history/coverage')
+def live_history_coverage():
+    history=getattr(app.state,'live_history',None)
+    return {'enabled':False} if history is None else {'enabled':True,**history.coverage()}
 
 
 class Search(BaseModel):
@@ -96,7 +118,10 @@ def _places_index():
 
 @app.get('/v1/health')
 def health():
-    return {'status':'ok','mode':'prototype','networkVersion':OBSERVED['version'],'defaultDataset':'observed','datasets':list(NETWORKS)}
+    from .native_graph import SCIPY_VERSION
+    return {'status':'ok','mode':'prototype','networkVersion':OBSERVED['version'],'defaultDataset':'observed','datasets':list(NETWORKS),
+            'transferRouting':'pedestrian_road_graph','walkingMaximumMeters':None,
+            'routingAccelerator':f'scipy-{SCIPY_VERSION}' if ENGINES['service'].transfer_graph.native is not None else 'python'}
 
 
 @app.get('/v1/network')

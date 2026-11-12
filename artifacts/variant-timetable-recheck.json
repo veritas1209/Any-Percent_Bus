@@ -1,0 +1,20 @@
+{
+  "source": "https://its.ulsan.kr/route/timetable.do",
+  "checkedAtEpoch": 1794443287.4414883,
+  "routeIds": [
+    "196000776",
+    "195000233"
+  ],
+  "independentDepartureRows": {
+    "196000776": [
+      0,
+      0,
+      0
+    ],
+    "195000233": [
+      0,
+      0,
+      0
+    ]
+  }
+}

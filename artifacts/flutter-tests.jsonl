@@ -15,22 +15,24 @@ Downloading packages...
 Got dependencies!
 12 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
-{"protocolVersion":"0.1.1","runnerVersion":null,"pid":17588,"type":"start","time":0}
-{"suite":{"id":0,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"suite","time":1}
-{"test":{"id":1,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":3}
-{"suite":{"id":2,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"suite","time":18}
-{"test":{"id":3,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":18}
-{"suite":{"id":4,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"suite","time":19}
-{"test":{"id":5,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart","suiteID":4,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":20}
-{"suite":{"id":6,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart"},"type":"suite","time":21}
-{"test":{"id":7,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart","suiteID":6,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":21}
-{"suite":{"id":8,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"suite","time":22}
-{"test":{"id":9,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart","suiteID":8,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":22}
-{"suite":{"id":10,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"suite","time":23}
-{"test":{"id":11,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart","suiteID":10,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":23}
-{"suite":{"id":12,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"suite","time":27}
-{"test":{"id":13,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart","suiteID":12,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":28}
-{"count":7,"time":29,"type":"allSuites"}
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":15300,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"suite":{"id":2,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"suite","time":7}
+{"test":{"id":3,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7}
+{"suite":{"id":4,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"suite","time":7}
+{"test":{"id":5,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart","suiteID":4,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7}
+{"suite":{"id":6,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart"},"type":"suite","time":7}
+{"test":{"id":7,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart","suiteID":6,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7}
+{"suite":{"id":8,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"suite","time":8}
+{"test":{"id":9,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart","suiteID":8,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":8}
+{"suite":{"id":10,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/transfers_test.dart"},"type":"suite","time":8}
+{"test":{"id":11,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/transfers_test.dart","suiteID":10,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":8}
+{"suite":{"id":12,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"suite","time":8}
+{"test":{"id":13,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart","suiteID":12,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":9}
+{"suite":{"id":14,"platform":"vm","path":"C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"suite","time":10}
+{"test":{"id":15,"name":"loading C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart","suiteID":14,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":10}
+{"count":8,"time":10,"type":"allSuites"}
 
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
 
@@ -39,135 +41,143 @@ Try `flutter pub outdated` for more information.
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
 
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
-{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":6497}
-{"group":{"id":14,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":8,"line":null,"column":null,"url":null},"type":"group","time":6507}
-{"test":{"id":15,"name":"(setUpAll)","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":97,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":6509}
 
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
-{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":6698}
-{"group":{"id":16,"suiteID":2,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":6700}
-{"test":{"id":17,"name":"walking graph follows the bridge and rejects a disconnected nearby edge","suiteID":2,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":15,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":6701}
-{"testID":5,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":6869}
-{"group":{"id":18,"suiteID":4,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":6870}
-{"test":{"id":19,"name":"express transfer can reboard an earlier trip of the first route","suiteID":4,"groupIDs":[18],"metadata":{"skip":false,"skipReason":null},"line":27,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"testStart","time":6870}
-{"testID":17,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6922}
-{"test":{"id":20,"name":"GPS pauses and scenario delay move along the recorded curve without stop-centroid detours","suiteID":2,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":50,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":6924}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3049}
+{"group":{"id":16,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":8,"line":null,"column":null,"url":null},"type":"group","time":3053}
+{"test":{"id":17,"name":"(setUpAll)","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":97,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":3054}
+{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3223}
+{"group":{"id":18,"suiteID":2,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":3226}
+{"test":{"id":19,"name":"walking graph follows the bridge and rejects a disconnected nearby edge","suiteID":2,"groupIDs":[18],"metadata":{"skip":false,"skipReason":null},"line":15,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":3226}
 
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
-{"testID":20,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6998}
-{"test":{"id":21,"name":"map picker accepts an arbitrary point rather than requiring a transit stop","suiteID":2,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":116,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":6999}
-{"testID":19,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7065}
-{"test":{"id":22,"name":"protected candidates preserve a safer later prefix","suiteID":4,"groupIDs":[18],"metadata":{"skip":false,"skipReason":null},"line":54,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"testStart","time":7066}
-{"testID":22,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7136}
+{"testID":5,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3333}
+{"group":{"id":20,"suiteID":4,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":3334}
+{"test":{"id":21,"name":"express transfer can reboard an earlier trip of the first route","suiteID":4,"groupIDs":[20],"metadata":{"skip":false,"skipReason":null},"line":27,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"testStart","time":3334}
+{"testID":19,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3348}
+{"test":{"id":22,"name":"GPS pauses and scenario delay move along the recorded curve without stop-centroid detours","suiteID":2,"groupIDs":[18],"metadata":{"skip":false,"skipReason":null},"line":50,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":3349}
+{"testID":22,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3372}
+{"test":{"id":23,"name":"map picker accepts an arbitrary point rather than requiring a transit stop","suiteID":2,"groupIDs":[18],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":116,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/locations_motion_test.dart"},"type":"testStart","time":3373}
+{"testID":21,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3481}
+{"test":{"id":24,"name":"protected candidates preserve a safer later prefix","suiteID":4,"groupIDs":[20],"metadata":{"skip":false,"skipReason":null},"line":54,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/routing_candidates_test.dart"},"type":"testStart","time":3482}
+{"testID":24,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3541}
 
 [{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
-{"testID":7,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":7499}
-{"group":{"id":23,"suiteID":6,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":7500}
-{"test":{"id":24,"name":"calendar filtering distinguishes market days and expires temporary service","suiteID":6,"groupIDs":[23],"metadata":{"skip":false,"skipReason":null},"line":6,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart"},"type":"testStart","time":7500}
-{"testID":24,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7650}
-{"testID":15,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":7723}
-{"test":{"id":25,"name":"recent accurate position is reused and concurrent GPS requests share one read","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":100,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7724}
-{"testID":25,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7778}
-{"test":{"id":26,"name":"Android permission grant preserves the actual coordinate and accuracy","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":122,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7779}
-{"testID":26,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7791}
-{"test":{"id":27,"name":"permanently denied and disabled GPS do not read position","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":139,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7792}
-{"testID":27,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7825}
-{"test":{"id":28,"name":"browser reads only once and classifies denial, timeout and out-of-area","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":170,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7825}
-{"testID":28,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7840}
-{"test":{"id":29,"name":"HTTP browser points to HTTPS without accessing device location","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":208,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7841}
-{"testID":29,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7850}
-{"test":{"id":30,"name":"current origin is opt-in, keeps destination, and reaches the route query","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":240,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7851}
-{"testID":9,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":8117}
-{"group":{"id":31,"suiteID":8,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":6,"line":null,"column":null,"url":null},"type":"group","time":8118}
-{"test":{"id":32,"name":"walking preferences change the recommendation without a hard distance limit","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":10,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":8118}
-{"testID":32,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8274}
-{"test":{"id":33,"name":"14:15 campus search chooses the near stop and retains the middle road line","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":86,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":8276}
-{"testID":11,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":8610}
-{"group":{"id":34,"suiteID":10,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":null,"column":null,"url":null},"type":"group","time":8611}
-{"test":{"id":35,"name":"road interpolation follows bends and never bridges missing geometry","suiteID":10,"groupIDs":[34],"metadata":{"skip":false,"skipReason":null},"line":24,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":8611}
-{"testID":35,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8668}
-{"test":{"id":36,"name":"boarding and alighting clip the road shape to the selected portion","suiteID":10,"groupIDs":[34],"metadata":{"skip":false,"skipReason":null},"line":39,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":8669}
-{"testID":36,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8699}
-{"test":{"id":37,"name":"tile failures offer an offline diagram without breaking the journey","suiteID":10,"groupIDs":[34],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":105,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":8699}
-{"testID":13,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":9013}
-{"group":{"id":38,"suiteID":12,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":14,"line":null,"column":null,"url":null},"type":"group","time":9015}
-{"test":{"id":39,"name":"(setUpAll)","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":34,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":9015}
-{"testID":39,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":9994}
-{"test":{"id":40,"name":"simulation agrees with the analytically known 50 percent connection","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":41,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":9995}
-{"testID":40,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10111}
-{"test":{"id":41,"name":"final walking leg and walk-only route respect the distance budget","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":65,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":10111}
-{"testID":41,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10126}
-{"test":{"id":42,"name":"observed replay preserves provenance and its one-hour boundary","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":110,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":10127}
-{"testID":33,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11621}
-{"test":{"id":43,"name":"wide walking and two transfers retain the faster one-transfer option","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":133,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":11621}
-{"testID":37,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":12569}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12570}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12572}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12607}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12609}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12610}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12611}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12612}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12613}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12614}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12616}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12617}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12618}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12619}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12621}
-{"testID":37,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":12622}
-{"testID":37,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":12623}
-{"test":{"id":44,"name":"map follows selected stop sequence and selected vehicle only","suiteID":10,"groupIDs":[34],"metadata":{"skip":false,"skipReason":null},"line":128,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":12625}
-{"testID":44,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":12651}
-{"test":{"id":45,"name":"map supports zoom, stop details, fullscreen and diagram fallback","suiteID":10,"groupIDs":[34],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":143,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":12652}
-{"testID":30,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":13425}
-{"test":{"id":46,"name":"pending GPS prevents duplicate requests and denial keeps the origin","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":263,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":13426}
-{"testID":21,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":14241}
-{"testID":21,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":14243}
-{"testID":46,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":14302}
-{"test":{"id":47,"name":"map current-location button recenters and shows a blue location dot","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":292,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":14303}
-{"testID":45,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":15131}
-{"testID":45,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":15133}
-{"testID":45,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":15149}
-{"testID":45,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":15164}
-{"testID":43,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":15799}
-{"test":{"id":48,"name":"both campuses connect to Upsquare at 12:45 within one kilometre of walking","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":177,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":15800}
-{"testID":42,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17083}
-{"test":{"id":49,"name":"Any% and Safe differ under delay risk","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":144,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":17084}
-{"testID":49,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17190}
-{"test":{"id":50,"name":"walking limits, zero transfers, last service and disconnected stop","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":160,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":17191}
-{"testID":50,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17212}
-{"test":{"id":51,"name":"search, station selection and input conditions on narrow mobile","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":200,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":17213}
-{"testID":47,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":17753}
-{"testID":47,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17785}
-{"test":{"id":52,"name":"(tearDownAll)","suiteID":0,"groupIDs":[14],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":17786}
-{"testID":52,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":17795}
-{"testID":48,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":17993}
-{"test":{"id":53,"name":"service days select the matching trip in search and replay","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":227,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":17995}
-{"testID":53,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":18010}
-{"test":{"id":54,"name":"offline official point search works at 10:07 with geometry-free routing data","suiteID":8,"groupIDs":[31],"metadata":{"skip":false,"skipReason":null},"line":288,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":18011}
-{"testID":54,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":21196}
-{"testID":51,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":28465}
-{"test":{"id":55,"name":"default search and offline recovery keep actual bus routes","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":237,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":28465}
-{"testID":55,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":34664}
-{"test":{"id":56,"name":"details and delay simulator update actual arrival","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":274,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":34665}
-{"testID":56,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":36684}
-{"testID":56,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":36713}
-{"testID":56,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":36715}
-{"test":{"id":57,"name":"empty results render without frozen spinner","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":301,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":36715}
-{"testID":57,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":36859}
-{"test":{"id":58,"name":"observed conditions use the recorded time window","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":320,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":36860}
-{"testID":58,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":38980}
-{"test":{"id":59,"name":"catalog-only route shows no invented arrival or delay action","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":346,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":38981}
-{"testID":59,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":44931}
-{"testID":59,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":44933}
-{"test":{"id":60,"name":"all-route picker finds 722 and opens its stop list","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":376,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":44933}
-{"testID":60,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":47896}
-{"test":{"id":61,"name":"recovered 81 shows its partial GPS source and no arrival promise","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":410,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":47897}
-{"testID":61,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":50075}
-{"testID":61,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":50077}
-{"test":{"id":62,"name":"sparse variant links to the existing same-number section","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":448,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":50078}
-{"testID":62,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":53961}
-{"test":{"id":63,"name":"(tearDownAll)","suiteID":12,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":53962}
-{"testID":63,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":53970}
-{"success":true,"type":"done","time":54142}
+{"testID":7,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3635}
+{"group":{"id":25,"suiteID":6,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":3636}
+{"test":{"id":26,"name":"calendar filtering distinguishes market days and expires temporary service","suiteID":6,"groupIDs":[25],"metadata":{"skip":false,"skipReason":null},"line":6,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_calendar_test.dart"},"type":"testStart","time":3636}
+{"testID":26,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3751}
+{"testID":17,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3890}
+{"test":{"id":27,"name":"recent accurate position is reused and concurrent GPS requests share one read","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":100,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":3892}
+{"testID":27,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3939}
+{"test":{"id":28,"name":"Android permission grant preserves the actual coordinate and accuracy","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":122,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":3940}
+{"testID":28,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3957}
+{"test":{"id":29,"name":"permanently denied and disabled GPS do not read position","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":139,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":3959}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":null}}]
+{"testID":29,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4000}
+{"test":{"id":30,"name":"browser reads only once and classifies denial, timeout and out-of-area","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":170,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":4001}
+{"testID":30,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4015}
+{"test":{"id":31,"name":"HTTP browser points to HTTPS without accessing device location","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":208,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":4015}
+{"testID":31,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4035}
+{"test":{"id":32,"name":"current origin is opt-in, keeps destination, and reaches the route query","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":240,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":4036}
+{"testID":9,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":4118}
+{"group":{"id":33,"suiteID":8,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":6,"line":null,"column":null,"url":null},"type":"group","time":4118}
+{"test":{"id":34,"name":"walking preferences change the recommendation without a hard distance limit","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":10,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":4119}
+{"testID":34,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4202}
+{"test":{"id":35,"name":"14:15 campus search chooses the near stop and retains the middle road line","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":86,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":4202}
+{"testID":11,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":4248}
+{"group":{"id":36,"suiteID":10,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":4249}
+{"test":{"id":37,"name":"a transfer longer than five kilometers is scored instead of excluded","suiteID":10,"groupIDs":[36],"metadata":{"skip":false,"skipReason":null},"line":63,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transfers_test.dart"},"type":"testStart","time":4250}
+{"testID":37,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4363}
+{"test":{"id":38,"name":"multisource walking retains both arrival and walking alternatives","suiteID":10,"groupIDs":[36],"metadata":{"skip":false,"skipReason":null},"line":130,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transfers_test.dart"},"type":"testStart","time":4363}
+{"testID":38,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4372}
+{"testID":13,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":4720}
+{"group":{"id":39,"suiteID":12,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":null,"column":null,"url":null},"type":"group","time":4720}
+{"test":{"id":40,"name":"road interpolation follows bends and never bridges missing geometry","suiteID":12,"groupIDs":[39],"metadata":{"skip":false,"skipReason":null},"line":24,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":4721}
+{"testID":40,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4762}
+{"test":{"id":41,"name":"boarding and alighting clip the road shape to the selected portion","suiteID":12,"groupIDs":[39],"metadata":{"skip":false,"skipReason":null},"line":39,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":4763}
+{"testID":41,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4783}
+{"test":{"id":42,"name":"tile failures offer an offline diagram without breaking the journey","suiteID":12,"groupIDs":[39],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":105,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":4783}
+{"testID":15,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":4986}
+{"group":{"id":43,"suiteID":14,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":14,"line":null,"column":null,"url":null},"type":"group","time":4987}
+{"test":{"id":44,"name":"(setUpAll)","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":34,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":4987}
+{"testID":44,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":5612}
+{"test":{"id":45,"name":"simulation agrees with the analytically known 50 percent connection","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":41,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":5613}
+{"testID":45,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":5709}
+{"test":{"id":46,"name":"final walking leg and walk-only route respect the distance budget","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":65,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":5710}
+{"testID":46,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":5724}
+{"test":{"id":47,"name":"observed replay preserves provenance and its one-hour boundary","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":110,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":5724}
+{"testID":35,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6015}
+{"test":{"id":48,"name":"wide walking and two transfers retain the faster one-transfer option","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":136,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":6016}
+{"testID":42,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":6795}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6796}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6796}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6809}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6810}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6810}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6811}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6811}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6812}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6812}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6813}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6813}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6814}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6814}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6815}
+{"testID":42,"messageType":"print","message":"Exception: Invalid image data","type":"print","time":6815}
+{"testID":42,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6817}
+{"test":{"id":49,"name":"map follows selected stop sequence and selected vehicle only","suiteID":12,"groupIDs":[39],"metadata":{"skip":false,"skipReason":null},"line":128,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":6818}
+{"testID":49,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6832}
+{"test":{"id":50,"name":"map supports zoom, stop details, fullscreen and diagram fallback","suiteID":12,"groupIDs":[39],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":143,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/transit_map_test.dart"},"type":"testStart","time":6833}
+{"testID":32,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7474}
+{"test":{"id":51,"name":"pending GPS prevents duplicate requests and denial keeps the origin","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":263,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":7475}
+{"testID":23,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":7885}
+{"testID":23,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":7888}
+{"testID":51,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8025}
+{"test":{"id":52,"name":"map current-location button recenters and shows a blue location dot","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":292,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/device_location_test.dart"},"type":"testStart","time":8026}
+{"testID":48,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8040}
+{"test":{"id":53,"name":"both campuses connect to Upsquare at 12:45 within one kilometre of walking","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":183,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":8042}
+{"testID":50,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":8393}
+{"testID":50,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":8394}
+{"testID":50,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":8407}
+{"testID":50,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8408}
+{"testID":47,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9241}
+{"test":{"id":54,"name":"Any% and Safe differ under delay risk","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":144,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":9242}
+{"testID":53,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9274}
+{"test":{"id":55,"name":"service days select the matching trip in search and replay","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":236,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":9275}
+{"testID":55,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9283}
+{"test":{"id":56,"name":"offline official point search works at 10:07 with geometry-free routing data","suiteID":8,"groupIDs":[33],"metadata":{"skip":false,"skipReason":null},"line":297,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/service_network_test.dart"},"type":"testStart","time":9284}
+{"testID":54,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9296}
+{"test":{"id":57,"name":"walking limits, zero transfers, last service and disconnected stop","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":160,"column":3,"url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":9296}
+{"testID":57,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9306}
+{"test":{"id":58,"name":"search, station selection and input conditions on narrow mobile","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":200,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":9307}
+{"testID":52,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":9719}
+{"testID":52,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":9733}
+{"test":{"id":59,"name":"(tearDownAll)","suiteID":0,"groupIDs":[16],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":9733}
+{"testID":59,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":9739}
+{"testID":56,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10555}
+{"testID":58,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":12684}
+{"test":{"id":60,"name":"default search and offline recovery keep actual bus routes","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":237,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":12685}
+{"testID":60,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":14620}
+{"test":{"id":61,"name":"details and delay simulator update actual arrival","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":274,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":14621}
+{"testID":61,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":15276}
+{"testID":61,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":15284}
+{"testID":61,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":15285}
+{"test":{"id":62,"name":"empty results render without frozen spinner","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":301,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":15285}
+{"testID":62,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":15332}
+{"test":{"id":63,"name":"observed conditions use the recorded time window","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":320,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":15332}
+{"testID":63,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":15955}
+{"test":{"id":64,"name":"catalog-only route shows no invented arrival or delay action","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":346,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":15956}
+{"testID":64,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":18053}
+{"testID":64,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":18054}
+{"test":{"id":65,"name":"all-route picker finds 722 and opens its stop list","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":376,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":18054}
+{"testID":65,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":18925}
+{"test":{"id":66,"name":"recovered 81 shows its partial GPS source and no arrival promise","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":410,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":18925}
+{"testID":66,"messageType":"print","message":"  \u001b[1m[flutter_map]\u001b[0m\n    We want to help keep OpenStreetMap available for everyone. Our examples\n    and demo app use the public tile servers, but they are NOT free to use by\n    everyone! Please review whether the OpenStreetMap tile servers are suitable\n    for your project.\n    See:\n      * https://operations.osmfoundation.org/policies/tiles (OSM Tile Usage Policy)\n      * https://docs.fleaflet.dev/osm-warn for more information about this warning","type":"print","time":19605}
+{"testID":66,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":19607}
+{"test":{"id":67,"name":"sparse variant links to the existing same-number section","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":448,"root_column":3,"root_url":"file:///C:/Users/hajin/Downloads/anypercent/app/test/widget_test.dart"},"type":"testStart","time":19607}
+{"testID":67,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":20662}
+{"test":{"id":68,"name":"(tearDownAll)","suiteID":14,"groupIDs":[43],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":20662}
+{"testID":68,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":20666}
+{"success":true,"type":"done","time":20735}

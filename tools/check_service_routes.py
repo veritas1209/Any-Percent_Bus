@@ -26,12 +26,12 @@ CASES = [
 ]
 
 
-def check_case(client, url, network, case, departure, day):
+def check_case(client, url, network, case, departure, day,service_date_override=None):
     key, title, origin, destination, transfers = case
     stops = {s['id']: s for s in network['stops']}
     routes = {r['id']: r for r in network['routes']}
     point = lambda sid: {k: stops[sid][k] for k in ('name', 'lat', 'lon')}
-    service_date={'weekday':'2026-11-11','saturday':'2026-11-14','holiday':'2026-11-15'}[day]
+    service_date=service_date_override or {'weekday':'2026-11-11','saturday':'2026-11-14','holiday':'2026-11-15'}[day]
     query = dict(dataset='service', origin=origin, destination=destination,
         origin_point=point(origin), destination_point=point(destination), departure=departure,
         max_walk=None, walking_penalty=1, max_transfers=transfers, samples=300,
@@ -42,6 +42,7 @@ def check_case(client, url, network, case, departure, day):
     result = response.json()
     elapsed = round((time.perf_counter() - started) * 1000, 1)
     errors, gaps = [], []
+    long_walks=[]
     timed = [r for r in result['journeys'] if r.get('arrival') is not None]
     if not timed:
         errors.append('No timed journey during the tested daytime service')
@@ -51,6 +52,12 @@ def check_case(client, url, network, case, departure, day):
         for leg in row['legs']:
             if leg['from'] != current or leg['depart'] < now - .001 or leg['arrive'] < leg['depart']:
                 errors.append('Disconnected stops or nonmonotone leg times')
+            if leg['kind']=='walk' and leg.get('meters',0)>.5:
+                shape=leg.get('shape')
+                if isinstance(shape,str):shape=result['geometry']['shapes'].get(shape)
+                if not shape or len(shape.get('points',[]))<2:errors.append('Missing pedestrian road geometry')
+                if ride_count and leg['to']!='@destination' and leg['meters']>250:
+                    long_walks.append(dict(fromStop=leg['from'],toStop=leg['to'],meters=leg['meters']))
             if leg['kind'] == 'ride':
                 ride_count += 1
                 route = routes[leg['routeId']]
@@ -73,6 +80,7 @@ def check_case(client, url, network, case, departure, day):
         if not row:
             return None
         return dict(arrival=row['arrival'], walkingMeters=row['walkingMeters'], transfers=row['transfers'],
+            transferWalkingMeters=[leg['meters'] for leg in row['legs'] if leg['kind']=='walk' and leg['from']!='@origin' and leg['to']!='@destination'],
             buses=[routes[leg['routeId']]['number'] for leg in row['legs'] if leg['kind'] == 'ride'],
             boarding=[stops[leg['from']]['name'] for leg in row['legs'] if leg['kind'] == 'ride'])
     # A separate scan provides a known feasible direct trip without calling the route engine.
@@ -97,6 +105,7 @@ def check_case(client, url, network, case, departure, day):
     return dict(case=key, title=title, departure=departure, day=day,serviceDate=service_date,maxTransfers=transfers,
         timedJourneys=len(timed), elapsedMs=elapsed, serverMs=result['elapsedMs'],
         recommended=describe(recommended), fastest=describe(fastest),
+        transfersOver250Meters=long_walks,
         missingShapeSegments=sorted(set(gaps)), errors=sorted(set(errors)))
 
 
@@ -106,6 +115,7 @@ def main():
     parser.add_argument('--departures', nargs='+', type=int, default=[480, 840, 1080])
     parser.add_argument('--days', nargs='+', default=['weekday'])
     parser.add_argument('--report', default='service-route-matrix.json')
+    parser.add_argument('--service-date')
     args = parser.parse_args()
     network = json.loads((ROOT / 'shared/service_network.json').read_text(encoding='utf-8'))
     report = dict(recordedAt=datetime.now(timezone.utc).isoformat(), url=args.url,
@@ -117,7 +127,7 @@ def main():
         for day in args.days:
             for departure in args.departures:
                 for case in CASES:
-                    row = check_case(client, args.url, network, case, departure, day)
+                    row = check_case(client, args.url, network, case, departure, day,args.service_date)
                     report['cases'].append(row)
                     (ROOT / 'artifacts' / args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
                     print(json.dumps(row, ensure_ascii=False), flush=True)
